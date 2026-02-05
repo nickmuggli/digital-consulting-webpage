@@ -1,0 +1,216 @@
+{
+    "ci": {
+        "collect": {
+            "numberOfRuns": 3,
+            "startServerCommand": "npm run serve",
+            "startServerReadyPattern": "Local server: http",
+            "url": [
+                "http://localhost:3000",
+                "http://localhost:3000/#about",
+                "http://localhost:3000/#skills",
+                "http://localhost:3000/#projects",
+                "http://localhost:3000/#services",
+                "http://localhost:3000/#contact"
+            ],
+            "settings": {
+                "chromeFlags": "--no-sandbox --headless --disable-gpu",
+                "preset": "desktop",
+                "throttling": {
+                    "rttMs": 40,
+                    "throughputKbps": 10240,
+                    "cpuSlowdownMultiplier": 1
+                }
+            }
+        },
+        "assert": {
+            "assertions": {
+                "categories:performance": [
+                    "error",
+                    {
+                        "minScore": 0.95
+                    }
+                ],
+                "categories:accessibility": [
+                    "error",
+                    {
+                        "minScore": 0.95
+                    }
+                ],
+                "categories:best-practices": [
+                    "error",
+                    {
+                        "minScore": 0.95
+                    }
+                ],
+                "categories:seo": [
+                    "error",
+                    {
+                        "minScore": 0.95
+                    }
+                ],
+                "categories:pwa": [
+                    "warn",
+                    {
+                        "minScore": 0.8
+                    }
+                ],
+                "first-contentful-paint": [
+                    "error",
+                    {
+                        "maxNumericValue": 2500
+                    }
+                ],
+                "largest-contentful-paint": [
+                    "error",
+                    {
+                        "maxNumericValue": 4000
+                    }
+                ],
+                "cumulative-layout-shift": [
+                    "error",
+                    {
+                        "maxNumericValue": 0.1
+                    }
+                ],
+                "total-blocking-time": [
+                    "error",
+                    {
+                        "maxNumericValue": 300
+                    }
+                ],
+                "speed-index": [
+                    "error",
+                    {
+                        "maxNumericValue": 4000
+                    }
+                ],
+                "resource-summary:stylesheet:size": [
+                    "error",
+                    {
+                        "maxNumericValue": 150000
+                    }
+                ],
+                "resource-summary:script:size": [
+                    "error",
+                    {
+                        "maxNumericValue": 300000
+                    }
+                ],
+                "resource-summary:image:size": [
+                    "error",
+                    {
+                        "maxNumericValue": 1000000
+                    }
+                ],
+                "resource-summary:font:size": [
+                    "error",
+                    {
+                        "maxNumericValue": 500000
+                    }
+                ],
+                "resource-summary:total:size": [
+                    "error",
+                    {
+                        "maxNumericValue": 2000000
+                    }
+                ],
+                "uses-https": "error",
+                "redirects-http": "error",
+                "uses-http2": "warn",
+                "no-vulnerable-libraries": "error",
+                "color-contrast": "error",
+                "image-alt": "error",
+                "label": "error",
+                "valid-lang": "error",
+                "meta-viewport": "error",
+                "meta-description": "error",
+                "document-title": "error",
+                "robots-txt": "warn",
+                "canonical": "error",
+                "hreflang": "warn",
+                "structured-data": "warn"
+            },
+            "includePassedAssertions": true
+        },
+        "upload": {
+            "target": "filesystem",
+            "outputDir": "./lighthouse-reports",
+            "reportFilenamePattern": "lighthouse-%%PATHNAME%%-%%DATETIME%%.%%EXTENSION%%"
+        },
+        "server": {
+            "port": 3000,
+            "host": "localhost"
+        }
+    },
+    "budgets": [
+        {
+            "path": "/*",
+            "timings": [
+                {
+                    "metric": "first-contentful-paint",
+                    "budget": 2500
+                },
+                {
+                    "metric": "largest-contentful-paint",
+                    "budget": 4000
+                },
+                {
+                    "metric": "speed-index",
+                    "budget": 4000
+                },
+                {
+                    "metric": "cumulative-layout-shift",
+                    "budget": 0.1
+                },
+                {
+                    "metric": "total-blocking-time",
+                    "budget": 300
+                }
+            ],
+            "resourceSizes": [
+                {
+                    "resourceType": "stylesheet",
+                    "budget": 150
+                },
+                {
+                    "resourceType": "script",
+                    "budget": 300
+                },
+                {
+                    "resourceType": "image",
+                    "budget": 1000
+                },
+                {
+                    "resourceType": "font",
+                    "budget": 500
+                },
+                {
+                    "resourceType": "total",
+                    "budget": 2000
+                }
+            ],
+            "resourceCounts": [
+                {
+                    "resourceType": "stylesheet",
+                    "budget": 5
+                },
+                {
+                    "resourceType": "script",
+                    "budget": 10
+                },
+                {
+                    "resourceType": "image",
+                    "budget": 30
+                },
+                {
+                    "resourceType": "font",
+                    "budget": 5
+                },
+                {
+                    "resourceType": "third-party",
+                    "budget": 20
+                }
+            ]
+        }
+    ]
+}

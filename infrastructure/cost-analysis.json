@@ -1,0 +1,419 @@
+{
+    "projectName": "gabriele-showcase",
+    "version": "2.0.0",
+    "analysisDate": "2024-01-28",
+    "currency": "USD",
+    "estimationPeriod": "monthly",
+    "infrastructure": {
+        "summary": {
+            "totalEstimatedCost": 17.50,
+            "costRange": {
+                "minimum": 12.00,
+                "maximum": 25.00
+            },
+            "trafficAssumptions": {
+                "monthlyVisitors": 10000,
+                "pageViews": 50000,
+                "dataTransfer": "100GB",
+                "requests": 1000000
+            }
+        },
+        "services": [
+            {
+                "name": "Amazon S3",
+                "category": "Storage",
+                "components": [
+                    {
+                        "resource": "Standard Storage",
+                        "usage": "10 GB",
+                        "unitCost": 0.023,
+                        "monthlyCost": 0.23,
+                        "description": "Website files, images, documents"
+                    },
+                    {
+                        "resource": "GET Requests",
+                        "usage": "100,000 requests",
+                        "unitCost": 0.0004,
+                        "monthlyCost": 0.04,
+                        "description": "File retrieval requests"
+                    },
+                    {
+                        "resource": "PUT Requests",
+                        "usage": "1,000 requests",
+                        "unitCost": 0.005,
+                        "monthlyCost": 0.005,
+                        "description": "File upload requests during deployments"
+                    }
+                ],
+                "totalCost": 0.275,
+                "optimization": [
+                    "Use S3 Intelligent-Tiering for cost optimization",
+                    "Enable compression for static assets",
+                    "Implement lifecycle policies for old versions"
+                ]
+            },
+            {
+                "name": "Amazon CloudFront",
+                "category": "CDN",
+                "components": [
+                    {
+                        "resource": "Data Transfer Out",
+                        "usage": "100 GB (First 1TB)",
+                        "unitCost": 0.085,
+                        "monthlyCost": 8.50,
+                        "description": "Global content delivery"
+                    },
+                    {
+                        "resource": "HTTP Requests",
+                        "usage": "1,000,000 requests",
+                        "unitCost": 0.0075,
+                        "monthlyCost": 0.75,
+                        "description": "HTTP/HTTPS requests"
+                    },
+                    {
+                        "resource": "HTTPS Requests",
+                        "usage": "Additional security",
+                        "unitCost": 0.0100,
+                        "monthlyCost": 0.00,
+                        "description": "SSL/TLS termination (included)"
+                    }
+                ],
+                "totalCost": 9.25,
+                "optimization": [
+                    "Optimize cache headers for better hit ratio",
+                    "Use compression (gzip/brotli)",
+                    "Configure appropriate TTL values"
+                ]
+            },
+            {
+                "name": "Amazon Route 53",
+                "category": "DNS",
+                "components": [
+                    {
+                        "resource": "Hosted Zone",
+                        "usage": "1 hosted zone",
+                        "unitCost": 0.50,
+                        "monthlyCost": 0.50,
+                        "description": "DNS hosting for domain"
+                    },
+                    {
+                        "resource": "DNS Queries",
+                        "usage": "1,000,000 queries",
+                        "unitCost": 0.40,
+                        "monthlyCost": 0.40,
+                        "description": "DNS resolution requests"
+                    }
+                ],
+                "totalCost": 0.90,
+                "optimization": [
+                    "Use alias records to reduce query costs",
+                    "Configure appropriate TTL for DNS records"
+                ]
+            },
+            {
+                "name": "AWS Certificate Manager",
+                "category": "Security",
+                "components": [
+                    {
+                        "resource": "SSL Certificate",
+                        "usage": "1 wildcard certificate",
+                        "unitCost": 0.00,
+                        "monthlyCost": 0.00,
+                        "description": "Free SSL certificates for AWS services"
+                    }
+                ],
+                "totalCost": 0.00,
+                "optimization": [
+                    "Automatic certificate renewal",
+                    "No additional costs for multiple domains"
+                ]
+            },
+            {
+                "name": "AWS WAF",
+                "category": "Security",
+                "components": [
+                    {
+                        "resource": "Web ACL",
+                        "usage": "1 Web ACL",
+                        "unitCost": 1.00,
+                        "monthlyCost": 1.00,
+                        "description": "Web application firewall"
+                    },
+                    {
+                        "resource": "Rule Evaluations",
+                        "usage": "1,000,000 requests",
+                        "unitCost": 0.60,
+                        "monthlyCost": 0.60,
+                        "description": "Security rule processing"
+                    },
+                    {
+                        "resource": "Managed Rules",
+                        "usage": "2 rule groups",
+                        "unitCost": 2.00,
+                        "monthlyCost": 2.00,
+                        "description": "AWS managed rule sets"
+                    }
+                ],
+                "totalCost": 3.60,
+                "optimization": [
+                    "Use only necessary managed rules",
+                    "Optimize rule order for performance",
+                    "Monitor blocked requests to adjust rules"
+                ]
+            },
+            {
+                "name": "Amazon CloudWatch",
+                "category": "Monitoring",
+                "components": [
+                    {
+                        "resource": "Dashboards",
+                        "usage": "1 dashboard",
+                        "unitCost": 3.00,
+                        "monthlyCost": 3.00,
+                        "description": "Monitoring dashboards"
+                    },
+                    {
+                        "resource": "Alarms",
+                        "usage": "5 alarms",
+                        "unitCost": 0.10,
+                        "monthlyCost": 0.50,
+                        "description": "Performance and error alerting"
+                    },
+                    {
+                        "resource": "Log Storage",
+                        "usage": "1 GB",
+                        "unitCost": 0.50,
+                        "monthlyCost": 0.50,
+                        "description": "Application and access logs"
+                    }
+                ],
+                "totalCost": 4.00,
+                "optimization": [
+                    "Use log retention policies",
+                    "Optimize alarm frequency",
+                    "Use CloudWatch Insights for log analysis"
+                ]
+            }
+        ]
+    },
+    "costBreakdown": {
+        "byCategory": {
+            "Storage": 0.275,
+            "CDN": 9.25,
+            "DNS": 0.90,
+            "Security": 3.60,
+            "Monitoring": 4.00
+        },
+        "byService": {
+            "Amazon S3": 0.275,
+            "Amazon CloudFront": 9.25,
+            "Amazon Route 53": 0.90,
+            "AWS Certificate Manager": 0.00,
+            "AWS WAF": 3.60,
+            "Amazon CloudWatch": 4.00
+        }
+    },
+    "scalingCosts": {
+        "lowTraffic": {
+            "description": "1,000 visitors/month, 10GB transfer",
+            "estimatedCost": 12.00,
+            "savings": "Basic monitoring, minimal WAF rules"
+        },
+        "mediumTraffic": {
+            "description": "10,000 visitors/month, 100GB transfer",
+            "estimatedCost": 17.50,
+            "currentLevel": true
+        },
+        "highTraffic": {
+            "description": "100,000 visitors/month, 1TB transfer",
+            "estimatedCost": 65.00,
+            "additionalCosts": "Higher CloudFront data transfer costs"
+        },
+        "enterpriseTraffic": {
+            "description": "1M+ visitors/month, 10TB+ transfer",
+            "estimatedCost": 450.00,
+            "considerations": "Consider AWS Enterprise Support, additional monitoring"
+        }
+    },
+    "optimizationStrategies": {
+        "immediate": [
+            {
+                "strategy": "Enable Compression",
+                "impact": "30-40% reduction in transfer costs",
+                "implementation": "Configure gzip/brotli compression in CloudFront"
+            },
+            {
+                "strategy": "Optimize Cache Settings",
+                "impact": "50-70% reduction in origin requests",
+                "implementation": "Set appropriate TTL values, use cache-control headers"
+            },
+            {
+                "strategy": "Image Optimization",
+                "impact": "60-80% reduction in image transfer",
+                "implementation": "Use WebP format, optimize image sizes"
+            }
+        ],
+        "longTerm": [
+            {
+                "strategy": "S3 Intelligent Tiering",
+                "impact": "20-30% reduction in storage costs",
+                "implementation": "Automatically move old content to cheaper storage classes"
+            },
+            {
+                "strategy": "Reserved Capacity",
+                "impact": "10-15% discount on consistent usage",
+                "implementation": "Purchase reserved capacity for predictable traffic"
+            },
+            {
+                "strategy": "Multi-CDN Strategy",
+                "impact": "Cost optimization for global traffic",
+                "implementation": "Use regional CDNs for specific markets"
+            }
+        ]
+    },
+    "budgetRecommendations": {
+        "monthly": {
+            "development": 15.00,
+            "staging": 20.00,
+            "production": 25.00,
+            "total": 60.00
+        },
+        "alerts": [
+            {
+                "threshold": "80%",
+                "action": "Email notification",
+                "description": "Warning when approaching budget limit"
+            },
+            {
+                "threshold": "100%",
+                "action": "Slack notification + Email",
+                "description": "Alert when budget exceeded"
+            },
+            {
+                "threshold": "120%",
+                "action": "Automated resource review",
+                "description": "Trigger cost optimization review"
+            }
+        ]
+    },
+    "comparisonAnalysis": {
+        "alternatives": [
+            {
+                "provider": "Netlify",
+                "monthlyCost": 19.00,
+                "pros": [
+                    "Simpler setup",
+                    "Built-in CI/CD"
+                ],
+                "cons": [
+                    "Less control",
+                    "Vendor lock-in"
+                ]
+            },
+            {
+                "provider": "Vercel",
+                "monthlyCost": 20.00,
+                "pros": [
+                    "Great developer experience",
+                    "Automatic optimization"
+                ],
+                "cons": [
+                    "Limited customization",
+                    "Higher costs for traffic"
+                ]
+            },
+            {
+                "provider": "GitHub Pages",
+                "monthlyCost": 0.00,
+                "pros": [
+                    "Free for public repos",
+                    "Simple setup"
+                ],
+                "cons": [
+                    "Limited features",
+                    "No CDN",
+                    "No custom domains on free tier"
+                ]
+            },
+            {
+                "provider": "AWS (Current)",
+                "monthlyCost": 17.50,
+                "pros": [
+                    "Full control",
+                    "Enterprise features",
+                    "Global CDN"
+                ],
+                "cons": [
+                    "Complex setup",
+                    "Learning curve"
+                ]
+            }
+        ],
+        "recommendation": "AWS provides the best balance of features, performance, and cost for a professional showcase website"
+    },
+    "roiAnalysis": {
+        "benefits": [
+            {
+                "category": "Performance",
+                "value": "Global CDN reduces load times by 60-80%",
+                "impact": "Better user experience, higher engagement"
+            },
+            {
+                "category": "Reliability",
+                "value": "99.9% uptime SLA",
+                "impact": "Professional credibility, no lost opportunities"
+            },
+            {
+                "category": "Security",
+                "value": "Enterprise-grade security (WAF, SSL)",
+                "impact": "Protection against threats, compliance"
+            },
+            {
+                "category": "Scalability",
+                "value": "Automatic scaling to handle traffic spikes",
+                "impact": "No performance degradation during high traffic"
+            }
+        ],
+        "costJustification": {
+            "professionalCredibility": "Demonstrates DevOps expertise worth $17.50/month investment",
+            "learningValue": "Hands-on AWS experience valuable for career development",
+            "portfolioShowcase": "High-performance site showcases technical capabilities"
+        }
+    },
+    "reporting": {
+        "frequency": "monthly",
+        "keyMetrics": [
+            "Total AWS spend",
+            "Cost per visitor",
+            "Data transfer efficiency",
+            "Performance vs. cost ratio"
+        ],
+        "dashboards": [
+            {
+                "name": "Cost Dashboard",
+                "url": "AWS Cost Explorer",
+                "metrics": [
+                    "Daily spend",
+                    "Service breakdown",
+                    "Forecast"
+                ]
+            },
+            {
+                "name": "Performance Dashboard",
+                "url": "CloudWatch Dashboard",
+                "metrics": [
+                    "Response time",
+                    "Error rate",
+                    "Cache hit ratio"
+                ]
+            }
+        ]
+    },
+    "notes": [
+        "Costs are estimates based on typical usage patterns",
+        "Actual costs may vary based on traffic, content size, and usage patterns",
+        "Free tier benefits may apply for new AWS accounts",
+        "Currency exchange rates may affect international billing",
+        "Additional costs may apply for advanced features or support plans"
+    ]
+}

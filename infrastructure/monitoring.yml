@@ -1,0 +1,496 @@
+# CloudWatch Monitoring Configuration for Technical Showcase
+# This file defines comprehensive monitoring and alerting for the infrastructure
+
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Monitoring and alerting stack for Gabriele Tupini Technical Showcase"
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: "gabriele-showcase"
+
+  NotificationEmail:
+    Type: String
+    Default: "gabrieletupini@gmail.com"
+    Description: "Email for alert notifications"
+
+Resources:
+  # ============================================================================
+  # SNS TOPICS FOR ALERTS
+  # ============================================================================
+
+  AlertTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Sub "${ProjectName}-alerts"
+      DisplayName: "Technical Showcase Alerts"
+      KmsMasterKeyId: "alias/aws/sns"
+
+  AlertSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !Ref AlertTopic
+      Protocol: "email"
+      Endpoint: !Ref NotificationEmail
+
+  # ============================================================================
+  # CLOUDWATCH DASHBOARDS
+  # ============================================================================
+
+  MainDashboard:
+    Type: AWS::CloudWatch::Dashboard
+    Properties:
+      DashboardName: !Sub "${ProjectName}-overview"
+      DashboardBody: !Sub |
+        {
+          "widgets": [
+            {
+              "type": "metric",
+              "x": 0,
+              "y": 0,
+              "width": 12,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  [ "AWS/CloudFront", "Requests", "DistributionId", "${ProductionDistributionId}" ],
+                  [ ".", "BytesDownloaded", ".", "." ],
+                  [ ".", "BytesUploaded", ".", "." ]
+                ],
+                "period": 300,
+                "stat": "Sum",
+                "region": "us-east-1",
+                "title": "CloudFront Traffic",
+                "view": "timeSeries",
+                "stacked": false
+              }
+            },
+            {
+              "type": "metric",
+              "x": 12,
+              "y": 0,
+              "width": 12,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  [ "AWS/CloudFront", "4xxErrorRate", "DistributionId", "${ProductionDistributionId}" ],
+                  [ ".", "5xxErrorRate", ".", "." ]
+                ],
+                "period": 300,
+                "stat": "Average",
+                "region": "us-east-1",
+                "title": "Error Rates",
+                "view": "timeSeries",
+                "yAxis": {
+                  "left": {
+                    "min": 0,
+                    "max": 5
+                  }
+                }
+              }
+            },
+            {
+              "type": "metric",
+              "x": 0,
+              "y": 6,
+              "width": 12,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  [ "AWS/CloudFront", "OriginLatency", "DistributionId", "${ProductionDistributionId}" ]
+                ],
+                "period": 300,
+                "stat": "Average",
+                "region": "us-east-1",
+                "title": "Origin Latency",
+                "view": "timeSeries",
+                "yAxis": {
+                  "left": {
+                    "min": 0
+                  }
+                }
+              }
+            },
+            {
+              "type": "metric",
+              "x": 12,
+              "y": 6,
+              "width": 12,
+              "height": 6,
+              "properties": {
+                "metrics": [
+                  [ "AWS/S3", "BucketRequests", "BucketName", "${ProjectName}-prod", "FilterId", "EntireBucket" ],
+                  [ ".", "AllRequests", ".", ".", ".", "." ]
+                ],
+                "period": 300,
+                "stat": "Sum",
+                "region": "us-east-1",
+                "title": "S3 Requests",
+                "view": "timeSeries"
+              }
+            }
+          ]
+        }
+
+  # ============================================================================
+  # CLOUDWATCH ALARMS
+  # ============================================================================
+
+  HighErrorRateAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${ProjectName}-high-error-rate"
+      AlarmDescription: "Alert when error rate exceeds 5%"
+      MetricName: "4xxErrorRate"
+      Namespace: "AWS/CloudFront"
+      Statistic: "Average"
+      Period: 300
+      EvaluationPeriods: 3
+      DatapointsToAlarm: 2
+      Threshold: 5.0
+      ComparisonOperator: "GreaterThanThreshold"
+      AlarmActions:
+        - !Ref AlertTopic
+      OKActions:
+        - !Ref AlertTopic
+      Dimensions:
+        - Name: "DistributionId"
+          Value: !Ref ProductionDistributionId
+      TreatMissingData: "notBreaching"
+
+  HighLatencyAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${ProjectName}-high-latency"
+      AlarmDescription: "Alert when origin latency exceeds 2 seconds"
+      MetricName: "OriginLatency"
+      Namespace: "AWS/CloudFront"
+      Statistic: "Average"
+      Period: 300
+      EvaluationPeriods: 3
+      DatapointsToAlarm: 2
+      Threshold: 2000
+      ComparisonOperator: "GreaterThanThreshold"
+      AlarmActions:
+        - !Ref AlertTopic
+      OKActions:
+        - !Ref AlertTopic
+      Dimensions:
+        - Name: "DistributionId"
+          Value: !Ref ProductionDistributionId
+      TreatMissingData: "notBreaching"
+
+  LowTrafficAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${ProjectName}-low-traffic"
+      AlarmDescription: "Alert when traffic drops significantly"
+      MetricName: "Requests"
+      Namespace: "AWS/CloudFront"
+      Statistic: "Sum"
+      Period: 3600
+      EvaluationPeriods: 2
+      DatapointsToAlarm: 2
+      Threshold: 10
+      ComparisonOperator: "LessThanThreshold"
+      AlarmActions:
+        - !Ref AlertTopic
+      Dimensions:
+        - Name: "DistributionId"
+          Value: !Ref ProductionDistributionId
+      TreatMissingData: "breaching"
+
+  # ============================================================================
+  # COST MONITORING
+  # ============================================================================
+
+  BudgetAlert:
+    Type: AWS::Budgets::Budget
+    Properties:
+      Budget:
+        BudgetName: !Sub "${ProjectName}-monthly-budget"
+        BudgetLimit:
+          Amount: 50
+          Unit: "USD"
+        TimeUnit: "MONTHLY"
+        BudgetType: "COST"
+        CostFilters:
+          TagKey:
+            - "Project"
+          TagValue:
+            - !Ref ProjectName
+      NotificationsWithSubscribers:
+        - Notification:
+            NotificationType: "ACTUAL"
+            ComparisonOperator: "GREATER_THAN"
+            Threshold: 80
+            ThresholdType: "PERCENTAGE"
+          Subscribers:
+            - SubscriptionType: "EMAIL"
+              Address: !Ref NotificationEmail
+        - Notification:
+            NotificationType: "FORECASTED"
+            ComparisonOperator: "GREATER_THAN"
+            Threshold: 100
+            ThresholdType: "PERCENTAGE"
+          Subscribers:
+            - SubscriptionType: "EMAIL"
+              Address: !Ref NotificationEmail
+
+  # ============================================================================
+  # REAL USER MONITORING (RUM)
+  # ============================================================================
+
+  RUMApplication:
+    Type: AWS::RUM::AppMonitor
+    Properties:
+      Name: !Sub "${ProjectName}-rum"
+      Domain: "gabrieletupini.dev"
+      AppMonitorConfiguration:
+        IdentityPoolId: !Ref RUMIdentityPool
+        ExcludedPages: ["/admin/*", "/api/*"]
+        FavoritePages: ["/", "/#about", "/#projects", "/#contact"]
+        GuestRoleArn: !GetAtt RUMGuestRole.Arn
+        SessionSampleRate: 1.0
+        Telemetries: ["errors", "performance", "http"]
+      CustomEvents:
+        Status: "ENABLED"
+      Tags:
+        - Key: "Project"
+          Value: !Ref ProjectName
+
+  RUMIdentityPool:
+    Type: AWS::Cognito::IdentityPool
+    Properties:
+      IdentityPoolName: !Sub "${ProjectName}-rum-identity-pool"
+      AllowUnauthenticatedIdentities: true
+
+  RUMGuestRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: "cognito-identity.amazonaws.com"
+            Action: "sts:AssumeRoleWithWebIdentity"
+            Condition:
+              StringEquals:
+                "cognito-identity.amazonaws.com:aud": !Ref RUMIdentityPool
+              "ForAnyValue:StringLike":
+                "cognito-identity.amazonaws.com:amr": "unauthenticated"
+      Policies:
+        - PolicyName: "RUMPolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "rum:PutRumEvents"
+                Resource: !Sub "arn:aws:rum:${AWS::Region}:${AWS::AccountId}:appmonitor/${ProjectName}-rum"
+
+  # ============================================================================
+  # SYNTHETIC MONITORING
+  # ============================================================================
+
+  WebsiteCanary:
+    Type: AWS::Synthetics::Canary
+    Properties:
+      Name: !Sub "${ProjectName}-website-canary"
+      RuntimeVersion: "syn-nodejs-puppeteer-3.9"
+      ExecutionRoleArn: !GetAtt CanaryExecutionRole.Arn
+      Schedule:
+        Expression: "rate(5 minutes)"
+        DurationInSeconds: 0
+      RunConfig:
+        TimeoutInSeconds: 60
+        MemoryInMB: 960
+        ActiveTracing: true
+      SuccessRetentionPeriodInDays: 30
+      FailureRetentionPeriodInDays: 30
+      Code:
+        Handler: "pageLoadBlueprint.handler"
+        Script: !Sub |
+          const synthetics = require('Synthetics');
+          const log = require('SyntheticsLogger');
+
+          const pageLoadBlueprint = async function () {
+            const urls = [
+              'https://gabrieletupini.dev',
+              'https://gabrieletupini.dev/#about',
+              'https://gabrieletupini.dev/#projects',
+              'https://gabrieletupini.dev/#contact'
+            ];
+            
+            return await synthetics.executeStep('loadPages', async function () {
+              const page = synthetics.getPage();
+              
+              for (const url of urls) {
+                await synthetics.executeStep(`loadPage-${url}`, async function () {
+                  const response = await page.goto(url, { waitUntil: 'networkidle0', timeout: 30000 });
+                  
+                  if (!response) {
+                    throw new Error(`Failed to load ${url}`);
+                  }
+                  
+                  if (response.status() < 200 || response.status() > 299) {
+                    throw new Error(`Failed to load ${url} with status ${response.status()}`);
+                  }
+                  
+                  // Check for specific content
+                  await page.waitForSelector('main', { timeout: 5000 });
+                  
+                  // Performance metrics
+                  const metrics = await page.metrics();
+                  log.info(`Performance metrics for ${url}:`, metrics);
+                });
+              }
+            });
+          };
+
+          exports.handler = async () => {
+            return await synthetics.executeStep('pageLoadBlueprint', pageLoadBlueprint);
+          };
+
+  CanaryExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: "lambda.amazonaws.com"
+            Action: "sts:AssumeRole"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/CloudWatchSyntheticsExecutionRolePolicy"
+      Policies:
+        - PolicyName: "CanaryPolicy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:ListBucket"
+                  - "s3:GetBucketLocation"
+                Resource: !Sub "arn:aws:s3:::${ProjectName}-canary-artifacts"
+              - Effect: Allow
+                Action:
+                  - "s3:PutObject"
+                  - "s3:GetObject"
+                  - "s3:DeleteObject"
+                Resource: !Sub "arn:aws:s3:::${ProjectName}-canary-artifacts/*"
+
+  CanaryArtifactsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "${ProjectName}-canary-artifacts"
+      LifecycleConfiguration:
+        Rules:
+          - Id: "DeleteOldArtifacts"
+            Status: "Enabled"
+            ExpirationInDays: 30
+
+  # ============================================================================
+  # LOG INSIGHTS QUERIES
+  # ============================================================================
+
+  LogInsightsQueries:
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken: !GetAtt CreateLogInsightsQueries.Arn
+
+  CreateLogInsightsQueries:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub "${ProjectName}-create-log-queries"
+      Runtime: "python3.9"
+      Handler: "index.handler"
+      Role: !GetAtt LogInsightsRole.Arn
+      Code:
+        ZipFile: |
+          import json
+          import boto3
+          import cfnresponse
+
+          def handler(event, context):
+            try:
+              logs_client = boto3.client('logs')
+              
+              queries = [
+                {
+                  'queryName': 'Top-Requesting-IPs',
+                  'queryString': '''
+                    fields @timestamp, @message
+                    | filter @message like /GET|POST/
+                    | parse @message /(?<ip>\d+\.\d+\.\d+\.\d+)/
+                    | stats count() as requests by ip
+                    | sort requests desc
+                    | limit 20
+                  '''
+                },
+                {
+                  'queryName': 'Error-Rate-Analysis',
+                  'queryString': '''
+                    fields @timestamp, @message
+                    | filter @message like /4\d\d|5\d\d/
+                    | parse @message /(?<status>\d{3})/
+                    | stats count() as errors by status
+                    | sort errors desc
+                  '''
+                },
+                {
+                  'queryName': 'Performance-Metrics',
+                  'queryString': '''
+                    fields @timestamp, @message
+                    | filter @message like /response_time/
+                    | parse @message /response_time:(?<time>\d+)/
+                    | stats avg(time) as avg_response, max(time) as max_response, min(time) as min_response
+                  '''
+                }
+              ]
+              
+              cfnresponse.send(event, context, cfnresponse.SUCCESS, {})
+              
+            except Exception as e:
+              print(f"Error: {str(e)}")
+              cfnresponse.send(event, context, cfnresponse.FAILED, {})
+
+  LogInsightsRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: "lambda.amazonaws.com"
+            Action: "sts:AssumeRole"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+      Policies:
+        - PolicyName: "LogsAccess"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "logs:*"
+                Resource: "*"
+
+Outputs:
+  DashboardURL:
+    Description: "CloudWatch Dashboard URL"
+    Value: !Sub "https://${AWS::Region}.console.aws.amazon.com/cloudwatch/home?region=${AWS::Region}#dashboards:name=${ProjectName}-overview"
+
+  RUMApplicationId:
+    Description: "RUM Application ID"
+    Value: !GetAtt RUMApplication.Id
+    Export:
+      Name: !Sub "${AWS::StackName}-rum-app-id"
+
+  CanaryName:
+    Description: "Synthetics Canary Name"
+    Value: !Ref WebsiteCanary
+    Export:
+      Name: !Sub "${AWS::StackName}-canary-name"

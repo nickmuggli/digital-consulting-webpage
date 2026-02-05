@@ -1,0 +1,101 @@
+{
+    "name": "gabriele-showcase",
+    "version": "2.0.0",
+    "description": "Professional technical showcase website for Gabriele Tupini - Full-Stack Developer & DevOps Architect",
+    "main": "index.html",
+    "type": "module",
+    "engines": {
+        "node": ">=20.0.0",
+        "npm": ">=9.0.0"
+    },
+    "scripts": {
+        "build": "npm run clean && npm run optimize && npm run generate-sitemap",
+        "clean": "rimraf dist",
+        "optimize": "npm run optimize:html && npm run optimize:css && npm run optimize:js && npm run copy:assets",
+        "optimize:html": "html-minifier-terser --input-dir . --output-dir dist --file-ext html --collapse-whitespace --remove-comments --remove-redundant-attributes --use-short-doctype --remove-empty-attributes --minify-css true --minify-js true",
+        "optimize:css": "cleancss -o dist/css/style.css css/style.css",
+        "optimize:js": "terser js/main.js --compress --mangle --output dist/js/main.js --source-map",
+        "copy:assets": "npm run copy:images && npm run copy:fonts && npm run copy:docs",
+        "copy:images": "mkdirp dist/images && cpx2 'images/**/*' dist/images",
+        "copy:fonts": "mkdirp dist/fonts && cpx2 'fonts/**/*' dist/fonts",
+        "copy:docs": "cpx2 '*.pdf' dist/",
+        "generate-sitemap": "node scripts/generate-sitemap.js",
+        "generate-seo": "node scripts/generate-seo.js",
+        "serve": "live-server dist --port=3000 --host=localhost --open=/index.html",
+        "test": "npm run test:html && npm run test:css && npm run test:js && npm run test:lighthouse",
+        "test:html": "html-validate dist/index.html",
+        "test:css": "stylelint 'css/**/*.css'",
+        "test:js": "eslint js/**/*.js",
+        "test:lighthouse": "lhci autorun",
+        "deploy:staging": "aws s3 sync dist/ s3://gabriele-showcase-staging --delete",
+        "deploy:production": "aws s3 sync dist/ s3://gabriele-showcase-prod --delete",
+        "invalidate:staging": "aws cloudfront create-invalidation --distribution-id $STAGING_DISTRIBUTION_ID --paths '/*'",
+        "invalidate:production": "aws cloudfront create-invalidation --distribution-id $PRODUCTION_DISTRIBUTION_ID --paths '/*'",
+        "security:scan": "audit-ci --config audit-ci.json",
+        "performance:analyze": "webpack-bundle-analyzer dist/stats.json"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/gabriele-tupini/showcase.git"
+    },
+    "keywords": [
+        "portfolio",
+        "showcase",
+        "fullstack",
+        "developer",
+        "devops",
+        "react",
+        "nodejs",
+        "aws",
+        "docker",
+        "kubernetes",
+        "typescript"
+    ],
+    "author": {
+        "name": "Gabriele Tupini",
+        "email": "gabrieletupini@gmail.com",
+        "url": "https://gabrieletupini.dev"
+    },
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/gabriele-tupini/showcase/issues"
+    },
+    "homepage": "https://gabrieletupini.dev",
+    "devDependencies": {
+        "@eslint/js": "^9.15.0",
+        "@lhci/cli": "^0.14.0",
+        "audit-ci": "^7.0.1",
+        "clean-css-cli": "^5.6.3",
+        "cpx2": "^7.0.1",
+        "eslint": "^9.15.0",
+        "html-minifier-terser": "^7.2.0",
+        "html-validate": "^8.24.1",
+        "lighthouse": "^12.2.1",
+        "live-server": "^1.2.2",
+        "mkdirp": "^3.0.1",
+        "rimraf": "^6.0.1",
+        "stylelint": "^16.10.0",
+        "stylelint-config-standard": "^36.0.1",
+        "terser": "^5.36.0",
+        "webpack-bundle-analyzer": "^4.10.2"
+    },
+    "dependencies": {},
+    "browserslist": [
+        "> 1%",
+        "last 2 versions",
+        "not dead"
+    ],
+    "lighthouse": {
+        "extends": "lighthouse:default",
+        "settings": {
+            "onlyAudits": [
+                "first-contentful-paint",
+                "largest-contentful-paint",
+                "first-meaningful-paint",
+                "speed-index",
+                "interactive",
+                "cumulative-layout-shift"
+            ]
+        }
+    }
+}
