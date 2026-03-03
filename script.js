@@ -747,6 +747,10 @@
   // ===== SARA VOICE ASSISTANT (Gemini Live Audio) =====
   const GEMINI_API_KEY = '__GEMINI_API_KEY__';
   const GEMINI_WS_URL = 'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent';
+  const CAL_API_KEY = '__CAL_API_KEY__';
+  const CAL_USERNAME = 'gabriele-tupini-da60rn';
+  const CAL_EVENT_SLUG = '15min';
+  const CAL_API_BASE = 'https://api.cal.com/v2';
 
   // DOM elements
   const saraToggle = document.getElementById('saraToggle');
@@ -851,14 +855,34 @@ Contact:
 Pricing Policy:
 IMPORTANT: Never quote specific prices or price ranges. Every engagement depends on current infrastructure, ad spend level, and revenue goals. Always redirect pricing questions toward booking a free revenue audit.
 
-When the caller wants to book or learn more, gather these details naturally:
-1. Name
+When the caller wants to book or learn more, gather these details naturally, one at a time:
+1. Name — use it throughout the call
 2. Business type / industry
 3. Current marketing channels and approximate ad spend
 4. Main goal (more leads, lower CPA, better tracking, etc.)
-5. Email address — spell it back to them to confirm
+5. Email address — spell it back letter by letter to confirm. Say: "Just to make sure I got that right — that's J-O-H-N at example dot com, correct?"
 
-Once you have their info, confirm and say the team will reach out within 24 hours for a free revenue audit.
+Once you have at least their name, email, and what they need, move to booking.
+
+Booking a Consultation:
+You can book a consultation directly for the caller — no forms, no links, everything happens through this voice call. You have two tools:
+
+Step 1: Check available slots
+Use get_available_slots to look up open time slots. Ask the caller when they'd prefer to meet (e.g. "Do you prefer this week or next week? Morning or afternoon?"), then call the function with the appropriate date range.
+- Present 3–5 good options to the caller in their local time.
+- Example: "I've got a few great options for you. How about Tuesday at 10 AM, Wednesday at 2 PM, or Thursday at 11 AM — your time?"
+
+Step 2: Book the slot
+Once the caller picks a time, use book_consultation with their name, email, and the chosen time slot.
+Before calling the function, briefly say: "Perfect, let me lock that in for you now."
+- If the response says success: Say enthusiastically: "You're all set! You'll get a confirmation email shortly. The team is looking forward to chatting with you! Is there anything else I can help with?"
+- If the response says failure: Say: "Hmm, something went wrong on my end. No worries — you can also book directly at cal.com/gabriele-tupini-da60rn/15min, or I can have the team reach out to you by email."
+
+Important booking notes:
+- Always gather name and email before booking.
+- Always spell back the email to confirm before booking.
+- The consultation is free, 15 minutes — no commitment.
+- If the caller changes their mind about the time, just check slots again and rebook.
 
 Conversation Guidelines:
 - Be concise. This is a voice call. Keep answers to 2-3 sentences.
@@ -962,6 +986,52 @@ Conversation Guidelines:
     saraNextStartTime = startTime + audioBuffer.duration;
   }
 
+  // Cal.com API functions
+  async function fetchAvailableSlots(startDate, endDate, timeZone) {
+    const params = new URLSearchParams({
+      eventTypeSlug: CAL_EVENT_SLUG,
+      'usernameList[]': CAL_USERNAME,
+      start: startDate,
+      end: endDate,
+      timeZone: timeZone
+    });
+    const res = await fetch(CAL_API_BASE + '/slots/available?' + params, {
+      headers: {
+        'cal-api-version': '2024-09-04',
+        'Authorization': 'Bearer ' + CAL_API_KEY
+      }
+    });
+    if (!res.ok) throw new Error('Cal.com slots error: ' + res.status);
+    const json = await res.json();
+    return json.data;
+  }
+
+  async function createBooking(startTime, attendeeName, attendeeEmail, attendeeTimeZone) {
+    const res = await fetch(CAL_API_BASE + '/bookings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'cal-api-version': '2024-08-13',
+        'Authorization': 'Bearer ' + CAL_API_KEY
+      },
+      body: JSON.stringify({
+        start: startTime,
+        eventTypeSlug: CAL_EVENT_SLUG,
+        username: CAL_USERNAME,
+        attendee: {
+          name: attendeeName,
+          email: attendeeEmail,
+          timeZone: attendeeTimeZone
+        }
+      })
+    });
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error('Cal.com booking error: ' + res.status + ' — ' + text);
+    }
+    return await res.json();
+  }
+
   async function saraConnect() {
     try {
       saraIsConnecting = true;
@@ -1010,7 +1080,36 @@ Conversation Guidelines:
             },
             systemInstruction: {
               parts: [{ text: buildSaraSystemPrompt() }]
-            }
+            },
+            tools: [{
+              functionDeclarations: [
+                {
+                  name: 'get_available_slots',
+                  description: 'Check available consultation time slots for a given date range. Call this when the caller wants to book and you need to offer them specific times.',
+                  parameters: {
+                    type: 'OBJECT',
+                    properties: {
+                      start_date: { type: 'STRING', description: 'Start date in YYYY-MM-DD format' },
+                      end_date: { type: 'STRING', description: 'End date in YYYY-MM-DD format, max 7 days from start' }
+                    },
+                    required: ['start_date', 'end_date']
+                  }
+                },
+                {
+                  name: 'book_consultation',
+                  description: 'Book a specific consultation time slot. Call this after the caller picks a time from the available slots.',
+                  parameters: {
+                    type: 'OBJECT',
+                    properties: {
+                      caller_name: { type: 'STRING', description: "The caller's full name" },
+                      caller_email: { type: 'STRING', description: "The caller's email address" },
+                      start_time: { type: 'STRING', description: 'The selected slot start time in ISO 8601 format (must be one of the times returned by get_available_slots)' }
+                    },
+                    required: ['caller_name', 'caller_email', 'start_time']
+                  }
+                }
+              ]
+            }]
           }
         }));
       };
@@ -1040,6 +1139,78 @@ Conversation Guidelines:
               }));
             }
           };
+          return;
+        }
+
+        // Handle tool calls (Cal.com booking)
+        if (msg.toolCall && msg.toolCall.functionCalls) {
+          var callerTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+          msg.toolCall.functionCalls.forEach(function(fc) {
+            if (fc.name === 'get_available_slots') {
+              var args = fc.args || {};
+              fetchAvailableSlots(args.start_date, args.end_date, callerTz)
+                .then(function(slots) {
+                  // Format slots nicely for Sara to read out
+                  var formatted = {};
+                  Object.keys(slots).forEach(function(date) {
+                    var d = new Date(date + 'T12:00:00Z');
+                    var label = d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'UTC' });
+                    formatted[label] = slots[date].map(function(t) {
+                      var dt = new Date(t.start);
+                      return dt.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', timeZone: callerTz });
+                    });
+                  });
+                  saraWs.send(JSON.stringify({
+                    toolResponse: {
+                      functionResponses: [{
+                        id: fc.id,
+                        name: fc.name,
+                        response: { available_slots: formatted, timezone: callerTz, raw_slots: slots }
+                      }]
+                    }
+                  }));
+                })
+                .catch(function(err) {
+                  console.error('Failed to fetch slots:', err);
+                  saraWs.send(JSON.stringify({
+                    toolResponse: {
+                      functionResponses: [{
+                        id: fc.id,
+                        name: fc.name,
+                        response: { error: 'Failed to fetch available slots. Suggest the caller visit cal.com/gabriele-tupini-da60rn/15min directly.' }
+                      }]
+                    }
+                  }));
+                });
+            }
+            if (fc.name === 'book_consultation') {
+              var bArgs = fc.args || {};
+              createBooking(bArgs.start_time, bArgs.caller_name, bArgs.caller_email, callerTz)
+                .then(function() {
+                  saraWs.send(JSON.stringify({
+                    toolResponse: {
+                      functionResponses: [{
+                        id: fc.id,
+                        name: fc.name,
+                        response: { success: true, message: 'Booking confirmed!' }
+                      }]
+                    }
+                  }));
+                })
+                .catch(function(err) {
+                  console.error('Failed to book:', err);
+                  saraWs.send(JSON.stringify({
+                    toolResponse: {
+                      functionResponses: [{
+                        id: fc.id,
+                        name: fc.name,
+                        response: { success: false, message: err.message }
+                      }]
+                    }
+                  }));
+                });
+            }
+          });
           return;
         }
 

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0a0a0f"/>
+      <stop offset="1" stop-color="#0d1117"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="300" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00b7ff"/>
+      <stop offset="1" stop-color="#00ffd1"/>
+    </linearGradient>
+    <linearGradient id="logoG" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00b7ff"/>
+      <stop offset="1" stop-color="#00ffd1"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <!-- Subtle grid pattern -->
+  <g opacity="0.04" stroke="#fff" stroke-width="1">
+    <line x1="0" y1="0" x2="1200" y2="630"/>
+    <line x1="400" y1="0" x2="1200" y2="400"/>
+    <line x1="0" y1="200" x2="800" y2="630"/>
+    <line x1="600" y1="0" x2="1200" y2="300"/>
+  </g>
+  <!-- Accent bar top -->
+  <rect x="0" y="0" width="1200" height="4" fill="url(#accent)"/>
+  <!-- Logo icon -->
+  <rect x="80" y="200" width="64" height="64" rx="14" fill="url(#logoG)"/>
+  <path d="M96 244v-24l16 13 16-13v24" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Brand name -->
+  <text x="164" y="248" font-family="system-ui, -apple-system, sans-serif" font-size="38" font-weight="700" fill="#ffffff">DigitalConsulting</text>
+  <!-- Tagline -->
+  <text x="80" y="340" font-family="system-ui, -apple-system, sans-serif" font-size="52" font-weight="700" fill="#ffffff">Growth Systems For</text>
+  <text x="80" y="405" font-family="system-ui, -apple-system, sans-serif" font-size="52" font-weight="700" fill="url(#accent)">Ambitious Teams</text>
+  <!-- Description -->
+  <text x="80" y="470" font-family="system-ui, -apple-system, sans-serif" font-size="22" fill="#8b949e">AI-powered revenue infrastructure · Performance marketing · Tracking systems</text>
+  <!-- Bottom accent bar -->
+  <rect x="0" y="626" width="1200" height="4" fill="url(#accent)"/>
+</svg>
