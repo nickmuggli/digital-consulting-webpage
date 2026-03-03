@@ -298,8 +298,17 @@
         p.angle += p.spiralTwist + (1 - progress) * 0.01;
         if (p.radius < 1) p.radius = 1;
 
-        p.x = centerX + Math.cos(p.angle) * p.radius;
-        p.y = centerY + Math.sin(p.angle) * p.radius;
+        // Organic distortion — grows stronger as particles converge to center
+        const closeness = 1 - Math.min(p.radius / 180, 1);
+        const wobble = closeness * (
+          Math.sin(p.angle * 3 + time * 5) * 10 +
+          Math.sin(p.angle * 5 - time * 3.7) * 5 +
+          Math.sin(time * 7.5 + p.pulseOffset) * 4
+        );
+        const displayRadius = Math.max(1, p.radius + wobble);
+
+        p.x = centerX + Math.cos(p.angle) * displayRadius;
+        p.y = centerY + Math.sin(p.angle) * displayRadius;
 
         const brightness = easeOutCubic(progress);
         p.currentAlpha = p.baseAlpha * brightness * (p.isBright ? 1.5 : 1);
@@ -310,12 +319,25 @@
       else if (isPulsing) {
         const progress = (elapsed - IMPLODE_END) / PHASE.PULSE_DURATION;
         const intensity = Math.sin(progress * Math.PI);
-        const compressR = 1 + (1 - intensity) * 5;
-        p.angle += 0.03;
+
+        // Organic plasma blob — overlapping sine waves distort the shape
+        const a = p.angle;
+        const t = time;
+        const blob = 1
+          + Math.sin(a * 2 + t * 6) * 0.35
+          + Math.sin(a * 3 - t * 4.5) * 0.2
+          + Math.sin(a * 5 + t * 9) * 0.12;
+
+        const baseR = 3 + (1 - intensity) * 10;
+        const compressR = Math.max(0.5, baseR * blob + Math.sin(p.pulseOffset + t * 12) * 2.5);
+
+        // Each particle rotates at its own organic speed
+        p.angle += 0.015 + p.spiralTwist * 3 + intensity * 0.04;
+
         p.x = centerX + Math.cos(p.angle) * compressR;
         p.y = centerY + Math.sin(p.angle) * compressR;
-        p.currentAlpha = 0.8 + intensity * 0.2;
-        p.size = p.baseSize * (1.2 + intensity * 1);
+        p.currentAlpha = 0.7 + intensity * 0.3;
+        p.size = p.baseSize * (1.0 + intensity * 1.2);
         p.ex = 0; p.ey = 0;
         p.trail = [];
       }
