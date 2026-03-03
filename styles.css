@@ -1630,11 +1630,10 @@ a { color: inherit; text-decoration: none; }
   .dashboard-row { grid-template-columns: 1fr; }
   .resolution-stats { flex-direction: column; gap: 12px; }
   .stat-divider { width: 100%; height: 1px; }
-  .sara-panel { bottom: 0; right: 0; left: 0; width: 100%; height: 100vh; max-height: 100vh; border-radius: 0; }
   .sara-toggle-label { display: none; }
 }
 
-/* ===== SARA AI CHATBOT ===== */
+/* ===== SARA VOICE ASSISTANT ===== */
 .sara-toggle {
   position: fixed;
   bottom: 24px;
@@ -1666,217 +1665,281 @@ a { color: inherit; text-decoration: none; }
   box-shadow: 0 6px 30px rgba(0, 183, 255, 0.3), 0 0 80px rgba(0, 183, 255, 0.08);
 }
 
-.sara-toggle[aria-expanded="true"] .sara-toggle-icon { display: none; }
-.sara-toggle[aria-expanded="true"] .sara-close-icon { display: block; }
-.sara-toggle[aria-expanded="true"] .sara-toggle-label { display: none; }
-
 @keyframes saraPulse {
   0%, 100% { box-shadow: 0 4px 24px rgba(0, 183, 255, 0.2), 0 0 60px rgba(0, 183, 255, 0.05); }
   50% { box-shadow: 0 4px 30px rgba(0, 183, 255, 0.35), 0 0 80px rgba(0, 183, 255, 0.1); }
 }
 
-.sara-panel {
+/* Overlay */
+.sara-overlay {
   position: fixed;
-  bottom: 90px;
-  right: 24px;
-  z-index: 9998;
-  width: 400px;
-  max-height: 600px;
+  inset: 0;
+  z-index: 10001;
+  background: rgba(2, 6, 16, 0.97);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  animation: saraFadeIn 0.35s ease-out;
+}
+
+@keyframes saraFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.sara-call-screen {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  border-radius: var(--radius-xl);
-  border: 1px solid var(--border-color);
-  background: rgba(6, 13, 31, 0.95);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 183, 255, 0.05);
-  overflow: hidden;
-  animation: saraPanelIn 0.3s ease-out;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
-@keyframes saraPanelIn {
-  from { opacity: 0; transform: translateY(12px) scale(0.96); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.sara-header {
+.sara-call-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--border-color);
-  background: rgba(255, 255, 255, 0.02);
+  padding: 24px 24px 0;
 }
 
-.sara-header-info {
+.sara-back-btn {
   display: flex;
   align-items: center;
-  gap: 12px;
-}
-
-.sara-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-mint));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 700;
-  font-size: 14px;
-  color: var(--bg-primary);
-  position: relative;
-  flex-shrink: 0;
-}
-
-.sara-avatar-dot {
-  position: absolute;
-  bottom: -1px;
-  right: -1px;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--accent-green);
-  border: 2px solid var(--bg-primary);
-  box-shadow: 0 0 6px rgba(92, 255, 143, 0.4);
-}
-
-.sara-name {
-  display: block;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.sara-status {
-  display: block;
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.sara-header-close {
+  gap: 6px;
   background: none;
   border: none;
   color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
-  padding: 4px;
-  border-radius: 6px;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease;
 }
 
-.sara-header-close:hover {
-  color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.06);
+.sara-back-btn:hover { color: var(--text-primary); }
+
+.sara-powered {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  opacity: 0.4;
 }
 
-.sara-messages {
+.sara-call-body {
   flex: 1;
-  overflow-y: auto;
-  padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  min-height: 300px;
-  max-height: 420px;
-  scroll-behavior: smooth;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
 }
 
-.sara-messages::-webkit-scrollbar { width: 4px; }
-.sara-messages::-webkit-scrollbar-track { background: transparent; }
-.sara-messages::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
+.sara-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent-cyan);
+  opacity: 0.7;
+  margin-bottom: 20px;
+}
 
-.sara-msg {
-  max-width: 85%;
-  padding: 10px 14px;
-  border-radius: 14px;
+.sara-title {
+  font-size: clamp(40px, 8vw, 64px);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.sara-desc {
   font-size: 14px;
+  color: var(--text-muted);
+  max-width: 340px;
   line-height: 1.5;
-  animation: msgIn 0.25s ease-out;
+  margin-bottom: 48px;
 }
 
-@keyframes msgIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Orb */
+.sara-orb-wrap {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin-bottom: 32px;
 }
 
-.sara-msg.bot {
-  align-self: flex-start;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
-  border-bottom-left-radius: 4px;
-}
-
-.sara-msg.user {
-  align-self: flex-end;
-  background: linear-gradient(135deg, rgba(0, 183, 255, 0.2), rgba(0, 255, 209, 0.12));
-  border: 1px solid rgba(0, 183, 255, 0.2);
-  color: var(--text-primary);
-  border-bottom-right-radius: 4px;
-}
-
-.sara-msg.typing {
-  align-self: flex-start;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border-color);
-  border-bottom-left-radius: 4px;
-  display: flex;
-  gap: 4px;
-  padding: 14px 18px;
-}
-
-.sara-msg.typing .dot {
-  width: 6px;
-  height: 6px;
+.sara-orb-glow {
+  position: absolute;
   border-radius: 50%;
-  background: var(--text-muted);
-  animation: typingDot 1.4s ease-in-out infinite;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
 
-.sara-msg.typing .dot:nth-child(2) { animation-delay: 0.2s; }
-.sara-msg.typing .dot:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes typingDot {
-  0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
-  30% { opacity: 1; transform: translateY(-4px); }
+.sara-orb-glow-outer {
+  inset: -40px;
+  background: rgba(0, 183, 255, 0.15);
+  filter: blur(30px);
 }
 
-.sara-form {
-  display: flex;
-  gap: 8px;
-  padding: 16px 20px;
-  border-top: 1px solid var(--border-color);
-  background: rgba(255, 255, 255, 0.02);
+.sara-orb-glow-inner {
+  inset: -20px;
+  background: rgba(0, 183, 255, 0.12);
+  filter: blur(20px);
 }
 
-.sara-input {
-  flex: 1;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  padding: 10px 14px;
-  font-family: var(--font-sans);
-  font-size: 14px;
-  color: var(--text-primary);
-  outline: none;
-  transition: border-color 0.2s ease;
-}
-
-.sara-input::placeholder { color: var(--text-muted); }
-.sara-input:focus { border-color: rgba(0, 183, 255, 0.4); }
-
-.sara-send {
-  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-mint));
-  border: none;
-  border-radius: var(--radius-sm);
-  padding: 10px 14px;
-  color: var(--bg-primary);
-  cursor: pointer;
-  transition: all 0.2s ease;
+.sara-orb {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.5s ease;
+  position: relative;
 }
 
-.sara-send:hover { transform: scale(1.05); box-shadow: 0 2px 12px rgba(0, 183, 255, 0.3); }
-.sara-send:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+.sara-orb.connected {
+  background: linear-gradient(135deg, rgba(0, 183, 255, 0.15), rgba(0, 255, 209, 0.08));
+  border-color: rgba(0, 183, 255, 0.3);
+  box-shadow: 0 0 40px rgba(0, 183, 255, 0.1);
+}
+
+.sara-orb.connecting {
+  animation: orbPulseConnect 1.2s ease-in-out infinite;
+}
+
+@keyframes orbPulseConnect {
+  0%, 100% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.05); opacity: 0.9; }
+}
+
+.sara-orb.speaking {
+  animation: orbPulseSpeaking 1s ease-in-out infinite;
+}
+
+@keyframes orbPulseSpeaking {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+/* Speaking glow animation */
+.sara-orb-wrap.speaking .sara-orb-glow-outer {
+  opacity: 1;
+  animation: glowOuter 2s ease-in-out infinite;
+}
+
+.sara-orb-wrap.speaking .sara-orb-glow-inner {
+  opacity: 1;
+  animation: glowInner 1.5s ease-in-out infinite 0.3s;
+}
+
+.sara-orb-wrap.connected .sara-orb-glow-outer { opacity: 0.3; }
+.sara-orb-wrap.connected .sara-orb-glow-inner { opacity: 0.2; }
+
+@keyframes glowOuter {
+  0%, 100% { transform: scale(1); opacity: 0.15; }
+  50% { transform: scale(1.4); opacity: 0; }
+}
+
+@keyframes glowInner {
+  0%, 100% { transform: scale(1); opacity: 0.2; }
+  50% { transform: scale(1.25); opacity: 0.05; }
+}
+
+.sara-mic-icon { color: var(--text-muted); transition: color 0.3s ease; }
+.sara-orb.connected .sara-mic-icon { color: var(--accent-cyan); }
+
+.sara-call-status {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  height: 16px;
+  margin-bottom: 32px;
+  transition: color 0.3s ease;
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.sara-call-status.connecting { color: var(--accent-cyan); opacity: 0.7; }
+.sara-call-status.speaking { color: var(--accent-cyan); opacity: 1; }
+.sara-call-status.listening { color: var(--text-muted); opacity: 0.5; }
+
+/* Call buttons */
+.sara-call-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.sara-start-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  border: none;
+  border-radius: 100px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 24px rgba(255, 255, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.sara-start-btn:hover {
+  transform: scale(1.04);
+  box-shadow: 0 6px 30px rgba(255, 255, 255, 0.2);
+}
+
+.sara-start-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.sara-end-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+  border-radius: 100px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.sara-end-btn:hover {
+  background: rgba(239, 68, 68, 0.25);
+  transform: scale(1.04);
+}
+
+.sara-error {
+  margin-top: 20px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #f87171;
+  opacity: 0.8;
+  max-width: 320px;
+  text-align: center;
+  min-height: 16px;
+}

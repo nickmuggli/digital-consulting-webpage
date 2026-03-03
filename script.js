@@ -744,48 +744,87 @@
     }, 3000);
   }
 
-  // ===== SARA AI CHATBOT (Gemini-Powered) =====
+  // ===== SARA VOICE ASSISTANT (Gemini Live Audio) =====
   const GEMINI_API_KEY = '__GEMINI_API_KEY__';
+  const GEMINI_WS_URL = 'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent';
 
+  // DOM elements
   const saraToggle = document.getElementById('saraToggle');
-  const saraPanel = document.getElementById('saraPanel');
-  const saraClose = document.getElementById('saraClose');
-  const saraForm = document.getElementById('saraForm');
-  const saraInput = document.getElementById('saraInput');
-  const saraMessages = document.getElementById('saraMessages');
+  const saraOverlay = document.getElementById('saraOverlay');
+  const saraBack = document.getElementById('saraBack');
+  const saraOrb = document.getElementById('saraOrb');
+  const saraOrbWrap = document.querySelector('.sara-orb-wrap');
+  const saraMicIcon = document.getElementById('saraMicIcon');
+  const saraMicOffIcon = document.getElementById('saraMicOffIcon');
+  const saraStatusEl = document.getElementById('saraStatus');
+  const saraStartCall = document.getElementById('saraStartCall');
+  const saraEndCall = document.getElementById('saraEndCall');
+  const saraErrorEl = document.getElementById('saraError');
 
-  const saraConversation = [];
-  let saraReady = true;
+  // State
+  let saraWs = null;
+  let saraAudioCtx = null;
+  let saraPlaybackCtx = null;
+  let saraStream = null;
+  let saraProcessor = null;
+  let saraActiveSources = [];
+  let saraNextStartTime = 0;
+  let saraSpeakingTimeout = null;
+  let saraIsConnected = false;
+  let saraIsConnecting = false;
+  let saraIsSpeaking = false;
+
+  // AudioWorklet code for real-time mic capture
+  const pcmWorkletCode = `
+class PCMProcessor extends AudioWorkletProcessor {
+  process(inputs) {
+    const input = inputs[0];
+    if (input.length > 0 && input[0].length > 0) {
+      this.port.postMessage(input[0]);
+    }
+    return true;
+  }
+}
+registerProcessor('pcm-processor', PCMProcessor);
+`;
+
+  function floatTo16BitPCM(float32) {
+    const buffer = new ArrayBuffer(float32.length * 2);
+    const view = new DataView(buffer);
+    for (let i = 0; i < float32.length; i++) {
+      const s = Math.max(-1, Math.min(1, float32[i]));
+      view.setInt16(i * 2, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+    }
+    return buffer;
+  }
+
+  function arrayBufferToBase64(buffer) {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    for (let i = 0; i < bytes.byteLength; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return btoa(binary);
+  }
 
   function buildSaraSystemPrompt() {
     const callerTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const callerTime = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZone: callerTz });
     const todayDate = new Date().toISOString().split('T')[0];
 
-    return `Your name is **Sara**, and you are the AI assistant for **DigitalConsulting**, a performance marketing and revenue infrastructure agency. You are warm, professional, and confident — you speak like a senior strategist who genuinely loves helping businesses grow. Keep responses concise and conversational since this is a chat.
+    return `Your name is Sara, and you are the AI voice assistant for DigitalConsulting, a performance marketing and revenue infrastructure agency. You are warm, professional, and confident — you speak like a senior strategist who genuinely loves helping businesses grow. Keep responses concise and conversational since this is a voice call. Avoid long monologues.
 
----
+When the call starts, introduce yourself briefly and immediately ask what the caller needs. Example:
+"Hi, I'm Sara from DigitalConsulting! Are you looking to chat about our services, or would you like to schedule a free revenue audit with our team?"
 
-## Opening
+Timezone info:
+- The caller's timezone is ${callerTz} and their local time is ${callerTime}.
+- Today's date is ${todayDate}.
 
-When the conversation starts, introduce yourself briefly and immediately ask what the visitor needs. Example:
-
-"Hi, I'm Sara from DigitalConsulting! Are you looking to learn about our services, or would you like to schedule a free revenue audit with our team?"
-
----
-
-## Timezone & Context
-
-- The caller's timezone is **${callerTz}** and their local time is **${callerTime}**.
-- Today's date is **${todayDate}**.
-
----
-
-## About DigitalConsulting
-
+About DigitalConsulting:
 DigitalConsulting builds AI-powered revenue infrastructure for growth-focused businesses. We combine Google and Meta performance marketing, enterprise-level tracking systems, and 24/7 AI appointment capture to turn marketing into predictable revenue.
 
-**What we do:**
+What we do:
 - Google Ads management and optimization
 - Meta (Facebook/Instagram) Ads management
 - Enterprise-level tracking (GA4, GTM, Meta CAPI, server-side tracking)
@@ -793,169 +832,301 @@ DigitalConsulting builds AI-powered revenue infrastructure for growth-focused bu
 - Landing page design and conversion rate optimization
 - Video ad creative and UGC direction
 
-**Core philosophy:** Infrastructure First. Scaling Second.
-- Step 1: Infrastructure Audit — analyze tracking, booking rates, and revenue leakage
-- Step 2: Build the System — landing pages, tracking, AI call automation, ad architecture
-- Step 3: Optimize and Scale — structured testing, budget allocation, revenue-based scaling
+Core philosophy: Infrastructure First. Scaling Second.
+Step 1: Infrastructure Audit — analyze tracking, booking rates, and revenue leakage.
+Step 2: Build the System — landing pages, tracking, AI call automation, ad architecture.
+Step 3: Optimize and Scale — structured testing, budget allocation, revenue-based scaling.
 
-**Results:**
+Results:
 - Average +312% revenue lift for clients
 - 5x+ ROAS track record
 - -28% average CPA reduction
 - +32% booked appointment lift
 
-**Contact:**
+Contact:
 - Email: gabrieletupini@gmail.com
 - Phone: +1 (612) 398-5577
 - WhatsApp: +1 (612) 398-5577
 
----
+Pricing Policy:
+IMPORTANT: Never quote specific prices or price ranges. Every engagement depends on current infrastructure, ad spend level, and revenue goals. Always redirect pricing questions toward booking a free revenue audit.
 
-## Pricing Policy
+When the caller wants to book or learn more, gather these details naturally:
+1. Name
+2. Business type / industry
+3. Current marketing channels and approximate ad spend
+4. Main goal (more leads, lower CPA, better tracking, etc.)
+5. Email address — spell it back to them to confirm
 
-**IMPORTANT: Never quote specific prices or price ranges.** Every engagement depends on current infrastructure, ad spend level, and revenue goals. If asked about pricing, say something like:
+Once you have their info, confirm and say the team will reach out within 24 hours for a free revenue audit.
 
-- "Every business has a different starting point, so we scope the engagement around your specific infrastructure needs. The best next step is a free revenue audit where we can map out exactly what's needed."
-- "Pricing depends on the channels and infrastructure involved. Let's set up a quick audit call — it's free, no commitment."
-
-Always redirect pricing questions toward booking a revenue audit.
-
----
-
-## Booking Flow
-
-When the visitor wants to book, collect these details naturally, one at a time:
-
-1. **Name** — "What's your name?"
-2. **Business type** — "What does your business do?" (industry, service type)
-3. **Current marketing** — "Are you currently running paid ads? If so, roughly what monthly ad spend?"
-4. **Main goal** — "What's the #1 thing you'd want to improve — more leads, lower CPA, better tracking, or something else?"
-5. **Email** — "What's the best email to reach you at?"
-
-Once you have their info, confirm the details and say:
-"Perfect — I've got everything. Our team will reach out within 24 hours to schedule your free revenue audit. You'll also receive a confirmation at [their email]. In the meantime, feel free to call us at +1 (612) 398-5577 or email gabrieletupini@gmail.com."
-
----
-
-## Conversation Guidelines
-
-- **Be concise.** Keep answers to 2-3 sentences when possible.
-- **Be data-driven** — reference specific metrics (312% revenue lift, 5x ROAS, etc.) when relevant.
-- **Never discuss specific prices.** Always redirect to a revenue audit.
-- **Always offer a next step.** Don't end a topic without suggesting booking an audit or exploring the website.
-- **If you don't know something,** say: "Great question — I'll have the team follow up on that directly."
-- **Handle objections gracefully:**
-  - "Too expensive" → "We scope engagements to match your revenue goals. The audit is free and helps us find the right approach."
-  - "I'll think about it" → "Totally! Whenever you're ready, the revenue audit is always free. You can also call us anytime at +1 (612) 398-5577."
-  - "Do you handle X?" → If unsure, say yes and suggest discussing details in the audit.
-- **Tone:** Confident, strategic, approachable. Think senior consultant, not salesperson.
-- Do NOT use markdown formatting or special characters in your responses. Write plain text only.`;
+Conversation Guidelines:
+- Be concise. This is a voice call. Keep answers to 2-3 sentences.
+- Be data-driven — reference specific metrics when relevant.
+- Never discuss specific prices. Always redirect to a revenue audit.
+- Always offer a next step.
+- If you don't know something, say: "Great question — I'll have the team follow up on that directly."
+- Tone: Confident, strategic, approachable. Think senior consultant, not salesperson.`;
   }
 
-  function addSaraMessage(text, role) {
-    const msg = document.createElement('div');
-    msg.className = 'sara-msg ' + role;
-    msg.textContent = text;
-    saraMessages.appendChild(msg);
-    saraMessages.scrollTop = saraMessages.scrollHeight;
+  function updateSaraUI() {
+    // Orb states
+    saraOrb.classList.toggle('connected', saraIsConnected);
+    saraOrb.classList.toggle('connecting', saraIsConnecting);
+    saraOrb.classList.toggle('speaking', saraIsConnected && saraIsSpeaking);
+    saraOrbWrap.classList.toggle('connected', saraIsConnected);
+    saraOrbWrap.classList.toggle('speaking', saraIsConnected && saraIsSpeaking);
+
+    // Mic icon
+    if (saraIsConnected) {
+      saraMicIcon.style.display = '';
+      saraMicOffIcon.style.display = 'none';
+    } else {
+      saraMicIcon.style.display = 'none';
+      saraMicOffIcon.style.display = '';
+    }
+
+    // Status text
+    saraStatusEl.className = 'sara-call-status';
+    if (saraIsConnecting) {
+      saraStatusEl.textContent = 'Connecting\u2026';
+      saraStatusEl.classList.add('connecting');
+    } else if (saraIsConnected && saraIsSpeaking) {
+      saraStatusEl.textContent = 'Speaking\u2026';
+      saraStatusEl.classList.add('speaking');
+    } else if (saraIsConnected) {
+      saraStatusEl.textContent = 'Listening\u2026';
+      saraStatusEl.classList.add('listening');
+    } else {
+      saraStatusEl.textContent = 'Ready';
+    }
+
+    // Buttons
+    saraStartCall.style.display = saraIsConnected ? 'none' : '';
+    saraEndCall.style.display = saraIsConnected ? '' : 'none';
+    saraStartCall.disabled = saraIsConnecting;
+    saraStartCall.textContent = saraIsConnecting ? 'Connecting\u2026' : '';
+    if (!saraIsConnecting) {
+      saraStartCall.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg> Start call';
+    }
   }
 
-  function showTyping() {
-    const typing = document.createElement('div');
-    typing.className = 'sara-msg typing';
-    typing.id = 'saraTyping';
-    typing.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
-    saraMessages.appendChild(typing);
-    saraMessages.scrollTop = saraMessages.scrollHeight;
+  function handleInterruption() {
+    saraActiveSources.forEach(function(s) { try { s.stop(); } catch(_) {} });
+    saraActiveSources = [];
+    if (saraPlaybackCtx) {
+      saraNextStartTime = saraPlaybackCtx.currentTime;
+    }
+    saraIsSpeaking = false;
+    updateSaraUI();
   }
 
-  function removeTyping() {
-    const typing = document.getElementById('saraTyping');
-    if (typing) typing.remove();
-  }
+  function playPCMAudio(base64Data) {
+    if (!saraPlaybackCtx) return;
+    const binaryStr = atob(base64Data);
+    const bytes = new Uint8Array(binaryStr.length);
+    for (let i = 0; i < binaryStr.length; i++) {
+      bytes[i] = binaryStr.charCodeAt(i);
+    }
 
-  async function sendToGemini(userMessage) {
-    saraConversation.push({ role: 'user', parts: [{ text: userMessage }] });
+    const int16 = new Int16Array(bytes.buffer);
+    const float32 = new Float32Array(int16.length);
+    for (let i = 0; i < int16.length; i++) {
+      float32[i] = int16[i] / 32768.0;
+    }
 
-    const body = {
-      system_instruction: { parts: [{ text: buildSaraSystemPrompt() }] },
-      contents: saraConversation,
-      generationConfig: {
-        temperature: 0.8,
-        topP: 0.95,
-        maxOutputTokens: 512
-      }
+    const audioBuffer = saraPlaybackCtx.createBuffer(1, float32.length, 24000);
+    audioBuffer.getChannelData(0).set(float32);
+
+    const source = saraPlaybackCtx.createBufferSource();
+    source.buffer = audioBuffer;
+    source.connect(saraPlaybackCtx.destination);
+
+    const startTime = Math.max(saraPlaybackCtx.currentTime, saraNextStartTime);
+    source.start(startTime);
+    saraActiveSources.push(source);
+
+    saraIsSpeaking = true;
+    updateSaraUI();
+
+    if (saraSpeakingTimeout) clearTimeout(saraSpeakingTimeout);
+    saraSpeakingTimeout = setTimeout(function() {
+      saraIsSpeaking = false;
+      updateSaraUI();
+    }, (startTime - saraPlaybackCtx.currentTime + audioBuffer.duration) * 1000);
+
+    source.onended = function() {
+      saraActiveSources = saraActiveSources.filter(function(s) { return s !== source; });
     };
 
-    const resp = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body)
-      }
-    );
+    saraNextStartTime = startTime + audioBuffer.duration;
+  }
 
-    if (!resp.ok) {
-      throw new Error('Gemini API error: ' + resp.status);
+  async function saraConnect() {
+    try {
+      saraIsConnecting = true;
+      saraErrorEl.textContent = '';
+      updateSaraUI();
+
+      // Create playback context at 24kHz
+      saraPlaybackCtx = new AudioContext({ sampleRate: 24000 });
+      if (saraPlaybackCtx.state === 'suspended') await saraPlaybackCtx.resume();
+      saraNextStartTime = saraPlaybackCtx.currentTime;
+
+      // Get mic access
+      saraStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+      // Create capture context at 16kHz
+      saraAudioCtx = new AudioContext({ sampleRate: 16000 });
+      if (saraAudioCtx.state === 'suspended') await saraAudioCtx.resume();
+      const micSource = saraAudioCtx.createMediaStreamSource(saraStream);
+
+      // Load AudioWorklet
+      const workletBlob = new Blob([pcmWorkletCode], { type: 'application/javascript' });
+      const workletUrl = URL.createObjectURL(workletBlob);
+      await saraAudioCtx.audioWorklet.addModule(workletUrl);
+      URL.revokeObjectURL(workletUrl);
+
+      saraProcessor = new AudioWorkletNode(saraAudioCtx, 'pcm-processor');
+      micSource.connect(saraProcessor);
+      saraProcessor.connect(saraAudioCtx.destination);
+
+      // Connect WebSocket to Gemini Live API
+      const wsUrl = GEMINI_WS_URL + '?key=' + GEMINI_API_KEY;
+      saraWs = new WebSocket(wsUrl);
+
+      saraWs.onopen = function() {
+        // Send setup message
+        saraWs.send(JSON.stringify({
+          setup: {
+            model: 'models/gemini-2.5-flash-native-audio-preview-09-2025',
+            generationConfig: {
+              responseModalities: ['AUDIO'],
+              speechConfig: {
+                voiceConfig: {
+                  prebuiltVoiceConfig: { voiceName: 'Zephyr' }
+                }
+              }
+            },
+            systemInstruction: {
+              parts: [{ text: buildSaraSystemPrompt() }]
+            }
+          }
+        }));
+      };
+
+      saraWs.onmessage = function(event) {
+        let msg;
+        try { msg = JSON.parse(event.data); } catch(_) { return; }
+
+        // Setup complete — start streaming mic
+        if (msg.setupComplete) {
+          saraIsConnecting = false;
+          saraIsConnected = true;
+          updateSaraUI();
+
+          // Stream mic audio to Gemini
+          saraProcessor.port.onmessage = function(e) {
+            if (saraWs && saraWs.readyState === WebSocket.OPEN) {
+              const pcm = floatTo16BitPCM(e.data);
+              const b64 = arrayBufferToBase64(pcm);
+              saraWs.send(JSON.stringify({
+                realtimeInput: {
+                  mediaChunks: [{
+                    data: b64,
+                    mimeType: 'audio/pcm;rate=16000'
+                  }]
+                }
+              }));
+            }
+          };
+          return;
+        }
+
+        // Audio response from Gemini
+        if (msg.serverContent) {
+          if (msg.serverContent.interrupted) {
+            handleInterruption();
+            return;
+          }
+          const parts = msg.serverContent.modelTurn && msg.serverContent.modelTurn.parts;
+          if (parts) {
+            for (let i = 0; i < parts.length; i++) {
+              if (parts[i].inlineData && parts[i].inlineData.data) {
+                playPCMAudio(parts[i].inlineData.data);
+              }
+            }
+          }
+        }
+      };
+
+      saraWs.onclose = function() {
+        saraDisconnect();
+      };
+
+      saraWs.onerror = function(e) {
+        console.error('Sara WebSocket error:', e);
+        saraErrorEl.textContent = 'Connection error. Please try again.';
+        saraDisconnect();
+      };
+
+    } catch (err) {
+      console.error('Sara connect failed:', err);
+      saraErrorEl.textContent = err.message || 'Failed to connect. Check microphone permissions.';
+      saraIsConnecting = false;
+      updateSaraUI();
+      saraDisconnect();
     }
-
-    const data = await resp.json();
-    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I couldn\'t process that. Please try again.';
-
-    saraConversation.push({ role: 'model', parts: [{ text: reply }] });
-    return reply;
   }
 
-  function openSara() {
-    saraPanel.removeAttribute('hidden');
-    saraToggle.setAttribute('aria-expanded', 'true');
-    saraInput.focus();
-
-    if (saraMessages.children.length === 0) {
-      setTimeout(() => {
-        addSaraMessage('Hi, I\'m Sara from DigitalConsulting! Are you looking to learn about our revenue infrastructure services, or would you like to schedule a free audit with our team?', 'bot');
-      }, 400);
+  function saraDisconnect() {
+    if (saraWs) {
+      try { saraWs.close(); } catch(_) {}
+      saraWs = null;
     }
+    if (saraStream) {
+      saraStream.getTracks().forEach(function(t) { t.stop(); });
+      saraStream = null;
+    }
+    if (saraAudioCtx) {
+      saraAudioCtx.close();
+      saraAudioCtx = null;
+    }
+    if (saraPlaybackCtx) {
+      saraPlaybackCtx.close();
+      saraPlaybackCtx = null;
+    }
+    if (saraSpeakingTimeout) {
+      clearTimeout(saraSpeakingTimeout);
+      saraSpeakingTimeout = null;
+    }
+    saraProcessor = null;
+    saraActiveSources = [];
+    saraIsConnected = false;
+    saraIsConnecting = false;
+    saraIsSpeaking = false;
+    updateSaraUI();
   }
 
-  function closeSara() {
-    saraPanel.setAttribute('hidden', '');
-    saraToggle.setAttribute('aria-expanded', 'false');
-  }
-
-  if (saraToggle && saraPanel && saraForm && saraInput) {
-    saraToggle.addEventListener('click', () => {
-      const isHidden = saraPanel.hasAttribute('hidden');
-      if (isHidden) { openSara(); } else { closeSara(); }
+  // Event listeners
+  if (saraToggle && saraOverlay) {
+    saraToggle.addEventListener('click', function() {
+      saraOverlay.removeAttribute('hidden');
+      saraToggle.style.display = 'none';
     });
 
-    saraClose.addEventListener('click', closeSara);
+    saraBack.addEventListener('click', function() {
+      if (saraIsConnected) saraDisconnect();
+      saraOverlay.setAttribute('hidden', '');
+      saraToggle.style.display = '';
+    });
 
-    saraForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const text = saraInput.value.trim();
-      if (!text || !saraReady) return;
+    saraStartCall.addEventListener('click', function() {
+      if (!saraIsConnecting && !saraIsConnected) saraConnect();
+    });
 
-      addSaraMessage(text, 'user');
-      saraInput.value = '';
-      saraReady = false;
-      saraInput.disabled = true;
-
-      showTyping();
-
-      try {
-        const reply = await sendToGemini(text);
-        removeTyping();
-        addSaraMessage(reply, 'bot');
-      } catch (err) {
-        removeTyping();
-        addSaraMessage('Sorry, I\'m having a connection issue. You can reach us directly at +1 (612) 398-5577 or gabrieletupini@gmail.com.', 'bot');
-      }
-
-      saraReady = true;
-      saraInput.disabled = false;
-      saraInput.focus();
+    saraEndCall.addEventListener('click', function() {
+      saraDisconnect();
     });
   }
 
