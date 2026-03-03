@@ -744,4 +744,219 @@
     }, 3000);
   }
 
+  // ===== SARA AI CHATBOT (Gemini-Powered) =====
+  const GEMINI_API_KEY = '__GEMINI_API_KEY__';
+
+  const saraToggle = document.getElementById('saraToggle');
+  const saraPanel = document.getElementById('saraPanel');
+  const saraClose = document.getElementById('saraClose');
+  const saraForm = document.getElementById('saraForm');
+  const saraInput = document.getElementById('saraInput');
+  const saraMessages = document.getElementById('saraMessages');
+
+  const saraConversation = [];
+  let saraReady = true;
+
+  function buildSaraSystemPrompt() {
+    const callerTz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const callerTime = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZone: callerTz });
+    const todayDate = new Date().toISOString().split('T')[0];
+
+    return `Your name is **Sara**, and you are the AI assistant for **DigitalConsulting**, a performance marketing and revenue infrastructure agency. You are warm, professional, and confident — you speak like a senior strategist who genuinely loves helping businesses grow. Keep responses concise and conversational since this is a chat.
+
+---
+
+## Opening
+
+When the conversation starts, introduce yourself briefly and immediately ask what the visitor needs. Example:
+
+"Hi, I'm Sara from DigitalConsulting! Are you looking to learn about our services, or would you like to schedule a free revenue audit with our team?"
+
+---
+
+## Timezone & Context
+
+- The caller's timezone is **${callerTz}** and their local time is **${callerTime}**.
+- Today's date is **${todayDate}**.
+
+---
+
+## About DigitalConsulting
+
+DigitalConsulting builds AI-powered revenue infrastructure for growth-focused businesses. We combine Google and Meta performance marketing, enterprise-level tracking systems, and 24/7 AI appointment capture to turn marketing into predictable revenue.
+
+**What we do:**
+- Google Ads management and optimization
+- Meta (Facebook/Instagram) Ads management
+- Enterprise-level tracking (GA4, GTM, Meta CAPI, server-side tracking)
+- AI Secretary — 24/7 automated inbound call handling and appointment booking
+- Landing page design and conversion rate optimization
+- Video ad creative and UGC direction
+
+**Core philosophy:** Infrastructure First. Scaling Second.
+- Step 1: Infrastructure Audit — analyze tracking, booking rates, and revenue leakage
+- Step 2: Build the System — landing pages, tracking, AI call automation, ad architecture
+- Step 3: Optimize and Scale — structured testing, budget allocation, revenue-based scaling
+
+**Results:**
+- Average +312% revenue lift for clients
+- 5x+ ROAS track record
+- -28% average CPA reduction
+- +32% booked appointment lift
+
+**Contact:**
+- Email: gabrieletupini@gmail.com
+- Phone: +1 (612) 398-5577
+- WhatsApp: +1 (612) 398-5577
+
+---
+
+## Pricing Policy
+
+**IMPORTANT: Never quote specific prices or price ranges.** Every engagement depends on current infrastructure, ad spend level, and revenue goals. If asked about pricing, say something like:
+
+- "Every business has a different starting point, so we scope the engagement around your specific infrastructure needs. The best next step is a free revenue audit where we can map out exactly what's needed."
+- "Pricing depends on the channels and infrastructure involved. Let's set up a quick audit call — it's free, no commitment."
+
+Always redirect pricing questions toward booking a revenue audit.
+
+---
+
+## Booking Flow
+
+When the visitor wants to book, collect these details naturally, one at a time:
+
+1. **Name** — "What's your name?"
+2. **Business type** — "What does your business do?" (industry, service type)
+3. **Current marketing** — "Are you currently running paid ads? If so, roughly what monthly ad spend?"
+4. **Main goal** — "What's the #1 thing you'd want to improve — more leads, lower CPA, better tracking, or something else?"
+5. **Email** — "What's the best email to reach you at?"
+
+Once you have their info, confirm the details and say:
+"Perfect — I've got everything. Our team will reach out within 24 hours to schedule your free revenue audit. You'll also receive a confirmation at [their email]. In the meantime, feel free to call us at +1 (612) 398-5577 or email gabrieletupini@gmail.com."
+
+---
+
+## Conversation Guidelines
+
+- **Be concise.** Keep answers to 2-3 sentences when possible.
+- **Be data-driven** — reference specific metrics (312% revenue lift, 5x ROAS, etc.) when relevant.
+- **Never discuss specific prices.** Always redirect to a revenue audit.
+- **Always offer a next step.** Don't end a topic without suggesting booking an audit or exploring the website.
+- **If you don't know something,** say: "Great question — I'll have the team follow up on that directly."
+- **Handle objections gracefully:**
+  - "Too expensive" → "We scope engagements to match your revenue goals. The audit is free and helps us find the right approach."
+  - "I'll think about it" → "Totally! Whenever you're ready, the revenue audit is always free. You can also call us anytime at +1 (612) 398-5577."
+  - "Do you handle X?" → If unsure, say yes and suggest discussing details in the audit.
+- **Tone:** Confident, strategic, approachable. Think senior consultant, not salesperson.
+- Do NOT use markdown formatting or special characters in your responses. Write plain text only.`;
+  }
+
+  function addSaraMessage(text, role) {
+    const msg = document.createElement('div');
+    msg.className = 'sara-msg ' + role;
+    msg.textContent = text;
+    saraMessages.appendChild(msg);
+    saraMessages.scrollTop = saraMessages.scrollHeight;
+  }
+
+  function showTyping() {
+    const typing = document.createElement('div');
+    typing.className = 'sara-msg typing';
+    typing.id = 'saraTyping';
+    typing.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
+    saraMessages.appendChild(typing);
+    saraMessages.scrollTop = saraMessages.scrollHeight;
+  }
+
+  function removeTyping() {
+    const typing = document.getElementById('saraTyping');
+    if (typing) typing.remove();
+  }
+
+  async function sendToGemini(userMessage) {
+    saraConversation.push({ role: 'user', parts: [{ text: userMessage }] });
+
+    const body = {
+      system_instruction: { parts: [{ text: buildSaraSystemPrompt() }] },
+      contents: saraConversation,
+      generationConfig: {
+        temperature: 0.8,
+        topP: 0.95,
+        maxOutputTokens: 512
+      }
+    };
+
+    const resp = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      }
+    );
+
+    if (!resp.ok) {
+      throw new Error('Gemini API error: ' + resp.status);
+    }
+
+    const data = await resp.json();
+    const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I couldn\'t process that. Please try again.';
+
+    saraConversation.push({ role: 'model', parts: [{ text: reply }] });
+    return reply;
+  }
+
+  function openSara() {
+    saraPanel.removeAttribute('hidden');
+    saraToggle.setAttribute('aria-expanded', 'true');
+    saraInput.focus();
+
+    if (saraMessages.children.length === 0) {
+      setTimeout(() => {
+        addSaraMessage('Hi, I\'m Sara from DigitalConsulting! Are you looking to learn about our revenue infrastructure services, or would you like to schedule a free audit with our team?', 'bot');
+      }, 400);
+    }
+  }
+
+  function closeSara() {
+    saraPanel.setAttribute('hidden', '');
+    saraToggle.setAttribute('aria-expanded', 'false');
+  }
+
+  if (saraToggle && saraPanel && saraForm && saraInput) {
+    saraToggle.addEventListener('click', () => {
+      const isHidden = saraPanel.hasAttribute('hidden');
+      if (isHidden) { openSara(); } else { closeSara(); }
+    });
+
+    saraClose.addEventListener('click', closeSara);
+
+    saraForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const text = saraInput.value.trim();
+      if (!text || !saraReady) return;
+
+      addSaraMessage(text, 'user');
+      saraInput.value = '';
+      saraReady = false;
+      saraInput.disabled = true;
+
+      showTyping();
+
+      try {
+        const reply = await sendToGemini(text);
+        removeTyping();
+        addSaraMessage(reply, 'bot');
+      } catch (err) {
+        removeTyping();
+        addSaraMessage('Sorry, I\'m having a connection issue. You can reach us directly at +1 (612) 398-5577 or gabrieletupini@gmail.com.', 'bot');
+      }
+
+      saraReady = true;
+      saraInput.disabled = false;
+      saraInput.focus();
+    });
+  }
+
 })();

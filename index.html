@@ -524,6 +524,42 @@
     </div>
   </footer>
 
+  <!-- Sara AI Chatbot -->
+  <button class="sara-toggle" id="saraToggle" aria-label="Talk to Sara" aria-expanded="false">
+    <svg class="sara-toggle-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+    </svg>
+    <svg class="sara-close-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+      <path d="M18 6L6 18M6 6l12 12"/>
+    </svg>
+    <span class="sara-toggle-label">Talk to Sara</span>
+  </button>
+
+  <div class="sara-panel" id="saraPanel" hidden>
+    <div class="sara-header">
+      <div class="sara-header-info">
+        <div class="sara-avatar">
+          <span class="sara-avatar-dot"></span>
+          S
+        </div>
+        <div>
+          <span class="sara-name">Sara</span>
+          <span class="sara-status">AI Assistant</span>
+        </div>
+      </div>
+      <button class="sara-header-close" id="saraClose" aria-label="Close chat">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="sara-messages" id="saraMessages"></div>
+    <form class="sara-form" id="saraForm" autocomplete="off">
+      <input type="text" id="saraInput" class="sara-input" placeholder="Ask Sara anything..." aria-label="Message">
+      <button type="submit" class="sara-send" aria-label="Send message">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>
+      </button>
+    </form>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
