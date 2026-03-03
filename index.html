@@ -1,452 +1,529 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DigitalConsulting | Growth Systems For Ambitious Teams</title>
-    <meta name="description"
-        content="DigitalConsulting builds high-converting acquisition systems for e-commerce, service businesses, and startups.">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DigitalConsulting | Growth Systems For Ambitious Teams</title>
+  <meta name="description" content="DigitalConsulting builds high-converting acquisition systems for e-commerce, service businesses, and startups.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
-    <div class="site-bg" aria-hidden="true">
-        <div class="aurora aurora-one"></div>
-        <div class="aurora aurora-two"></div>
-        <div class="glow glow-one"></div>
-        <div class="glow glow-two"></div>
-        <div class="noise-overlay"></div>
-        <div class="grid-overlay"></div>
-    </div>
+  <!-- Canvas layers for background effects -->
+  <canvas id="grainCanvas" class="grain-canvas"></canvas>
+  <canvas id="particleCanvas" class="particle-canvas"></canvas>
 
-    <header class="topbar">
-        <a class="logo" href="#home" aria-label="DigitalConsulting home">
-            <img src="images/digital_consulting_logo-DQJncZBR.webp" alt="DigitalConsulting logo">
-            <span>DigitalConsulting</span>
-        </a>
-        <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
-            <span></span><span></span><span></span>
+  <!-- Cursor glow effect -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- Navigation -->
+  <header class="nav-header">
+    <nav class="nav-container">
+      <a href="#" class="nav-logo">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <rect width="28" height="28" rx="6" fill="url(#logoGrad)"/>
+          <path d="M7 20V8l7 6 7-6v12" stroke="#fff" stroke-width="2" fill="none" opacity="0.9"/>
+          <defs>
+            <linearGradient id="logoGrad" x1="0" y1="0" x2="28" y2="28">
+              <stop stop-color="#00b7ff"/>
+              <stop offset="1" stop-color="#00ffd1"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <span>DigitalConsulting</span>
+      </a>
+      <div class="nav-links">
+        <a href="#services" class="nav-link">Services</a>
+        <a href="#process" class="nav-link">Process</a>
+        <a href="#results" class="nav-link">Results</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
+      <a href="#contact" class="btn btn-primary btn-nav">Book a Call</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+      <!-- Conic gradient light beams -->
+      <div class="hero-lights">
+        <div class="hero-light hero-light-1"></div>
+        <div class="hero-light hero-light-2"></div>
+        <div class="hero-light hero-light-3"></div>
+      </div>
+      <!-- Radial mask overlay -->
+      <div class="hero-mask"></div>
+
+      <div class="hero-badge hero-reveal" style="--delay: 0">
+        <span class="badge-dot"></span>
+        <span>New</span>
+        <span class="badge-text shimmer-text">AI-Powered Revenue Infrastructure</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" opacity="0.5"><path d="M6 3l5 5-5 5"/></svg>
+      </div>
+      <h1 class="hero-title hero-reveal" style="--delay: 1">
+        <span class="hero-title-line">AI-Powered Revenue</span>
+        <span class="hero-title-line gradient-text">Infrastructure for Growth</span>
+      </h1>
+      <p class="hero-subtitle hero-reveal" style="--delay: 2">
+        We combine Google and Meta performance marketing, enterprise-level<br>
+        tracking systems, and 24/7 AI appointment capture to turn<br>
+        marketing into predictable revenue.
+      </p>
+      <div class="hero-cta hero-reveal" style="--delay: 3">
+        <a href="#contact" class="btn btn-primary btn-lg btn-glow">Book a Revenue Audit</a>
+        <a href="#process" class="btn btn-secondary btn-lg">See How It Works</a>
+      </div>
+
+      <!-- Hero interactive card -->
+      <div class="hero-card hero-reveal" style="--delay: 4" data-tilt>
+        <div class="shimmer-border"></div>
+        <div class="card-radar"></div>
+        <div class="hero-card-content">
+          <div class="hero-card-header">
+            <span class="hero-card-tag">Revenue Command</span>
+            <span class="hero-card-live"><span class="live-dot"></span> Live</span>
+          </div>
+
+          <!-- KPI Dashboard mockup -->
+          <div class="dashboard-mockup">
+            <div class="dashboard-row">
+              <div class="dashboard-kpi">
+                <span class="kpi-label">Qualified Leads</span>
+                <span class="kpi-value">$126,800</span>
+              </div>
+              <div class="dashboard-kpi">
+                <span class="kpi-label">Blended ROAS</span>
+                <span class="kpi-value accent">4.9x</span>
+              </div>
+            </div>
+            <div class="dashboard-row">
+              <div class="dashboard-kpi">
+                <span class="kpi-label">Booked Calls</span>
+                <span class="kpi-value success">+42%</span>
+              </div>
+              <div class="dashboard-kpi">
+                <span class="kpi-label">CPA Reduction</span>
+                <span class="kpi-value success">-28%</span>
+              </div>
+            </div>
+            <div class="dashboard-chart">
+              <div class="mini-bar" style="--h: 35%"></div>
+              <div class="mini-bar" style="--h: 52%"></div>
+              <div class="mini-bar" style="--h: 45%"></div>
+              <div class="mini-bar" style="--h: 68%"></div>
+              <div class="mini-bar" style="--h: 72%"></div>
+              <div class="mini-bar" style="--h: 61%"></div>
+              <div class="mini-bar" style="--h: 85%"></div>
+              <div class="mini-bar" style="--h: 78%"></div>
+              <div class="mini-bar" style="--h: 92%"></div>
+              <div class="mini-bar" style="--h: 88%"></div>
+              <div class="mini-bar active" style="--h: 95%"></div>
+              <div class="mini-bar active" style="--h: 100%"></div>
+            </div>
+            <p class="dashboard-note">AI handled inbound conversations, qualified prospects, and booked directly to calendar.</p>
+          </div>
+
+          <!-- Hero metrics -->
+          <div class="resolution-stats">
+            <div class="stat-item">
+              <span class="stat-value accent">+312%</span>
+              <span class="stat-label">Avg Revenue Lift</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-value accent">8.4x</span>
+              <span class="stat-label">Top Campaign ROAS</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-value">21 days</span>
+              <span class="stat-label">Time to First Tests</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="stats-section">
+      <div class="stats-container reveal-up">
+        <div class="stats-text">
+          <p>Most businesses don't have a lead problem.</p>
+          <p>They have a</p>
+        </div>
+        <div class="stats-highlight">
+          <span class="gradient-text-inline">revenue infrastructure</span>
+        </div>
+        <div class="stats-text"><p>problem.</p></div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="feature-section" id="services">
+      <div class="feature-tabs reveal-up">
+        <button class="feature-tab active" data-tab="google">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="3"/></svg>
+          Google Ads
         </button>
-        <nav class="nav" id="nav">
-            <a href="#services">Services</a>
-            <a href="#process">Process</a>
-            <a href="#results">Results</a>
-            <a href="#contact">Contact</a>
-            <a class="btn btn-small" href="#contact">Book a Call</a>
-        </nav>
-    </header>
-
-    <main>
-        <section class="hero" id="home">
-            <div class="hero-content-block">
-                <p class="kicker reveal">1️⃣ Premium Homepage Copy</p>
-                <h1 class="reveal">AI-Powered Revenue Infrastructure
-                    <span class="accent-text">for Scaling Minnesota Service Companies</span>
-                </h1>
-                <p class="hero-copy reveal">
-                    We combine Google and Meta performance marketing, enterprise-level tracking systems, and 24/7 AI appointment capture to turn marketing into predictable revenue.
-                </p>
-                <div class="hero-actions reveal">
-                    <a class="btn" href="#contact">Book a Revenue Infrastructure Audit</a>
-                    <a class="btn btn-ghost" href="#process">See How It Works</a>
-                </div>
-                <div class="hero-metrics reveal">
-                    <article>
-                        <p class="metric-value">+312%</p>
-                        <p class="metric-label">Average Revenue Lift</p>
-                    </article>
-                    <article>
-                        <p class="metric-value">8.4x</p>
-                        <p class="metric-label">Top Campaign ROAS</p>
-                    </article>
-                    <article>
-                        <p class="metric-value">21 days</p>
-                        <p class="metric-label">Time To First Tests</p>
-                    </article>
-                </div>
-            </div>
-            <aside class="hero-panel reveal" aria-label="Campaign dashboard preview">
-                <div class="hero-chip chip-top" data-parallax="8">AI Setter + SMS</div>
-                <div class="hero-chip chip-bottom" data-parallax="14">Booked Calls +42%</div>
-                <div class="panel-art" aria-hidden="true">
-                    <span class="cursor-orb"></span>
-                    <span class="ring ring-one"></span>
-                    <span class="ring ring-two"></span>
-                    <span class="ring ring-three"></span>
-                </div>
-                <div class="panel-head">
-                    <p>Revenue Command</p>
-                    <span>Live</span>
-                </div>
-                <div class="panel-kpi">
-                    <div>
-                        <p>Qualified Leads</p>
-                        <strong>$126,800</strong>
-                    </div>
-                    <div>
-                        <p>Blended ROAS</p>
-                        <strong>4.9x</strong>
-                    </div>
-                </div>
-                <div class="panel-bars">
-                    <span style="--w: 86%"></span>
-                    <span style="--w: 62%"></span>
-                    <span style="--w: 91%"></span>
-                    <span style="--w: 74%"></span>
-                    <span style="--w: 97%"></span>
-                </div>
-                <div class="panel-foot">
-                    <p>AI handled inbound conversations, qualified prospects, and booked directly to calendar.</p>
-                </div>
-            </aside>
-        </section>
-
-        <section class="trust reveal">
-            <p>SECTION 2 — THE PROBLEM<br>Most Minnesota Businesses Don’t Have a Lead Problem. They have a revenue infrastructure problem.</p>
-            <div class="trust-marquee" aria-label="Revenue infrastructure gaps">
-                <div class="trust-track">
-                    <span>Calls go unanswered after hours</span>
-                    <span>Lead response time is too slow</span>
-                    <span>Ad spend not tied to booked revenue</span>
-                    <span>Tracking is incomplete or inaccurate</span>
-                    <span>Conversion rates are under-optimized</span>
-                    <span>Traffic without infrastructure equals lost revenue</span>
-                </div>
-            </div>
-        </section>
-        <div class="section-divider reveal" aria-hidden="true"><span></span></div>
-
-        <section class="services" id="services">
-            <div class="section-head reveal">
-                <p class="kicker">SECTION 3 — WHAT WE BUILD</p>
-                <h2>The Minnesota Revenue Infrastructure System</h2>
-            </div>
-            <div class="card-grid">
-                <article class="card reveal">
-                    <h3>1️⃣ Google Ads</h3>
-                    <p>Search, Performance Max, and YouTube campaigns engineered for booked appointments.</p>
-                </article>
-                <article class="card reveal">
-                    <h3>2️⃣ Meta Ads</h3>
-                    <p>Facebook and Instagram retargeting to recover demand and lower cost per booked appointment.</p>
-                </article>
-                <article class="card reveal">
-                    <h3>3️⃣ Advanced Tracking</h3>
-                    <p>GTM, GA4, Meta Pixel, and CAPI for complete signal integrity and better optimization.</p>
-                </article>
-                <article class="card reveal">
-                    <h3>4️⃣ AI Call Secretary + 5️⃣ Landing Architecture</h3>
-                    <p>24/7 answering and booking automation with conversion landing pages built around one KPI: cost per booked appointment.</p>
-                </article>
-            </div>
-            <div class="addons reveal">
-                <p class="addons-title">Strategic Add-Ons</p>
-                <div class="addons-list">
-                    <span>Content Strategy</span>
-                    <span>Video Ads</span>
-                    <span>UGC Direction</span>
-                    <span>Landing Page CRO</span>
-                    <span>Lifecycle Follow-Ups</span>
-                </div>
-            </div>
-        </section>
-        <div class="section-divider reveal" aria-hidden="true"><span></span></div>
-
-        <section class="process" id="process">
-            <div class="section-head reveal">
-                <p class="kicker">SECTION 5 — HOW IT WORKS</p>
-                <h2>Infrastructure First. Scaling Second.</h2>
-            </div>
-            <div class="timeline">
-                <article class="timeline-item reveal">
-                    <p class="step">01</p>
-                    <h3>Infrastructure Audit</h3>
-                    <p>We analyze tracking, booking rates, and where revenue leakage is happening right now.</p>
-                </article>
-                <article class="timeline-item reveal">
-                    <p class="step">02</p>
-                    <h3>Build the System</h3>
-                    <p>Landing pages, tracking, AI call automation, and ad architecture deployed with clean measurement.</p>
-                </article>
-                <article class="timeline-item reveal">
-                    <p class="step">03</p>
-                    <h3>Optimize and Scale</h3>
-                    <p>Structured testing, budget allocation, and revenue-based scaling with true performance visibility.</p>
-                </article>
-            </div>
-        </section>
-        <div class="section-divider reveal" aria-hidden="true"><span></span></div>
-
-        <section class="results" id="results">
-            <div class="section-head reveal">
-                <p class="kicker">SECTION 4 — PERFORMANCE CREDENTIALS</p>
-                <h2>Enterprise-Level Performance. Local Market Focus.</h2>
-            </div>
-            <div class="results-grid">
-                <article class="result-card reveal">
-                    <p class="result-tag">Ad Spend Managed</p>
-                    <h3>$60K-$120K+ Monthly</h3>
-                    <p class="result-stat">5x+ ROAS Track Record</p>
-                    <p>Built through structured optimization and disciplined performance systems.</p>
-                </article>
-                <article class="result-card reveal">
-                    <p class="result-tag">Efficiency Gains</p>
-                    <h3>20-35% CPA Reduction</h3>
-                    <p class="result-stat">Via Structured Testing</p>
-                    <p>Creative, audience, and funnel tests tied directly to booked revenue performance.</p>
-                </article>
-                <article class="result-card reveal">
-                    <p class="result-tag">Signal Accuracy</p>
-                    <h3>Server-Side Tracking</h3>
-                    <p class="result-stat">Better Optimization Inputs</p>
-                    <p>GTM + GA4 + Pixel + CAPI implementation for cleaner attribution and scaling decisions.</p>
-                </article>
-            </div>
-        </section>
-        <div class="section-divider reveal" aria-hidden="true"><span></span></div>
-
-        <section class="pricing" id="pricing">
-            <div class="section-head reveal">
-                <p class="kicker">SECTION 6 — EXPECTED IMPACT</p>
-                <h2>Revenue Lift Scenarios For Established Service Companies</h2>
-            </div>
-            <div class="pricing-grid">
-                <article class="price-card reveal">
-                    <p class="price-tag">Conservative</p>
-                    <h3>+10-20% Lift</h3>
-                    <p class="price-value">Faster<span> response</span></p>
-                    <p class="price-desc">From improved speed-to-lead and immediate appointment capture.</p>
-                    <ul>
-                        <li>Faster response</li>
-                        <li>Higher booking rate</li>
-                    </ul>
-                    <a class="btn btn-ghost" href="#contact">Review My Baseline</a>
-                </article>
-                <article class="price-card featured reveal">
-                    <p class="price-tag">Moderate</p>
-                    <h3>+20-35% Lift</h3>
-                    <p class="price-value">Better<span> tracking</span></p>
-                    <p class="price-desc">Driven by cleaner attribution and smarter budget allocation.</p>
-                    <ul>
-                        <li>Improved tracking accuracy</li>
-                        <li>Smarter scaling</li>
-                    </ul>
-                    <a class="btn" href="#contact">Review My Growth Case</a>
-                </article>
-                <article class="price-card reveal">
-                    <p class="price-tag">Aggressive</p>
-                    <h3>+35%+ Lift</h3>
-                    <p class="price-value">Booking<span> gaps fixed</span></p>
-                    <p class="price-desc">Most common when after-hours leakage and follow-up failures are present.</p>
-                    <ul>
-                        <li>AI capture + booking coverage</li>
-                        <li>Revenue leak reduction</li>
-                    </ul>
-                    <a class="btn btn-ghost" href="#contact">Review My Scale Case</a>
-                </article>
-            </div>
-        </section>
-        <div class="section-divider reveal" aria-hidden="true"><span></span></div>
-
-        <section class="faq" id="faq">
-            <div class="section-head reveal">
-                <p class="kicker">SECTION 7 — POSITIONING</p>
-                <h2>We are not a marketing agency. We are a Revenue Infrastructure Partner.</h2>
-            </div>
-            <div class="faq-list">
-                <details class="faq-item reveal">
-                    <summary>What this means in practice</summary>
-                    <p>Every component is engineered around one financial KPI: cost per booked appointment.</p>
-                </details>
-                <details class="faq-item reveal">
-                    <summary>Operational model</summary>
-                    <p>We build and optimize tracking, booking systems, paid media, and conversion architecture as one system.</p>
-                </details>
-                <details class="faq-item reveal">
-                    <summary>Why this approach wins</summary>
-                    <p>Traffic without infrastructure loses revenue. Infrastructure with disciplined scaling compounds revenue.</p>
-                </details>
-            </div>
-        </section>
-        <div class="section-divider reveal" aria-hidden="true"><span></span></div>
-
-        <section class="services" id="service-page-copy">
-            <div class="section-head reveal">
-                <p class="kicker">2️⃣ High-Converting Service Page</p>
-                <h2>Stop Missing Revenue From Calls You Never Answered.</h2>
-            </div>
-            <div class="card-grid">
-                <article class="card reveal">
-                    <h3>The Hidden Revenue Leak</h3>
-                    <p>Most service companies lose 10-30% of potential revenue because calls go to voicemail, response time is slow, and no 24/7 answering exists.</p>
-                </article>
-                <article class="card reveal">
-                    <h3>The AI Call Secretary</h3>
-                    <p>A 24/7 intelligent answering system that answers instantly, books directly, qualifies callers, sends SMS confirmations, and escalates emergencies.</p>
-                </article>
-                <article class="card reveal">
-                    <h3>Paid Media Layer</h3>
-                    <p>Google Search, Performance Max, and Meta Retargeting optimized around cost per booked appointment, CAC, and true ROAS.</p>
-                </article>
-                <article class="card reveal">
-                    <h3>Tracking Infrastructure</h3>
-                    <p>Full stack implementation: GTM, GA4, Meta Pixel, Conversion API, and CRM integration. No more guessing.</p>
-                </article>
-            </div>
-            <div class="final-cta-actions" style="margin-top: 16px;">
-                <a class="btn" href="#contact">Schedule a Revenue Review Call</a>
-            </div>
-        </section>
-        <div class="section-divider reveal" aria-hidden="true"><span></span></div>
-
-        <section class="results" id="case-study-structure">
-            <div class="section-head reveal">
-                <p class="kicker">3️⃣ Case Study Structure</p>
-                <h2>How a Minnesota Roofing Company Increased Booked Inspections by 32% in 90 Days</h2>
-            </div>
-            <div class="results-grid">
-                <article class="result-card reveal">
-                    <p class="result-tag">Section 1 + 2</p>
-                    <h3>Background + Problem</h3>
-                    <p class="result-stat">Industry, revenue range, initial challenges</p>
-                    <p>Missed after-hours calls, high cost per lead, no booking tracking, 24% booking rate, and no SMS follow-up.</p>
-                </article>
-                <article class="result-card reveal">
-                    <p class="result-tag">Section 3</p>
-                    <h3>What Was Implemented</h3>
-                    <p class="result-stat">Google + Meta + Tracking + AI</p>
-                    <p>Google Search restructure, Meta retargeting, GTM + GA4, Meta CAPI, AI Call Secretary, and SMS automation.</p>
-                </article>
-                <article class="result-card reveal">
-                    <p class="result-tag">Section 4 + 5</p>
-                    <h3>Results + Client Quote</h3>
-                    <p class="result-stat">24% → 36% booking rate, CPA -28%, revenue +22%, 5.3x ROAS</p>
-                    <p>Add a short testimonial focused on revenue predictability and confidence in scaling decisions.</p>
-                </article>
-            </div>
-        </section>
-        <div class="section-divider reveal" aria-hidden="true"><span></span></div>
-
-        <section class="about-authority" id="about">
-            <div class="section-head reveal">
-                <p class="kicker">1️⃣ Authority-Focused About Page</p>
-                <h2>We Build Revenue Infrastructure — Not Just Marketing Campaigns.</h2>
-            </div>
-            <div class="about-grid">
-                <article class="about-block reveal">
-                    <h3>Section 1 - The Philosophy</h3>
-                    <p>Most agencies focus on traffic.</p>
-                    <p>We focus on revenue.</p>
-                    <p>There's a difference.</p>
-                    <p>Minnesota service companies don't struggle because they lack leads. They struggle because their infrastructure doesn't convert, track, and capture revenue properly.</p>
-                    <p>We fix that.</p>
-                </article>
-                <article class="about-block reveal">
-                    <h3>Section 2 - Who We Are</h3>
-                    <p>We are a performance-driven revenue infrastructure firm specializing in:</p>
-                    <ul>
-                        <li>Google Ads (Search, Performance Max, YouTube)</li>
-                        <li>Meta Ads (Facebook and Instagram)</li>
-                        <li>Advanced tracking systems (GTM, GA4, Meta Pixel, CAPI)</li>
-                        <li>AI-powered call answering and appointment booking</li>
-                        <li>Conversion-focused landing architecture</li>
-                    </ul>
-                    <p>Campaigns are managed by a Paid Media Manager overseeing $60K-$120K+ in monthly ad spend across retail, banking, and real estate accounts, consistently delivering 5x+ ROAS through structured testing and performance-based scaling.</p>
-                    <p>This is enterprise-level media buying - applied locally.</p>
-                </article>
-                <article class="about-block reveal">
-                    <h3>Section 3 - What Makes Us Different</h3>
-                    <p>Most agencies:</p>
-                    <ul>
-                        <li>Run ads</li>
-                        <li>Send reports</li>
-                        <li>Optimize occasionally</li>
-                    </ul>
-                    <p>We:</p>
-                    <ul>
-                        <li>Own the tracking infrastructure</li>
-                        <li>Measure cost per booked appointment</li>
-                        <li>Implement server-side tracking</li>
-                        <li>Optimize based on revenue signals</li>
-                        <li>Build 24/7 AI appointment systems</li>
-                    </ul>
-                    <p>We don't stop at leads. We optimize for closed revenue.</p>
-                </article>
-                <article class="about-block reveal">
-                    <h3>Section 4 - Our Approach</h3>
-                    <ul>
-                        <li>Step 1: Diagnose revenue leakage</li>
-                        <li>Step 2: Install tracking and automation</li>
-                        <li>Step 3: Launch structured paid media</li>
-                        <li>Step 4: Optimize booking and close rate</li>
-                        <li>Step 5: Scale based on ROAS</li>
-                    </ul>
-                    <p>Predictability &gt; guesswork.</p>
-                </article>
-                <article class="about-block reveal about-wide">
-                    <h3>Section 5 - Who We Work With</h3>
-                    <p>We partner with established Minnesota service companies doing $1M-$25M+ annually who are ready to treat marketing as infrastructure, not experimentation.</p>
-                    <p><strong>We are not a marketing vendor.</strong></p>
-                    <p><strong>We are your Revenue Infrastructure Partner.</strong></p>
-                    <a class="btn" href="#contact">Schedule a Revenue Infrastructure Audit</a>
-                </article>
-            </div>
-        </section>
-
-        <section class="contact" id="contact">
-            <div class="contact-panel reveal">
-                <p class="kicker">Get Started</p>
-                <h2>Let's map your next growth sprint.</h2>
-                <p>Share your business model, current channels, and target goals. We will send a practical strategy outline.</p>
-                <div class="contact-actions">
-                    <a class="btn" href="mailto:gabrieletupini@gmail.com">Email DigitalConsulting</a>
-                    <a class="btn btn-ghost contact-btn" href="tel:+16123985577">Call +1 (612) 398-5577</a>
-                    <a class="btn btn-ghost contact-btn" href="https://wa.me/16123985577" target="_blank"
-                        rel="noopener noreferrer">WhatsApp Business</a>
-                </div>
-            </div>
-        </section>
-        <section class="final-cta reveal">
-            <p class="kicker">Final CTA</p>
-            <h2>Book a Revenue Infrastructure Review</h2>
-            <p>Let's see where revenue is leaking - and how to fix it.</p>
-            <div class="final-cta-actions">
-                <a class="btn" href="#contact">Book a Revenue Infrastructure Review</a>
-                <a class="btn btn-ghost" href="tel:+16123985577">Call +1 (612) 398-5577</a>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <p>&copy; <span id="year"></span> DigitalConsulting</p>
-        <a href="https://www.linkedin.com/in/nicmuggli/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-    </footer>
-
-    <div class="chatbot-shell" id="chatbot-shell" aria-live="polite">
-        <button class="chatbot-toggle" id="chatbot-toggle" aria-expanded="false" aria-controls="chatbot-panel">
-            AI Assistant
+        <button class="feature-tab" data-tab="meta">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 2L2 14h12L8 2z"/></svg>
+          Meta Ads
         </button>
-        <section class="chatbot-panel" id="chatbot-panel" hidden>
-            <header>
-                <h3>DigitalConsulting AI</h3>
-                <p>Ask a question or type "book appointment".</p>
-            </header>
-            <div class="chatbot-messages" id="chatbot-messages"></div>
-            <form class="chatbot-form" id="chatbot-form">
-                <input id="chatbot-input" type="text" placeholder="Ask about services, pricing, or booking..." autocomplete="off" required>
-                <button type="submit" class="btn">Send</button>
-            </form>
-            <p class="chatbot-note">
-                Calendar bookings use your Google Calendar webhook setting in <code>BOT_CONFIG.bookingWebhookUrl</code>.
-            </p>
-        </section>
-    </div>
+        <button class="feature-tab" data-tab="tracking">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><rect x="2" y="2" width="12" height="12" rx="2"/></svg>
+          Tracking
+        </button>
+        <button class="feature-tab" data-tab="ai">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 2.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM6 9h4v4H6V9z"/></svg>
+          AI Secretary
+        </button>
+      </div>
+      <div class="feature-content">
+        <div class="feature-text reveal-up">
+          <h2>
+            <span class="section-label">Services</span>
+            The Revenue Infrastructure<br>
+            <span class="text-muted">System that turns marketing</span><br>
+            <span class="text-muted">into predictable revenue.</span>
+          </h2>
+        </div>
+        <div class="feature-visual reveal-up" data-tilt data-glow-color="cyan">
+          <div class="shimmer-border"></div>
+          <canvas class="card-canvas" data-effect="connections"></canvas>
+          <div class="impact-map">
+            <div class="node node-center">
+              <div class="node-pulse"></div>
+              <span>Revenue</span>
+            </div>
+            <div class="node node-1">Google Ads</div>
+            <div class="node node-2">Meta Ads</div>
+            <div class="node node-3">Tracking</div>
+            <div class="node node-4">AI Secretary</div>
+            <div class="node node-5">Landing Pages</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    <script src="js/main.js"></script>
+    <!-- Process Section -->
+    <section class="feature-section feature-section-alt" id="process">
+      <div class="feature-content feature-content-reverse">
+        <div class="feature-text reveal-up">
+          <h2>
+            <span class="section-label label-mint">Process</span>
+            Infrastructure First.<br>
+            <span class="text-muted">Scaling Second.</span>
+          </h2>
+        </div>
+        <div class="feature-visual pr-list-visual reveal-up" data-tilt data-glow-color="mint">
+          <div class="shimmer-border shimmer-mint"></div>
+          <div class="pr-list-wrapper">
+            <div class="pr-list-scroll">
+              <div class="pr-item">
+                <div class="pr-icon step-icon">01</div>
+                <div class="pr-content"><span class="pr-title">Infrastructure Audit</span><span class="pr-meta">We analyze tracking, booking rates, and where revenue leakage is happening right now.</span></div>
+              </div>
+              <div class="pr-item">
+                <div class="pr-icon step-icon">02</div>
+                <div class="pr-content"><span class="pr-title">Build the System</span><span class="pr-meta">Landing pages, tracking, AI call automation, and ad architecture deployed with clean measurement.</span></div>
+              </div>
+              <div class="pr-item">
+                <div class="pr-icon step-icon">03</div>
+                <div class="pr-content"><span class="pr-title">Optimize and Scale</span><span class="pr-meta">Structured testing, budget allocation, and revenue-based scaling with true performance visibility.</span></div>
+              </div>
+              <div class="pr-item">
+                <div class="pr-icon step-icon">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm-.5 10.5l-3-3 1-1 2 2 4-4 1 1-5 5z"/></svg>
+                </div>
+                <div class="pr-content"><span class="pr-title">Revenue Predictability</span><span class="pr-meta">Campaigns are managed by a team overseeing $60K-$120K+ in monthly ad spend, consistently delivering 5x+ ROAS.</span></div>
+              </div>
+              <div class="pr-item">
+                <div class="pr-icon step-icon">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M13 2L3 14h10V2z"/></svg>
+                </div>
+                <div class="pr-content"><span class="pr-title">Enterprise-Level Media Buying</span><span class="pr-meta">Applied locally to Minnesota service companies ready to scale.</span></div>
+              </div>
+              <!-- Duplicated for infinite scroll -->
+              <div class="pr-item">
+                <div class="pr-icon step-icon">01</div>
+                <div class="pr-content"><span class="pr-title">Infrastructure Audit</span><span class="pr-meta">We analyze tracking, booking rates, and where revenue leakage is happening right now.</span></div>
+              </div>
+              <div class="pr-item">
+                <div class="pr-icon step-icon">02</div>
+                <div class="pr-content"><span class="pr-title">Build the System</span><span class="pr-meta">Landing pages, tracking, AI call automation, and ad architecture deployed with clean measurement.</span></div>
+              </div>
+              <div class="pr-item">
+                <div class="pr-icon step-icon">03</div>
+                <div class="pr-content"><span class="pr-title">Optimize and Scale</span><span class="pr-meta">Structured testing, budget allocation, and revenue-based scaling with true performance visibility.</span></div>
+              </div>
+              <div class="pr-item">
+                <div class="pr-icon step-icon">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm-.5 10.5l-3-3 1-1 2 2 4-4 1 1-5 5z"/></svg>
+                </div>
+                <div class="pr-content"><span class="pr-title">Revenue Predictability</span><span class="pr-meta">Campaigns are managed by a team overseeing $60K-$120K+ in monthly ad spend, consistently delivering 5x+ ROAS.</span></div>
+              </div>
+              <div class="pr-item">
+                <div class="pr-icon step-icon">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M13 2L3 14h10V2z"/></svg>
+                </div>
+                <div class="pr-content"><span class="pr-title">Enterprise-Level Media Buying</span><span class="pr-meta">Applied locally to Minnesota service companies ready to scale.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="diff-radar"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="feature-section" id="results">
+      <div class="feature-content">
+        <div class="feature-text reveal-up">
+          <h2>
+            <span class="section-label label-green">Results</span>
+            Enterprise-Level Performance.<br>
+            <span class="text-muted">Local Market Focus.</span>
+          </h2>
+        </div>
+        <div class="feature-visual reveal-up" data-tilt data-glow-color="green">
+          <div class="shimmer-border shimmer-green"></div>
+          <div class="prevent-visual">
+            <div class="browser-bar">
+              <div class="browser-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <span class="browser-url">revenue-dashboard.io</span>
+            </div>
+            <div class="uptime-graph">
+              <div class="uptime-bar" data-height="55"></div>
+              <div class="uptime-bar" data-height="62"></div>
+              <div class="uptime-bar" data-height="70"></div>
+              <div class="uptime-bar" data-height="68"></div>
+              <div class="uptime-bar" data-height="78"></div>
+              <div class="uptime-bar" data-height="82"></div>
+              <div class="uptime-bar" data-height="75"></div>
+              <div class="uptime-bar" data-height="88"></div>
+              <div class="uptime-bar" data-height="92"></div>
+              <div class="uptime-bar" data-height="95"></div>
+              <div class="uptime-bar" data-height="98"></div>
+              <div class="uptime-bar" data-height="100"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Big Stat Section -->
+    <section class="stats-section">
+      <div class="stats-container reveal-up">
+        <div class="stats-text">
+          <p>Average clients see</p>
+          <div class="stats-number">
+            <span class="counter" data-target="312">0</span><span class="percent">%</span>
+          </div>
+          <p>revenue lift</p>
+        </div>
+        <a href="#contact" class="btn btn-primary btn-lg btn-glow">Start scaling revenue</a>
+      </div>
+    </section>
+
+    <!-- Pricing / Revenue Lift Scenarios -->
+    <section class="knowledge-section" id="pricing">
+      <div class="knowledge-content">
+        <div class="knowledge-text reveal-up">
+          <h2>
+            <span class="section-label label-purple">Expected Impact</span>
+            Revenue Lift<br>Scenarios For<br>
+            <span class="text-muted">Established Service Companies</span>
+          </h2>
+        </div>
+        <div class="knowledge-visual reveal-up" data-tilt data-glow-color="purple">
+          <div class="shimmer-border shimmer-purple"></div>
+          <div class="pricing-mockup">
+            <div class="pricing-card">
+              <span class="pricing-tier">Conservative</span>
+              <span class="pricing-lift">+10-20%</span>
+              <p class="pricing-desc">From improved speed-to-lead and immediate appointment capture.</p>
+              <ul class="pricing-list">
+                <li>Faster response</li>
+                <li>Higher booking rate</li>
+              </ul>
+            </div>
+            <div class="pricing-card featured">
+              <span class="pricing-badge">Most Common</span>
+              <span class="pricing-tier">Moderate</span>
+              <span class="pricing-lift accent">+20-35%</span>
+              <p class="pricing-desc">Driven by cleaner attribution and smarter budget allocation.</p>
+              <ul class="pricing-list">
+                <li>Improved tracking accuracy</li>
+                <li>Smarter scaling</li>
+              </ul>
+            </div>
+            <div class="pricing-card">
+              <span class="pricing-tier">Aggressive</span>
+              <span class="pricing-lift">+35%+</span>
+              <p class="pricing-desc">Most common when after-hours leakage and follow-up failures are present.</p>
+              <ul class="pricing-list">
+                <li>AI capture + booking coverage</li>
+                <li>Revenue leak reduction</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="knowledge-description reveal-up">
+        <p>We partner with established service companies<br>doing $1M-$25M+ annually who are ready to<br>treat marketing as infrastructure.</p>
+        <a href="#contact" class="link-arrow">Book your audit <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5"/></svg></a>
+      </div>
+    </section>
+
+    <!-- Capabilities Grid -->
+    <section class="integrations-section" id="capabilities">
+      <div class="integrations-header reveal-up">
+        <span class="section-label">Capabilities</span>
+        <h2>Your full revenue stack</h2>
+        <p class="text-muted">Paid media, tracking, automation, creative,<br>and conversion architecture in one system.</p>
+      </div>
+      <div class="integrations-grid">
+        <div class="integration-card reveal-up" style="--i:0"><div class="integration-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg></div><span>Google Ads</span></div>
+        <div class="integration-card reveal-up" style="--i:1"><div class="integration-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></div><span>Meta Ads</span></div>
+        <div class="integration-card reveal-up" style="--i:2"><div class="integration-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 20V10M6 20V4M18 20v-6"/></svg></div><span>GA4 + GTM</span></div>
+        <div class="integration-card reveal-up" style="--i:3"><div class="integration-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div><span>AI Secretary</span></div>
+        <div class="integration-card reveal-up" style="--i:4"><div class="integration-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></div><span>Landing Pages</span></div>
+        <div class="integration-card reveal-up" style="--i:5"><div class="integration-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div><span>Meta CAPI</span></div>
+        <div class="integration-card reveal-up" style="--i:6"><div class="integration-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div><span>Video Ads</span></div>
+        <div class="integration-card reveal-up" style="--i:7"><div class="integration-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span>CRM</span></div>
+      </div>
+      <a href="#contact" class="btn btn-secondary btn-lg reveal-up">Get started</a>
+    </section>
+
+    <!-- Case Study / Social Proof -->
+    <section class="proof-section">
+      <div class="proof-container">
+        <p class="proof-intro reveal-up">Companies that use <strong>DigitalConsulting</strong></p>
+        <div class="proof-highlight reveal-up">
+          <span class="proof-verb">convert</span> <span class="proof-more">more</span>
+        </div>
+        <p class="proof-text reveal-up">revenue and spend less time<br>guessing what works.</p>
+
+        <div class="proof-stats">
+          <div class="proof-stat reveal-up" data-tilt>
+            <div class="shimmer-border"></div>
+            <span class="proof-stat-value">5x+</span>
+            <span class="proof-stat-label">ROAS Track Record</span>
+          </div>
+          <div class="proof-stat reveal-up" data-tilt>
+            <div class="shimmer-border"></div>
+            <span class="proof-stat-value">-28%</span>
+            <span class="proof-stat-label">Average CPA Reduction</span>
+          </div>
+          <div class="proof-stat reveal-up" data-tilt>
+            <div class="shimmer-border"></div>
+            <span class="proof-stat-value">+32%</span>
+            <span class="proof-stat-label">Booked Appointments Lift</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ / Positioning -->
+    <section class="faq-section" id="faq">
+      <div class="faq-container">
+        <div class="faq-header reveal-up">
+          <span class="section-label label-purple">Positioning</span>
+          <h2>We are not a marketing agency.<br><span class="text-muted">We are a Revenue Infrastructure Partner.</span></h2>
+        </div>
+        <div class="faq-grid reveal-up">
+          <div class="faq-item" data-tilt>
+            <div class="shimmer-border"></div>
+            <h3>What this means in practice</h3>
+            <p>Every component is engineered around one financial KPI: cost per booked appointment. Traffic, tracking, creative, and automation all serve this metric.</p>
+          </div>
+          <div class="faq-item" data-tilt>
+            <div class="shimmer-border"></div>
+            <h3>Operational model</h3>
+            <p>We build and optimize tracking, booking systems, paid media, and conversion architecture as one integrated system.</p>
+          </div>
+          <div class="faq-item" data-tilt>
+            <div class="shimmer-border"></div>
+            <h3>Why this approach wins</h3>
+            <p>Traffic without infrastructure loses revenue. Infrastructure with disciplined scaling compounds revenue over time.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+      <div class="contact-container reveal-up">
+        <span class="section-label">Get Started</span>
+        <h2>Let's map your next growth sprint.</h2>
+        <p class="text-muted">Share your business model, current channels, and target goals.<br>We will send a practical strategy outline.</p>
+        <div class="contact-actions">
+          <a href="mailto:gabrieletupini@gmail.com" class="btn btn-primary btn-lg btn-glow">Email DigitalConsulting</a>
+          <a href="tel:+16123985577" class="btn btn-secondary btn-lg">Call +1 (612) 398-5577</a>
+          <a href="https://wa.me/16123985577" class="btn btn-secondary btn-lg" target="_blank" rel="noopener">WhatsApp Business</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <div class="cta-lights">
+        <div class="cta-light cta-light-1"></div>
+        <div class="cta-light cta-light-2"></div>
+      </div>
+      <h2 class="reveal-up">Book a Revenue Infrastructure Review</h2>
+      <p class="cta-subtitle reveal-up">Let's see where revenue is leaking &mdash; and how to fix it.</p>
+      <div class="cta-buttons reveal-up">
+        <a href="#contact" class="btn btn-primary btn-xl btn-glow">Book a Review</a>
+        <a href="tel:+16123985577" class="btn btn-secondary btn-xl">Call +1 (612) 398-5577</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Services</h4>
+          <a href="#services">Google Ads</a>
+          <a href="#services">Meta Ads</a>
+          <a href="#services">Advanced Tracking</a>
+          <a href="#services">AI Call Secretary</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="#process">Process</a>
+          <a href="#results">Results</a>
+          <a href="#pricing">Pricing</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <a href="mailto:gabrieletupini@gmail.com">Email</a>
+          <a href="tel:+16123985577">+1 (612) 398-5577</a>
+          <a href="https://wa.me/16123985577" target="_blank" rel="noopener">WhatsApp</a>
+        </div>
+        <div class="footer-col">
+          <h4>Connect</h4>
+          <a href="https://www.linkedin.com/in/nicmuggli/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-status">
+          <span class="status-dot"></span>
+          <span>Revenue systems active</span>
+        </div>
+        <div class="footer-compliance">
+          <span>&copy; 2026 DigitalConsulting</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
-
 </html>
