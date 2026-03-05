@@ -726,6 +726,25 @@
     });
   });
 
+  // ===== EMAIL CTA FALLBACK (desktop) =====
+  const isMobileViewport = () => window.matchMedia('(max-width: 900px)').matches;
+  document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      if (isMobileViewport()) return;
+
+      const rawHref = link.getAttribute('href') || '';
+      const email = rawHref.replace(/^mailto:/i, '').split('?')[0].trim();
+      if (!email) return;
+
+      e.preventDefault();
+      const gmailCompose = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}`;
+      const win = window.open(gmailCompose, '_blank', 'noopener,noreferrer');
+      if (!win) {
+        window.location.href = rawHref;
+      }
+    });
+  });
+
   // ===== NODE FLOATING (impact map) =====
   const floatNodes = document.querySelectorAll('.node:not(.node-center)');
 
