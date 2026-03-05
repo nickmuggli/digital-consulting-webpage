@@ -1303,8 +1303,51 @@ Conversation Guidelines:
 
   // Event listeners
   if (saraToggle && saraOverlay) {
+    const saraMobileMedia = window.matchMedia('(max-width: 600px)');
+    let lastScrollY = window.scrollY || 0;
+    let saraScrollTicking = false;
+
+    function updateSaraToggleOnScroll() {
+      saraScrollTicking = false;
+      if (!saraMobileMedia.matches) {
+        saraToggle.classList.remove('sara-toggle-hidden');
+        lastScrollY = window.scrollY || 0;
+        return;
+      }
+      if (!saraOverlay.hasAttribute('hidden')) return;
+
+      const currentScrollY = window.scrollY || 0;
+      const isNearTop = currentScrollY < 80;
+      const isScrollingDown = currentScrollY > lastScrollY + 6;
+      const isScrollingUp = currentScrollY < lastScrollY - 6;
+
+      if (isNearTop || isScrollingUp) {
+        saraToggle.classList.remove('sara-toggle-hidden');
+      } else if (isScrollingDown) {
+        saraToggle.classList.add('sara-toggle-hidden');
+      }
+
+      lastScrollY = currentScrollY;
+    }
+
+    function handleSaraScroll() {
+      if (saraScrollTicking) return;
+      saraScrollTicking = true;
+      window.requestAnimationFrame(updateSaraToggleOnScroll);
+    }
+
+    window.addEventListener('scroll', handleSaraScroll, { passive: true });
+    window.addEventListener('resize', updateSaraToggleOnScroll);
+    if (typeof saraMobileMedia.addEventListener === 'function') {
+      saraMobileMedia.addEventListener('change', updateSaraToggleOnScroll);
+    } else if (typeof saraMobileMedia.addListener === 'function') {
+      saraMobileMedia.addListener(updateSaraToggleOnScroll);
+    }
+    updateSaraToggleOnScroll();
+
     saraToggle.addEventListener('click', function() {
       saraOverlay.removeAttribute('hidden');
+      saraToggle.classList.remove('sara-toggle-hidden');
       saraToggle.style.display = 'none';
     });
 
@@ -1312,6 +1355,7 @@ Conversation Guidelines:
       if (saraIsConnected) saraDisconnect();
       saraOverlay.setAttribute('hidden', '');
       saraToggle.style.display = '';
+      updateSaraToggleOnScroll();
     });
 
     saraStartCall.addEventListener('click', function() {
