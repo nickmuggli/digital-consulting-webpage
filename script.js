@@ -5,6 +5,8 @@
 (() => {
   'use strict';
 
+  if (document.body) document.body.classList.add('js-enabled');
+
   // ===== SHARED MOUSE STATE =====
   let mouseX = 0, mouseY = 0;
 
@@ -13,18 +15,31 @@
     mouseY = e.clientY;
   });
 
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isMobileEffectsViewport = window.matchMedia('(max-width: 768px)').matches;
+  const enableParticleEffects = !prefersReducedMotion;
+  const enableGrainEffects = !prefersReducedMotion;
+  const enableCursorGlowEffects = !prefersReducedMotion && !isMobileEffectsViewport;
+  const enableTiltEffects = !prefersReducedMotion;
+
   // ===== FILM GRAIN CANVAS =====
   const grainCanvas = document.getElementById('grainCanvas');
-  const grainCtx = grainCanvas.getContext('2d');
+  const grainCtx = grainCanvas ? grainCanvas.getContext('2d') : null;
 
   function resizeGrain() {
+    if (!grainCanvas) return;
     grainCanvas.width = window.innerWidth / 3;
     grainCanvas.height = window.innerHeight / 3;
   }
-  resizeGrain();
-  window.addEventListener('resize', resizeGrain);
+  if (grainCanvas && grainCtx && enableGrainEffects) {
+    resizeGrain();
+    window.addEventListener('resize', resizeGrain);
+  } else if (grainCanvas) {
+    grainCanvas.style.display = 'none';
+  }
 
   function renderGrain() {
+    if (!grainCanvas || !grainCtx) return;
     const w = grainCanvas.width;
     const h = grainCanvas.height;
     const imageData = grainCtx.createImageData(w, h);
@@ -39,16 +54,18 @@
     grainCtx.putImageData(imageData, 0, 0);
     requestAnimationFrame(renderGrain);
   }
-  renderGrain();
+  if (grainCanvas && grainCtx && enableGrainEffects) renderGrain();
 
   // ===== PAGE REVEAL — hide content until explosion finishes =====
   const pageContent = document.querySelector('.nav-header');
   const mainContent = document.querySelector('main');
   const footerContent = document.querySelector('footer');
   const cursorGlowEl = document.getElementById('cursorGlow');
-  [pageContent, mainContent, footerContent, cursorGlowEl].forEach(el => {
-    if (el) { el.style.opacity = '0'; el.style.transition = 'none'; }
-  });
+  if (enableParticleEffects) {
+    [pageContent, mainContent, footerContent, cursorGlowEl].forEach(el => {
+      if (el) { el.style.opacity = '0'; el.style.transition = 'none'; }
+    });
+  }
 
   function revealPage() {
     [pageContent, mainContent, footerContent, cursorGlowEl].forEach(el => {
@@ -61,7 +78,9 @@
 
   // ===== METAL SUPERNOVA PARTICLE SYSTEM =====
   const particleCanvas = document.getElementById('particleCanvas');
-  const pCtx = particleCanvas.getContext('2d');
+  const pCtx = particleCanvas ? particleCanvas.getContext('2d') : null;
+
+  if (enableParticleEffects && particleCanvas && pCtx) {
 
   function resizeParticles() {
     particleCanvas.width = window.innerWidth;
@@ -75,17 +94,18 @@
   });
 
   // --- Configuration ---
-  const PARTICLE_COUNT = 500;
-  const MOUSE_RADIUS = 250;
-  const MOUSE_REPEL = 4;
+  const PARTICLE_COUNT = isMobileEffectsViewport ? 220 : 500;
+  const MOUSE_RADIUS = isMobileEffectsViewport ? 160 : 250;
+  const MOUSE_REPEL = isMobileEffectsViewport ? 2.4 : 4;
   const CONNECTION_DIST = 120;
+  const phaseScale = isMobileEffectsViewport ? 0.68 : 1;
 
   // --- Phase timings (ms) ---
   const PHASE = {
-    IMPLODE_DURATION: 2200,
-    PULSE_DURATION: 400,
-    EXPLODE_DURATION: 1800,
-    SETTLE_DURATION: 2200,
+    IMPLODE_DURATION: Math.round(2200 * phaseScale),
+    PULSE_DURATION: Math.round(400 * phaseScale),
+    EXPLODE_DURATION: Math.round(1800 * phaseScale),
+    SETTLE_DURATION: Math.round(2200 * phaseScale),
   };
 
   const IMPLODE_END = PHASE.IMPLODE_DURATION;
@@ -484,6 +504,10 @@
   }
 
   requestAnimationFrame(renderSupernova);
+  } else if (particleCanvas) {
+    particleCanvas.style.display = 'none';
+    revealPage();
+  }
 
   // ===== CONNECTION LINES CANVAS (impact map) =====
   const connectionCanvases = document.querySelectorAll('.card-canvas[data-effect="connections"]');
@@ -559,25 +583,35 @@
   const cursorGlow = document.getElementById('cursorGlow');
   let glowX = 0, glowY = 0;
 
-  document.addEventListener('mousemove', () => {
-    cursorGlow.classList.add('active');
-  });
+  if (enableCursorGlowEffects && cursorGlow) {
+    document.addEventListener('mousemove', () => {
+      cursorGlow.classList.add('active');
+    });
 
-  document.addEventListener('mouseleave', () => {
-    cursorGlow.classList.remove('active');
-  });
+    document.addEventListener('mouseleave', () => {
+      cursorGlow.classList.remove('active');
+    });
 
-  function animateGlow() {
-    glowX += (mouseX - glowX) * 0.08;
-    glowY += (mouseY - glowY) * 0.08;
-    cursorGlow.style.left = glowX + 'px';
-    cursorGlow.style.top = glowY + 'px';
-    requestAnimationFrame(animateGlow);
+    function animateGlow() {
+      glowX += (mouseX - glowX) * 0.08;
+      glowY += (mouseY - glowY) * 0.08;
+      cursorGlow.style.left = glowX + 'px';
+      cursorGlow.style.top = glowY + 'px';
+      requestAnimationFrame(animateGlow);
+    }
+    animateGlow();
+  } else if (cursorGlow) {
+    cursorGlow.style.display = 'none';
   }
-  animateGlow();
 
   // ===== 3D TILT EFFECT =====
   document.querySelectorAll('[data-tilt]').forEach(el => {
+    if (!enableTiltEffects) {
+      el.style.transform = 'none';
+      el.style.transition = 'none';
+      return;
+    }
+
     el.addEventListener('mousemove', (e) => {
       const rect = el.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -632,30 +666,53 @@
 
   // ===== COUNTER ANIMATION =====
   const counters = document.querySelectorAll('.counter');
-
-  const counterObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const counter = entry.target;
-        const target = parseInt(counter.getAttribute('data-target'));
-        const duration = 2500;
-        const startTime = performance.now();
-
-        function updateCounter(currentTime) {
-          const elapsed = currentTime - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          const eased = 1 - Math.pow(1 - progress, 4);
-          counter.textContent = Math.round(eased * target);
-          if (progress < 1) requestAnimationFrame(updateCounter);
-        }
-
-        requestAnimationFrame(updateCounter);
-        counterObserver.unobserve(counter);
+  function setCounterFallbackValues() {
+    counters.forEach(counter => {
+      const target = Number.parseInt(counter.getAttribute('data-target') || '0', 10);
+      if (Number.isFinite(target)) {
+        counter.textContent = String(target);
       }
     });
-  }, { threshold: 0.5 });
+  }
 
-  counters.forEach(counter => counterObserver.observe(counter));
+  setCounterFallbackValues();
+  document.addEventListener('DOMContentLoaded', setCounterFallbackValues, { once: true });
+
+  function animateCounter(counter) {
+    const target = Number.parseInt(counter.getAttribute('data-target') || '0', 10);
+    if (!Number.isFinite(target)) return;
+    const duration = 2500;
+    const startTime = performance.now();
+    const startValue = Math.max(1, Math.round(target * 0.15));
+
+    function updateCounter(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 4);
+      const value = Math.round(startValue + (target - startValue) * eased);
+      counter.textContent = String(value);
+      if (progress < 1) requestAnimationFrame(updateCounter);
+    }
+
+    counter.textContent = String(startValue);
+    requestAnimationFrame(updateCounter);
+  }
+
+  if (!prefersReducedMotion && counters.length > 0) {
+    if ('IntersectionObserver' in window) {
+      const counterObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          animateCounter(entry.target);
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.5 });
+
+      counters.forEach(counter => counterObserver.observe(counter));
+    } else {
+      counters.forEach(animateCounter);
+    }
+  }
 
   // ===== NAV SCROLL EFFECT =====
   const navHeader = document.querySelector('.nav-header');
@@ -670,6 +727,33 @@
     }
   });
 
+  // ===== MOBILE NAV TOGGLE =====
+  const navToggle = document.getElementById('navToggle');
+  const primaryNav = document.getElementById('primaryNav');
+
+  if (navToggle && primaryNav) {
+    const setNavOpen = (isOpen) => {
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+      primaryNav.classList.toggle('is-open', isOpen);
+      document.body.classList.toggle('menu-open', isOpen);
+    };
+
+    setNavOpen(false);
+
+    navToggle.addEventListener('click', () => {
+      const isOpen = navToggle.getAttribute('aria-expanded') === 'true';
+      setNavOpen(!isOpen);
+    });
+
+    primaryNav.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => setNavOpen(false));
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setNavOpen(false);
+    });
+  }
+
   // ===== FEATURE TABS =====
   document.querySelectorAll('.feature-tab').forEach(tab => {
     tab.addEventListener('click', () => {
@@ -677,6 +761,16 @@
       tab.classList.add('active');
     });
   });
+
+  // ===== PROCESS LIST RUNTIME CLONE (for seamless loop) =====
+  const prListScroll = document.querySelector('.pr-list-scroll');
+  if (prListScroll && !prListScroll.dataset.cloned) {
+    const originalItems = Array.from(prListScroll.children);
+    originalItems.forEach((item) => {
+      prListScroll.appendChild(item.cloneNode(true));
+    });
+    prListScroll.dataset.cloned = 'true';
+  }
 
   // ===== HERO PARALLAX =====
   const heroCard = document.querySelector('.hero-card');

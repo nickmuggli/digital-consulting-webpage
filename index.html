@@ -39,7 +39,12 @@
         <img src="favicon.svg" alt="DigitalConsulting" width="32" height="32">
         <span>DigitalConsulting</span>
       </a>
-      <div class="nav-links">
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation menu" aria-controls="primaryNav" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="nav-links" id="primaryNav">
         <a href="#services" class="nav-link">Services</a>
         <a href="#process" class="nav-link">Process</a>
         <a href="#results" class="nav-link">Results</a>
@@ -60,6 +65,7 @@
       </div>
       <!-- Radial mask overlay -->
       <div class="hero-mask"></div>
+      <div class="container hero-inner">
 
       <div class="hero-badge hero-reveal" style="--delay: 0">
         <span class="badge-dot"></span>
@@ -149,10 +155,12 @@
           </div>
         </div>
       </div>
+      </div>
     </section>
 
     <!-- Problem Section -->
     <section class="stats-section">
+      <div class="container">
       <div class="stats-container reveal-up">
         <div class="stats-text">
           <p>Most businesses don't have a lead problem.</p>
@@ -163,10 +171,12 @@
         </div>
         <div class="stats-text"><p>problem.</p></div>
       </div>
+      </div>
     </section>
 
     <!-- Services Section -->
     <section class="feature-section" id="services">
+      <div class="container">
       <div class="feature-tabs reveal-up">
         <button class="feature-tab active" data-tab="google">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><circle cx="8" cy="8" r="3"/></svg>
@@ -210,10 +220,12 @@
           </div>
         </div>
       </div>
+      </div>
     </section>
 
     <!-- Process Section -->
     <section class="feature-section feature-section-alt" id="process">
+      <div class="container">
       <div class="feature-content feature-content-reverse">
         <div class="feature-text reveal-up">
           <h2>
@@ -250,40 +262,17 @@
                 </div>
                 <div class="pr-content"><span class="pr-title">Enterprise-Level Media Buying</span><span class="pr-meta">Applied locally to Minnesota service companies ready to scale.</span></div>
               </div>
-              <!-- Duplicated for infinite scroll -->
-              <div class="pr-item">
-                <div class="pr-icon step-icon">01</div>
-                <div class="pr-content"><span class="pr-title">Infrastructure Audit</span><span class="pr-meta">We analyze tracking, booking rates, and where revenue leakage is happening right now.</span></div>
-              </div>
-              <div class="pr-item">
-                <div class="pr-icon step-icon">02</div>
-                <div class="pr-content"><span class="pr-title">Build the System</span><span class="pr-meta">Landing pages, tracking, AI call automation, and ad architecture deployed with clean measurement.</span></div>
-              </div>
-              <div class="pr-item">
-                <div class="pr-icon step-icon">03</div>
-                <div class="pr-content"><span class="pr-title">Optimize and Scale</span><span class="pr-meta">Structured testing, budget allocation, and revenue-based scaling with true performance visibility.</span></div>
-              </div>
-              <div class="pr-item">
-                <div class="pr-icon step-icon">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm-.5 10.5l-3-3 1-1 2 2 4-4 1 1-5 5z"/></svg>
-                </div>
-                <div class="pr-content"><span class="pr-title">Revenue Predictability</span><span class="pr-meta">Campaigns are managed by a team overseeing $60K-$120K+ in monthly ad spend, consistently delivering 5x+ ROAS.</span></div>
-              </div>
-              <div class="pr-item">
-                <div class="pr-icon step-icon">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M13 2L3 14h10V2z"/></svg>
-                </div>
-                <div class="pr-content"><span class="pr-title">Enterprise-Level Media Buying</span><span class="pr-meta">Applied locally to Minnesota service companies ready to scale.</span></div>
-              </div>
             </div>
           </div>
           <div class="diff-radar"></div>
         </div>
       </div>
+      </div>
     </section>
 
     <!-- Results Section -->
     <section class="feature-section" id="results">
+      <div class="container">
       <div class="feature-content">
         <div class="feature-text reveal-up">
           <h2>
@@ -318,24 +307,28 @@
           </div>
         </div>
       </div>
+      </div>
     </section>
 
     <!-- Big Stat Section -->
     <section class="stats-section">
+      <div class="container">
       <div class="stats-container reveal-up">
         <div class="stats-text">
           <p>Average clients see</p>
           <div class="stats-number">
-            <span class="counter" data-target="312">0</span><span class="percent">%</span>
+            <span class="counter" data-target="312">312</span><span class="percent">%</span>
           </div>
           <p>revenue lift</p>
         </div>
         <a href="#contact" class="btn btn-primary btn-lg btn-glow">Start scaling revenue</a>
       </div>
+      </div>
     </section>
 
     <!-- Pricing / Revenue Lift Scenarios -->
     <section class="knowledge-section" id="pricing">
+      <div class="container">
       <div class="knowledge-content">
         <div class="knowledge-text reveal-up">
           <h2>
@@ -382,10 +375,12 @@
         <p>We partner with established service companies<br>doing $1M-$25M+ annually who are ready to<br>treat marketing as infrastructure.</p>
         <a href="https://cal.com/bookings-appointments-ooxy15/15min" class="link-arrow" target="_blank" rel="noopener">Book your audit <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5"/></svg></a>
       </div>
+      </div>
     </section>
 
     <!-- Capabilities Grid -->
     <section class="integrations-section" id="capabilities">
+      <div class="container">
       <div class="integrations-header reveal-up">
         <span class="section-label">Capabilities</span>
         <h2>Your full revenue stack</h2>
@@ -402,10 +397,12 @@
         <div class="integration-card reveal-up" style="--i:7"><div class="integration-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><span>CRM</span></div>
       </div>
       <a href="#contact" class="btn btn-secondary btn-lg reveal-up">Get started</a>
+      </div>
     </section>
 
     <!-- Case Study / Social Proof -->
     <section class="proof-section">
+      <div class="container">
       <div class="proof-container">
         <p class="proof-intro reveal-up">Companies that use <strong>DigitalConsulting</strong></p>
         <div class="proof-highlight reveal-up">
@@ -431,10 +428,12 @@
           </div>
         </div>
       </div>
+      </div>
     </section>
 
     <!-- FAQ / Positioning -->
     <section class="faq-section" id="faq">
+      <div class="container">
       <div class="faq-container">
         <div class="faq-header reveal-up">
           <span class="section-label label-purple">Positioning</span>
@@ -458,10 +457,12 @@
           </div>
         </div>
       </div>
+      </div>
     </section>
 
     <!-- Contact Section -->
     <section class="contact-section" id="contact">
+      <div class="container">
       <div class="contact-container reveal-up">
         <span class="section-label">Get Started</span>
         <h2>Let's map your next growth sprint.</h2>
@@ -472,6 +473,7 @@
           <a href="https://wa.me/16123985577" class="btn btn-secondary btn-lg" target="_blank" rel="noopener">WhatsApp Business</a>
         </div>
       </div>
+      </div>
     </section>
 
     <!-- CTA Section -->
@@ -480,18 +482,20 @@
         <div class="cta-light cta-light-1"></div>
         <div class="cta-light cta-light-2"></div>
       </div>
+      <div class="container">
       <h2 class="reveal-up">Book a Revenue Infrastructure Review</h2>
       <p class="cta-subtitle reveal-up">Let's see where revenue is leaking &mdash; and how to fix it.</p>
       <div class="cta-buttons reveal-up">
         <a href="https://cal.com/bookings-appointments-ooxy15/15min" class="btn btn-primary btn-xl btn-glow" target="_blank" rel="noopener">Book a Review</a>
         <a href="tel:+16123985577" class="btn btn-secondary btn-xl">Call +1 (612) 398-5577</a>
       </div>
+      </div>
     </section>
   </main>
 
   <!-- Footer -->
   <footer class="footer">
-    <div class="footer-container">
+    <div class="footer-container container">
       <div class="footer-grid">
         <div class="footer-col">
           <h4>Services</h4>
