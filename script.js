@@ -649,7 +649,7 @@
   });
 
   // ===== SCROLL REVEAL =====
-  const revealElements = document.querySelectorAll('.reveal-up');
+  const revealElements = document.querySelectorAll('.reveal-up, .reveal');
 
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {

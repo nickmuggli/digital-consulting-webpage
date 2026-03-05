@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Preview Site (Edge)",
+      "type": "pwa-msedge",
+      "request": "launch",
+      "url": "http://127.0.0.1:5500/index.html",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "Start Live Preview Server"
+    },
+    {
+      "name": "Preview Site (Chrome)",
+      "type": "pwa-chrome",
+      "request": "launch",
+      "url": "http://127.0.0.1:5500/index.html",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "Start Live Preview Server"
+    }
+  ]
+}
