@@ -789,7 +789,7 @@
   const GEMINI_API_KEY = '__GEMINI_API_KEY__';
   const GEMINI_WS_URL = 'wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent';
   const CAL_API_KEY = '__CAL_API_KEY__';
-  const CAL_USERNAME = 'gabriele-tupini-da60rn';
+  const CAL_USERNAME = 'bookings-appointments-ooxy15';
   const CAL_EVENT_SLUG = '15min';
   const CAL_API_BASE = 'https://api.cal.com/v2';
 
@@ -917,7 +917,7 @@ Step 2: Book the slot
 Once the caller picks a time, use book_consultation with their name, email, and the chosen time slot.
 Before calling the function, briefly say: "Perfect, let me lock that in for you now."
 - If the response says success: Say enthusiastically: "You're all set! You'll get a confirmation email shortly. The team is looking forward to chatting with you! Is there anything else I can help with?"
-- If the response says failure: Say: "Hmm, something went wrong on my end. No worries — you can also book directly at cal.com/gabriele-tupini-da60rn/15min, or I can have the team reach out to you by email."
+- If the response says failure: Say: "Hmm, something went wrong on my end. No worries — you can also book directly at cal.com/bookings-appointments-ooxy15/15min, or I can have the team reach out to you by email."
 
 Important booking notes:
 - Always gather name and email before booking.
@@ -1218,7 +1218,7 @@ Conversation Guidelines:
                       functionResponses: [{
                         id: fc.id,
                         name: fc.name,
-                        response: { error: 'Failed to fetch available slots. Suggest the caller visit cal.com/gabriele-tupini-da60rn/15min directly.' }
+                        response: { error: 'Failed to fetch available slots. Suggest the caller visit cal.com/bookings-appointments-ooxy15/15min directly.' }
                       }]
                     }
                   }));
@@ -1387,3 +1387,4 @@ Conversation Guidelines:
   }
 
 })();
+
