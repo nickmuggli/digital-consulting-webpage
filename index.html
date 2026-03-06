@@ -39,18 +39,49 @@
         <img src="favicon.svg" alt="DigitalConsulting" width="32" height="32">
         <span>DigitalConsulting</span>
       </a>
-      <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation menu" aria-controls="primaryNav" aria-expanded="false">
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation menu" aria-controls="nav" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
       </button>
-      <div class="nav-links" id="primaryNav">
-        <a href="#services" class="nav-link">Services</a>
+      <div class="nav-links" id="nav">
+        <a href="#ai-offer" class="nav-link">System</a>
+        <div class="nav-dropdown">
+          <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-controls="capabilitiesMega">
+            Capabilities
+          </button>
+          <div class="nav-mega" id="capabilitiesMega">
+            <div class="nav-mega-grid">
+              <div class="nav-mega-col">
+                <span class="nav-mega-label">AI Systems</span>
+                <a href="#ai-offer">AI Receptionist</a>
+                <a href="#ai-offer">AI Outbound Caller</a>
+                <a href="#ai-offer">AI Appointment Setter</a>
+                <a href="#ai-offer">Workflow Automation</a>
+              </div>
+              <div class="nav-mega-col">
+                <span class="nav-mega-label">Acquisition</span>
+                <a href="#services">Google Ads</a>
+                <a href="#services">Meta Ads</a>
+                <a href="#services">Landing Pages</a>
+                <a href="#results">Outcomes</a>
+              </div>
+              <div class="nav-mega-col nav-mega-featured">
+                <span class="nav-mega-label">Recommended next step</span>
+                <h4>Book a Revenue Audit</h4>
+                <p>We&apos;ll review your current lead flow, identify operational leakage, and map where AI can increase booked appointments.</p>
+                <a href="https://cal.com/bookings-appointments-ooxy15/15min" class="btn btn-primary btn-small" target="_blank" rel="noopener">
+                  Book Revenue Audit
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
         <a href="#process" class="nav-link">Process</a>
-        <a href="#results" class="nav-link">Results</a>
+        <a href="#results" class="nav-link">Outcomes</a>
         <a href="#contact" class="nav-link">Contact</a>
       </div>
-      <a href="https://cal.com/bookings-appointments-ooxy15/15min" class="btn btn-primary btn-nav" target="_blank" rel="noopener">Book a Call</a>
+      <a href="https://cal.com/bookings-appointments-ooxy15/15min" class="btn btn-primary btn-nav" target="_blank" rel="noopener">Book Revenue Audit</a>
     </nav>
   </header>
 
@@ -70,20 +101,28 @@
       <div class="hero-badge hero-reveal" style="--delay: 0">
         <span class="badge-dot"></span>
         <span>New</span>
-        <span class="badge-text shimmer-text">AI-Powered Revenue Infrastructure</span>
+        <span class="badge-text shimmer-text">AI Systems For Lead Capture &amp; Booking</span>
         <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" opacity="0.5"><path d="M6 3l5 5-5 5"/></svg>
       </div>
       <h1 class="hero-title hero-reveal" style="--delay: 1">
-        <span class="hero-title-line">Booked Appointments</span>
-        <span class="hero-title-line gradient-text">Backed By Tracking + AI Follow-Up</span>
+        <span class="hero-title-line">AI Revenue Systems</span>
+        <span class="hero-title-line gradient-text">For Minnesota Service Businesses</span>
       </h1>
       <p class="hero-subtitle hero-reveal" style="--delay: 2">
-        Google + Meta ads, clean attribution, and AI appointment capture in one operating system
-        for service businesses that need predictable growth.
+        We install AI-powered systems that answer calls, capture leads,
+        follow up instantly, and turn inbound demand into booked
+        appointments for roofing, HVAC, plumbing, restoration,
+        dental, and other high-trust service businesses.
       </p>
       <div class="hero-cta hero-reveal" style="--delay: 3">
         <a href="https://cal.com/bookings-appointments-ooxy15/15min" class="btn btn-primary btn-lg btn-glow" target="_blank" rel="noopener">Book a Revenue Audit</a>
-        <a href="#process" class="btn btn-secondary btn-lg">See How It Works</a>
+        <a href="#ai-offer" class="btn btn-secondary btn-lg">See the System</a>
+      </div>
+      <div class="hero-trust-strip hero-reveal" style="--delay: 3.4" aria-label="Trust highlights">
+        <span>AI-powered lead capture</span>
+        <span>24/7 booking coverage</span>
+        <span>Built for service businesses</span>
+        <span>Tracking-first system design</span>
       </div>
 
       <!-- Hero interactive card -->
@@ -100,56 +139,61 @@
           <div class="dashboard-mockup">
             <div class="dashboard-row">
               <div class="dashboard-kpi">
-                <span class="kpi-label">Qualified Leads</span>
-                <span class="kpi-value">$126,800</span>
+                <span class="kpi-label">Booked Appointments</span>
+                <span class="kpi-value" id="bookedAppointmentsValue">+5,000</span>
               </div>
               <div class="dashboard-kpi">
-                <span class="kpi-label">Blended ROAS</span>
-                <span class="kpi-value accent">4.9x</span>
+                <span class="kpi-label">Response Coverage</span>
+                <span class="kpi-value accent">24/7</span>
               </div>
             </div>
+
             <div class="dashboard-row">
               <div class="dashboard-kpi">
-                <span class="kpi-label">Booked Calls</span>
-                <span class="kpi-value success">+42%</span>
+                <span class="kpi-label">Speed-to-Lead</span>
+                <span class="kpi-value success">&lt; 60 sec</span>
               </div>
               <div class="dashboard-kpi">
-                <span class="kpi-label">CPA Reduction</span>
-                <span class="kpi-value success">-28%</span>
+                <span class="kpi-label">Missed Call Recovery</span>
+                <span class="kpi-value success">+41%</span>
               </div>
             </div>
+
             <div class="dashboard-chart">
-              <div class="mini-bar" style="--h: 35%"></div>
-              <div class="mini-bar" style="--h: 52%"></div>
-              <div class="mini-bar" style="--h: 45%"></div>
+              <div class="mini-bar" style="--h: 32%"></div>
+              <div class="mini-bar" style="--h: 38%"></div>
+              <div class="mini-bar" style="--h: 42%"></div>
+              <div class="mini-bar" style="--h: 49%"></div>
+              <div class="mini-bar" style="--h: 57%"></div>
+              <div class="mini-bar" style="--h: 63%"></div>
               <div class="mini-bar" style="--h: 68%"></div>
-              <div class="mini-bar" style="--h: 72%"></div>
-              <div class="mini-bar" style="--h: 61%"></div>
-              <div class="mini-bar" style="--h: 85%"></div>
-              <div class="mini-bar" style="--h: 78%"></div>
-              <div class="mini-bar" style="--h: 92%"></div>
-              <div class="mini-bar" style="--h: 88%"></div>
-              <div class="mini-bar active" style="--h: 95%"></div>
+              <div class="mini-bar" style="--h: 73%"></div>
+              <div class="mini-bar" style="--h: 81%"></div>
+              <div class="mini-bar" style="--h: 86%"></div>
+              <div class="mini-bar active" style="--h: 93%"></div>
               <div class="mini-bar active" style="--h: 100%"></div>
             </div>
-            <p class="dashboard-note">AI handled inbound conversations, qualified prospects, and booked directly to calendar.</p>
+
+            <p class="dashboard-note">
+              AI answered calls, qualified leads, followed up automatically, and routed prospects into the booking flow without manual bottlenecks.
+            </p>
           </div>
 
           <!-- Hero metrics -->
           <div class="resolution-stats">
             <div class="stat-item">
-              <span class="stat-value accent">+312%</span>
-              <span class="stat-label">Avg Revenue Lift</span>
+              <span class="stat-value accent">24/7</span>
+              <span class="stat-label">Lead Capture Coverage</span>
             </div>
             <div class="stat-divider"></div>
             <div class="stat-item">
-              <span class="stat-value accent">8.4x</span>
-              <span class="stat-label">Top Campaign ROAS</span>
+              <span class="stat-value accent">+41%</span>
+              <span class="stat-label">Missed Call Recovery</span>
             </div>
             <div class="stat-divider"></div>
             <div class="stat-item">
-              <span class="stat-value">21 days</span>
-              <span class="stat-label">Time to First Tests</span>
+              <span class="stat-value">Faster</span>
+              <span class="stat-label">Booking Flow</span>
             </div>
           </div>
         </div>
@@ -157,81 +201,366 @@
       </div>
     </section>
 
-    <!-- Offer Clarity Block -->
-    <section class="offer" id="offer">
-      <div class="container">
-        <div class="offer-head reveal">
-          <span class="offer-kicker">Revenue Audit</span>
-          <h2>Revenue Audit Includes</h2>
-          <p class="offer-sub">Clarity on leaks, priorities, and next steps &mdash; in one call.</p>
+    <section class="case-band reveal" id="case-band">
+      <div class="case-band-head">
+          <span class="offer-kicker">Selected outcomes</span>
+          <h2>Built to improve booked appointments, not just traffic.</h2>
+          <p class="offer-subcopy">
+            The system is designed to reduce missed demand, improve speed-to-lead, and create cleaner booking flow across the full funnel.
+          </p>
+      </div>
+
+      <div class="case-band-grid">
+        <article class="case-band-card">
+          <span class="case-industry">Roofing</span>
+          <div class="case-metric">+32%</div>
+          <h3>Booked call lift</h3>
+          <p>Improved speed-to-lead, lead routing, and conversion flow for higher inbound capture.</p>
+        </article>
+
+        <article class="case-band-card">
+          <span class="case-industry">Dental Implants</span>
+          <div class="case-metric">-28%</div>
+          <h3>Lower cost per acquisition</h3>
+          <p>Tracking cleanup, conversion path improvements, and more efficient paid traffic structure.</p>
+        </article>
+
+        <article class="case-band-card">
+          <span class="case-industry">Local Services</span>
+          <div class="case-metric">24/7</div>
+          <h3>Lead capture coverage</h3>
+          <p>AI answering, chatbot qualification, and automated follow-up reduce after-hours revenue leakage.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="proof-plus reveal" id="proof-plus">
+      <div class="proof-plus-head">
+        <span class="offer-kicker">Proof</span>
+        <h2>Built for service businesses where speed, response, and booking quality directly affect revenue.</h2>
+        <p class="offer-subcopy">
+          We focus on the operational side of growth: lead capture, follow-up, booking flow, and measurement.
+        </p>
+      </div>
+
+      <div class="trusted-strip">
+        <span class="trusted-label">Relevant verticals</span>
+        <div class="trusted-chips">
+          <span>Roofing</span>
+          <span>HVAC</span>
+          <span>Plumbing</span>
+          <span>Restoration</span>
+          <span>Dental</span>
+          <span>High-trust local services</span>
+        </div>
+      </div>
+
+      <div class="proof-cases">
+        <article class="proof-case">
+          <span class="proof-case-tag">Case snapshot</span>
+          <h3>Roofing</h3>
+          <div class="proof-case-metric">+32%</div>
+          <p class="proof-case-title">Booked call lift</p>
+          <p>Improved response flow, qualification routing, and conversion structure to capture more inbound demand.</p>
+        </article>
+
+        <article class="proof-case">
+          <span class="proof-case-tag">Case snapshot</span>
+          <h3>Dental Implants</h3>
+          <div class="proof-case-metric">-28%</div>
+          <p class="proof-case-title">Lower acquisition cost</p>
+          <p>Tracking cleanup, conversion path improvements, and cleaner campaign structure improved efficiency.</p>
+        </article>
+
+        <article class="proof-case">
+          <span class="proof-case-tag">Case snapshot</span>
+          <h3>Local Services</h3>
+          <div class="proof-case-metric">24/7</div>
+          <p class="proof-case-title">Lead capture coverage</p>
+          <p>AI answering, chatbot qualification, and follow-up automation reduced after-hours revenue leakage.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="ai-offer reveal" id="ai-offer">
+      <div class="ai-offer-head">
+          <span class="offer-kicker">Minnesota&rsquo;s AI Revenue Systems Provider</span>
+          <h2>We build AI-powered revenue systems that turn more inbound demand into booked appointments.</h2>
+          <p class="offer-lead">
+            For service businesses, lost revenue usually comes from a few operational gaps: missed calls, slow follow-up, weak websites, disconnected systems, and incomplete tracking. We solve that by installing one integrated revenue engine designed to capture, qualify, route, and book more of your leads.
+          </p>
+      </div>
+
+        <div class="ai-problem-strip">
+          <div class="problem-pill">Missed calls</div>
+          <div class="problem-pill">Slow follow-up</div>
+          <div class="problem-pill">Low website conversion</div>
+          <div class="problem-pill">Poor lead routing</div>
+          <div class="problem-pill">Weak attribution</div>
+          <div class="problem-pill">Lost revenue</div>
         </div>
 
-        <div class="offer-grid">
-          <article class="offer-card reveal">
-            <div class="offer-card-top">
-              <span class="offer-icon">01</span>
-              <h3>Attribution &amp; Tracking Map</h3>
-            </div>
-            <p>We identify where reporting breaks and what to fix first.</p>
+        <div class="ai-summary-grid">
+          <article class="summary-card reveal">
+            <span class="summary-label">What we build</span>
+            <h3>A complete AI revenue engine</h3>
+            <p>Not isolated tools. Not fragmented marketing. One system built to capture every lead, follow up faster, and create more booked jobs or appointments.</p>
           </article>
 
-          <article class="offer-card reveal">
-            <div class="offer-card-top">
-              <span class="offer-icon">02</span>
-              <h3>Booking Leakage Diagnosis</h3>
-            </div>
-            <p>Speed-to-lead, missed calls, follow-up gaps, and conversion blockers.</p>
+          <article class="summary-card reveal">
+            <span class="summary-label">Who it is for</span>
+            <h3>High-trust local service businesses</h3>
+            <p>Especially effective for roofing, HVAC, plumbing, restoration, dental, and other businesses where phone calls, speed-to-lead, and operational consistency directly affect revenue.</p>
           </article>
 
-          <article class="offer-card reveal">
-            <div class="offer-card-top">
-              <span class="offer-icon">03</span>
-              <h3>30-Day Execution Blueprint</h3>
-            </div>
-            <p>Exact priorities, KPIs, and rollout plan for predictable booked appointments.</p>
+          <article class="summary-card reveal">
+            <span class="summary-label">What it solves</span>
+            <h3>Revenue leakage across the funnel</h3>
+            <p>We eliminate missed opportunities caused by unanswered calls, delayed follow-up, low-converting pages, disconnected automations, and unclear performance data.</p>
           </article>
         </div>
 
-        <div class="offer-strip reveal">
-          <div class="offer-strip-copy">
-            <h3>Built for teams that sell high-trust services.</h3>
-            <p>Home services, dental, med spa, legal, and local high-ticket providers doing $1M&ndash;$25M+.</p>
+        <div class="ai-includes reveal">
+          <div class="section-head">
+            <span class="offer-kicker">What&rsquo;s included</span>
+            <h2>The system is built around nine core components</h2>
+            <p class="offer-subcopy">Each one supports the same goal: more qualified conversations and more booked appointments.</p>
           </div>
-          <div class="offer-chips" aria-label="Industries we serve">
+
+          <div class="ai-stack-grid">
+            <article class="stack-card">
+              <div class="stack-card-top">
+                <span class="stack-num">01</span>
+                <h3>AI Receptionist</h3>
+              </div>
+              <p>Answers inbound calls instantly, handles FAQs, books appointments, sends confirmations, and escalates urgent conversations so opportunities are not lost after hours or during busy periods.</p>
+            </article>
+
+            <article class="stack-card">
+              <div class="stack-card-top">
+                <span class="stack-num">02</span>
+                <h3>AI Outbound Caller</h3>
+              </div>
+              <p>Automatically follows up with new leads, old inquiries, estimate requests, and reminders to increase contact rates and recover revenue that would otherwise go cold.</p>
+            </article>
+
+            <article class="stack-card">
+              <div class="stack-card-top">
+                <span class="stack-num">03</span>
+                <h3>AI Website Chatbot</h3>
+              </div>
+              <p>Captures visitors on your website, answers common questions, qualifies leads, and routes them directly into the booking flow 24/7.</p>
+            </article>
+
+            <article class="stack-card">
+              <div class="stack-card-top">
+                <span class="stack-num">04</span>
+                <h3>AI Appointment Setter</h3>
+              </div>
+              <p>Automates qualification, booking links, confirmations, and reminders so manual scheduling does not become a bottleneck.</p>
+            </article>
+
+            <article class="stack-card">
+              <div class="stack-card-top">
+                <span class="stack-num">05</span>
+                <h3>Workflow Automation</h3>
+              </div>
+              <p>Connects lead routing, CRM updates, follow-up sequences, reminders, and pipeline movement behind the scenes so the system operates with consistency.</p>
+            </article>
+
+            <article class="stack-card">
+              <div class="stack-card-top">
+                <span class="stack-num">06</span>
+                <h3>Conversion Website / Landing Pages</h3>
+              </div>
+              <p>Pages designed to turn traffic into booked calls, quote requests, and appointments &mdash; with the right structure, messaging, and conversion pathways.</p>
+            </article>
+
+            <article class="stack-card">
+              <div class="stack-card-top">
+                <span class="stack-num">07</span>
+                <h3>Google Ads</h3>
+              </div>
+              <p>Search-focused acquisition campaigns built around high-intent local demand, so your business appears when prospects are actively looking for your service.</p>
+            </article>
+
+            <article class="stack-card">
+              <div class="stack-card-top">
+                <span class="stack-num">08</span>
+                <h3>Meta Ads</h3>
+              </div>
+              <p>Retargeting and demand-capture campaigns across Facebook and Instagram to bring back lost visitors and create additional lead flow.</p>
+            </article>
+
+            <article class="stack-card">
+              <div class="stack-card-top">
+                <span class="stack-num">09</span>
+                <h3>Enterprise Tracking Infrastructure</h3>
+              </div>
+              <p>GA4, GTM, Pixel, Conversion API, and attribution architecture configured to provide visibility into cost per lead, cost per booked appointment, and real performance.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="ai-fit reveal">
+          <div class="ai-fit-copy">
+            <span class="offer-kicker">Best fit</span>
+            <h2>Designed for businesses where every missed call can mean lost revenue.</h2>
+            <p>
+              This offer is built for service businesses that rely on inbound demand, booked appointments, phone calls, and fast response times to grow. It is especially powerful in categories where each job or patient has meaningful lifetime value.
+            </p>
+          </div>
+
+          <div class="fit-chips">
             <span>Roofing</span>
             <span>HVAC</span>
-            <span>Dental Implants</span>
-            <span>Med Spa</span>
-            <span>Legal</span>
-            <span>High-end Home Services</span>
+            <span>Plumbing</span>
+            <span>Restoration</span>
+            <span>Dental</span>
+            <span>High-ticket local services</span>
           </div>
         </div>
 
-        <div class="after reveal" id="after-booking">
-          <div class="after-head">
-            <span class="offer-kicker">After Booking</span>
-            <h2>What happens after you book</h2>
-            <p class="offer-sub">A simple, structured process &mdash; fast.</p>
+        <div class="ai-positioning reveal">
+          <div class="section-head">
+            <span class="offer-kicker">Positioning</span>
+            <h2>This is not a marketing package.</h2>
+            <p class="offer-subcopy">It is revenue infrastructure for companies that want tighter operations, stronger conversion, and better visibility across the full lead journey.</p>
           </div>
 
-          <div class="after-grid">
-            <article class="after-step">
-              <span class="after-num">Step 1</span>
-              <h3>Pre-Audit Intake <span class="after-meta">(24h)</span></h3>
-              <p>We review your channels, tracking, and booking flow before the call.</p>
+          <div class="ai-positioning-grid">
+            <article class="positioning-card">
+              <h3>Not just lead generation</h3>
+              <p>Traffic is only one part of growth. If calls are missed, leads are not followed up with, or systems are disconnected, revenue leaks before it can be realized.</p>
             </article>
 
-            <article class="after-step">
-              <span class="after-num">Step 2</span>
-              <h3>Revenue Audit Call <span class="after-meta">(15&ndash;30m)</span></h3>
-              <p>We map leaks, opportunities, and priority fixes.</p>
+            <article class="positioning-card">
+              <h3>Not just automation</h3>
+              <p>Automation alone does not create outcomes. We architect the full path from first contact to booked appointment to make the system commercially useful.</p>
             </article>
 
-            <article class="after-step">
-              <span class="after-num">Step 3</span>
-              <h3>Blueprint Delivery</h3>
-              <p>You receive a 30-day rollout plan with KPI targets and next steps.</p>
+            <article class="positioning-card">
+              <h3>Built for scale</h3>
+              <p>The same structure that improves local operator performance also gives larger teams more control, cleaner routing, and better measurement across channels.</p>
             </article>
+          </div>
+        </div>
+
+      <div class="after-booking reveal">
+          <div class="section-head">
+            <span class="offer-kicker">What happens next</span>
+            <h2>Book a call to map the right system for your business.</h2>
+            <p class="offer-subcopy">We&rsquo;ll review your current setup, identify revenue leakage, and show you where AI and automation can create the biggest operational lift.</p>
+          </div>
+
+          <div class="after-booking-grid">
+            <article class="after-card">
+              <span class="after-step">Step 1</span>
+              <h3>Revenue Audit</h3>
+              <p>We evaluate your current funnel, call flow, booking process, website conversion, and tracking visibility.</p>
+            </article>
+
+            <article class="after-card">
+              <span class="after-step">Step 2</span>
+              <h3>System Design</h3>
+              <p>We identify which AI and acquisition components fit your business model, sales process, and growth goals.</p>
+            </article>
+
+            <article class="after-card">
+              <span class="after-step">Step 3</span>
+              <h3>Implementation Roadmap</h3>
+              <p>You leave with a clear view of what should be built, what should be fixed first, and how the system would be deployed.</p>
+            </article>
+          </div>
+
+          <div class="offer-cta-row">
+            <a href="https://cal.com/bookings-appointments-ooxy15/15min" class="btn btn-primary btn-lg btn-glow" target="_blank" rel="noopener">Book a Revenue Audit</a>
+            <a href="#contact" class="btn btn-secondary btn-lg">Talk to Our Team</a>
+          </div>
+      </div>
+    </section>
+
+    <section class="system-visual reveal" id="system-visual">
+      <div class="system-visual-head">
+        <span class="offer-kicker">System view</span>
+        <h2>A revenue system is only valuable if the full workflow is connected.</h2>
+        <p class="offer-subcopy">
+          From first call to booked appointment to attribution visibility, each part of the system has to work together.
+        </p>
+      </div>
+
+      <div class="system-panel">
+        <div class="system-panel-top">
+          <span class="system-window-title">Revenue OS / Booking Pipeline</span>
+          <span class="system-live"><span class="live-dot"></span> Live</span>
+        </div>
+
+        <div class="system-grid">
+          <div class="system-column">
+            <p class="system-col-label">Inbound capture</p>
+            <div class="system-node">
+              <strong>AI Receptionist</strong>
+              <span>Calls answered instantly</span>
+            </div>
+            <div class="system-node">
+              <strong>Website Chatbot</strong>
+              <span>Questions answered / leads qualified</span>
+            </div>
+          </div>
+
+          <div class="system-column">
+            <p class="system-col-label">Automation</p>
+            <div class="system-node">
+              <strong>Lead Routing</strong>
+              <span>CRM + team assignment</span>
+            </div>
+            <div class="system-node">
+              <strong>AI Follow-Up</strong>
+              <span>Reminders, callbacks, confirmations</span>
+            </div>
+          </div>
+
+          <div class="system-column">
+            <p class="system-col-label">Booking</p>
+            <div class="system-node system-node-accent">
+              <strong>Appointment Setter</strong>
+              <span>Qualified prospects routed to booking</span>
+            </div>
+            <div class="system-node">
+              <strong>Calendar Sync</strong>
+              <span>Booked jobs / consultations</span>
+            </div>
+          </div>
+
+          <div class="system-column">
+            <p class="system-col-label">Measurement</p>
+            <div class="system-node">
+              <strong>Tracking Stack</strong>
+              <span>GA4, GTM, Pixel, CAPI</span>
+            </div>
+            <div class="system-node">
+              <strong>Performance View</strong>
+              <span>Cost per lead / booked appointment</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="system-metrics">
+          <div class="system-metric">
+            <span class="system-metric-value">24/7</span>
+            <span class="system-metric-label">Response coverage</span>
+          </div>
+          <div class="system-metric">
+            <span class="system-metric-value">&lt;60s</span>
+            <span class="system-metric-label">Speed-to-lead</span>
+          </div>
+          <div class="system-metric">
+            <span class="system-metric-value">Connected</span>
+            <span class="system-metric-label">Booking workflow</span>
+          </div>
+          <div class="system-metric">
+            <span class="system-metric-value">Clear</span>
+            <span class="system-metric-label">Attribution visibility</span>
           </div>
         </div>
       </div>
@@ -250,37 +579,6 @@
         </div>
         <div class="stats-text"><p>problem.</p></div>
       </div>
-      </div>
-    </section>
-
-    <!-- Mini Proof -->
-    <section class="mini-proof-section">
-      <div class="container">
-        <p class="trust-strip reveal">Trusted by growth-focused local service teams that need booked appointments, not vanity metrics.</p>
-        <div class="mini-proof-grid">
-          <article class="mini-proof-card reveal">
-            <div class="mini-proof-card-top">
-              <span class="mini-proof-icon">01</span>
-              <h3>Roofing</h3>
-            </div>
-            <div class="mini-proof-stats">
-              <span class="mini-proof-metric">+32% booked calls</span>
-              <span class="mini-proof-time">30 days</span>
-            </div>
-            <p>Speed-to-lead + follow-up routing + conversion page fixes.</p>
-          </article>
-          <article class="mini-proof-card reveal">
-            <div class="mini-proof-card-top">
-              <span class="mini-proof-icon">02</span>
-              <h3>Dental Implants</h3>
-            </div>
-            <div class="mini-proof-stats">
-              <span class="mini-proof-metric">-28% CPA</span>
-              <span class="mini-proof-time">21 days</span>
-            </div>
-            <p>Tracking cleanup + campaign restructure + landing page CRO.</p>
-          </article>
-        </div>
       </div>
     </section>
 
@@ -308,7 +606,7 @@
       <div class="feature-content">
         <div class="feature-text reveal-up">
           <h2>
-            <span class="section-label">Services</span>
+            <span class="section-label">Capabilities</span>
             The Revenue Infrastructure<br>
             <span class="text-muted">System that turns marketing</span><br>
             <span class="text-muted">into predictable revenue.</span>
@@ -334,49 +632,55 @@
     </section>
 
     <!-- Process Section -->
-    <section class="feature-section feature-section-alt" id="process">
-      <div class="container">
-      <div class="feature-content feature-content-reverse">
-        <div class="feature-text reveal-up">
-          <h2>
-            <span class="section-label label-mint">Process</span>
-            Infrastructure First.<br>
-            <span class="text-muted">Scaling Second.</span>
-          </h2>
-        </div>
-        <div class="feature-visual pr-list-visual reveal-up" data-tilt data-glow-color="mint">
-          <div class="shimmer-border shimmer-mint"></div>
-          <div class="pr-list-wrapper">
-            <div class="pr-list-scroll">
-              <div class="pr-item">
-                <div class="pr-icon step-icon">01</div>
-                <div class="pr-content"><span class="pr-title">Infrastructure Audit</span><span class="pr-meta">We analyze tracking, booking rates, and where revenue leakage is happening right now.</span></div>
-              </div>
-              <div class="pr-item">
-                <div class="pr-icon step-icon">02</div>
-                <div class="pr-content"><span class="pr-title">Build the System</span><span class="pr-meta">Landing pages, tracking, AI call automation, and ad architecture deployed with clean measurement.</span></div>
-              </div>
-              <div class="pr-item">
-                <div class="pr-icon step-icon">03</div>
-                <div class="pr-content"><span class="pr-title">Optimize and Scale</span><span class="pr-meta">Structured testing, budget allocation, and revenue-based scaling with true performance visibility.</span></div>
-              </div>
-              <div class="pr-item">
-                <div class="pr-icon step-icon">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm-.5 10.5l-3-3 1-1 2 2 4-4 1 1-5 5z"/></svg>
-                </div>
-                <div class="pr-content"><span class="pr-title">Revenue Predictability</span><span class="pr-meta">Campaigns are managed by a team overseeing $60K-$120K+ in monthly ad spend, consistently delivering 5x+ ROAS.</span></div>
-              </div>
-              <div class="pr-item">
-                <div class="pr-icon step-icon">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M13 2L3 14h10V2z"/></svg>
-                </div>
-                <div class="pr-content"><span class="pr-title">Enterprise-Level Media Buying</span><span class="pr-meta">Applied locally to Minnesota service companies ready to scale.</span></div>
-              </div>
-            </div>
-          </div>
-          <div class="diff-radar"></div>
-        </div>
+    <section class="how-it-works reveal" id="process">
+      <div class="how-head">
+          <span class="offer-kicker">How it works</span>
+          <h2>From revenue audit to implementation roadmap</h2>
+          <p class="offer-subcopy">
+            A structured process designed to identify revenue leakage, define the right system, and map the highest-leverage next steps.
+          </p>
       </div>
+
+        <div class="how-timeline">
+          <article class="how-step">
+            <div class="how-step-line"></div>
+            <div class="how-step-badge">01</div>
+            <div class="how-step-card">
+              <span class="how-step-label">Audit</span>
+              <h3>Revenue Audit</h3>
+              <p>We review lead sources, call handling, booking flow, website conversion, follow-up speed, and tracking visibility.</p>
+            </div>
+          </article>
+
+          <article class="how-step">
+            <div class="how-step-line"></div>
+            <div class="how-step-badge">02</div>
+            <div class="how-step-card">
+              <span class="how-step-label">Diagnosis</span>
+              <h3>Leakage &amp; Opportunity Mapping</h3>
+              <p>We identify where demand is being lost, where AI can improve response and qualification, and which systems should be connected first.</p>
+            </div>
+          </article>
+
+          <article class="how-step">
+            <div class="how-step-line"></div>
+            <div class="how-step-badge">03</div>
+            <div class="how-step-card">
+              <span class="how-step-label">Architecture</span>
+              <h3>System Design</h3>
+              <p>We define the right combination of AI answering, outbound follow-up, booking automation, ads, website structure, and tracking.</p>
+            </div>
+          </article>
+
+          <article class="how-step">
+            <div class="how-step-line"></div>
+            <div class="how-step-badge">04</div>
+            <div class="how-step-card">
+              <span class="how-step-label">Roadmap</span>
+              <h3>Implementation Plan</h3>
+              <p>You leave with a clear roadmap showing priorities, dependencies, KPI targets, and the path to a stronger booking system.</p>
+            </div>
+          </article>
       </div>
     </section>
 
@@ -420,74 +724,6 @@
       </div>
     </section>
 
-    <!-- Big Stat Section -->
-    <section class="stats-section">
-      <div class="container">
-      <div class="stats-container reveal-up">
-        <div class="stats-text">
-          <p>Average clients see</p>
-          <div class="stats-number">
-            <span class="counter" data-target="312">312</span><span class="percent">%</span>
-          </div>
-          <p>revenue lift</p>
-        </div>
-        <a href="#contact" class="btn btn-primary btn-lg btn-glow">Start scaling revenue</a>
-      </div>
-      </div>
-    </section>
-
-    <!-- Pricing / Revenue Lift Scenarios -->
-    <section class="knowledge-section" id="pricing">
-      <div class="container">
-      <div class="knowledge-content">
-        <div class="knowledge-text reveal-up">
-          <h2>
-            <span class="section-label label-purple">Expected Impact</span>
-            Revenue Lift<br>Scenarios For<br>
-            <span class="text-muted">Established Service Companies</span>
-          </h2>
-        </div>
-        <div class="knowledge-visual reveal-up" data-tilt data-glow-color="purple">
-          <div class="shimmer-border shimmer-purple"></div>
-          <div class="pricing-mockup">
-            <div class="pricing-card">
-              <span class="pricing-tier">Conservative</span>
-              <span class="pricing-lift">+10-20%</span>
-              <p class="pricing-desc">From improved speed-to-lead and immediate appointment capture.</p>
-              <ul class="pricing-list">
-                <li>Faster response</li>
-                <li>Higher booking rate</li>
-              </ul>
-            </div>
-            <div class="pricing-card featured">
-              <span class="pricing-badge">Most Common</span>
-              <span class="pricing-tier">Moderate</span>
-              <span class="pricing-lift accent">+20-35%</span>
-              <p class="pricing-desc">Driven by cleaner attribution and smarter budget allocation.</p>
-              <ul class="pricing-list">
-                <li>Improved tracking accuracy</li>
-                <li>Smarter scaling</li>
-              </ul>
-            </div>
-            <div class="pricing-card">
-              <span class="pricing-tier">Aggressive</span>
-              <span class="pricing-lift">+35%+</span>
-              <p class="pricing-desc">Most common when after-hours leakage and follow-up failures are present.</p>
-              <ul class="pricing-list">
-                <li>AI capture + booking coverage</li>
-                <li>Revenue leak reduction</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="knowledge-description reveal-up">
-        <p>We partner with established service companies<br>doing $1M-$25M+ annually who are ready to<br>treat marketing as infrastructure.</p>
-        <a href="https://cal.com/bookings-appointments-ooxy15/15min" class="link-arrow" target="_blank" rel="noopener">Book your audit <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M6 3l5 5-5 5"/></svg></a>
-      </div>
-      </div>
-    </section>
-
     <!-- Capabilities Grid -->
     <section class="integrations-section" id="capabilities">
       <div class="container">
@@ -510,63 +746,109 @@
       </div>
     </section>
 
-    <!-- Case Study / Social Proof -->
-    <section class="proof-section">
-      <div class="container">
-      <div class="proof-container">
-        <p class="proof-intro reveal-up">Companies that use <strong>DigitalConsulting</strong></p>
-        <div class="proof-highlight reveal-up">
-          <span class="proof-verb">convert</span> <span class="proof-more">more</span>
-        </div>
-        <p class="proof-text reveal-up">revenue and spend less time<br>guessing what works.</p>
-
-        <div class="proof-stats">
-          <div class="proof-stat reveal-up" data-tilt>
-            <div class="shimmer-border"></div>
-            <span class="proof-stat-value">5x+</span>
-            <span class="proof-stat-label">ROAS Track Record</span>
-          </div>
-          <div class="proof-stat reveal-up" data-tilt>
-            <div class="shimmer-border"></div>
-            <span class="proof-stat-value">-28%</span>
-            <span class="proof-stat-label">Average CPA Reduction</span>
-          </div>
-          <div class="proof-stat reveal-up" data-tilt>
-            <div class="shimmer-border"></div>
-            <span class="proof-stat-value">+32%</span>
-            <span class="proof-stat-label">Booked Appointments Lift</span>
-          </div>
-        </div>
-      </div>
-      </div>
-    </section>
-
     <!-- FAQ / Positioning -->
     <section class="faq-section" id="faq">
       <div class="container">
-      <div class="faq-container">
-        <div class="faq-header reveal-up">
-          <span class="section-label label-purple">Positioning</span>
-          <h2>We are not a marketing agency.<br><span class="text-muted">We are a Revenue Infrastructure Partner.</span></h2>
-        </div>
-        <div class="faq-grid reveal-up">
-          <div class="faq-item" data-tilt>
-            <div class="shimmer-border"></div>
-            <h3>What this means in practice</h3>
-            <p>Every component is engineered around one financial KPI: cost per booked appointment. Traffic, tracking, creative, and automation all serve this metric.</p>
+        <div class="faq-container">
+          <div class="faq-header reveal-up">
+            <span class="section-label label-purple">FAQ</span>
+            <h2>What operators ask before implementing an AI revenue system.</h2>
           </div>
-          <div class="faq-item" data-tilt>
-            <div class="shimmer-border"></div>
-            <h3>Operational model</h3>
-            <p>We build and optimize tracking, booking systems, paid media, and conversion architecture as one integrated system.</p>
-          </div>
-          <div class="faq-item" data-tilt>
-            <div class="shimmer-border"></div>
-            <h3>Why this approach wins</h3>
-            <p>Traffic without infrastructure loses revenue. Infrastructure with disciplined scaling compounds revenue over time.</p>
+          <div class="faq-accordion reveal-up">
+            <details class="faq-detail">
+              <summary>Who is this best suited for?</summary>
+              <p>Service businesses where calls, speed-to-lead, and booked appointments drive revenue, including roofing, HVAC, plumbing, restoration, and dental.</p>
+            </details>
+            <details class="faq-detail">
+              <summary>What does the AI system actually handle?</summary>
+              <p>Inbound call handling, lead qualification, chat capture, follow-up automations, appointment workflows, and tracking visibility across the funnel.</p>
+            </details>
+            <details class="faq-detail">
+              <summary>Do you replace our team?</summary>
+              <p>No. The system removes manual bottlenecks and repetitive admin, so your team can focus on sales conversations and service delivery.</p>
+            </details>
+            <details class="faq-detail">
+              <summary>Can this work with our current website and CRM?</summary>
+              <p>Yes. We typically integrate with your current stack first, then prioritize upgrades based on where the most revenue leakage is happening.</p>
+            </details>
+            <details class="faq-detail">
+              <summary>What happens on the revenue audit call?</summary>
+              <p>We map your lead flow, identify bottlenecks, and outline the highest-impact implementation roadmap for booked appointment growth.</p>
+            </details>
           </div>
         </div>
       </div>
+    </section>
+
+    <section class="founder-band reveal" id="founder-band">
+      <div class="founder-band-grid">
+        <div class="founder-band-copy">
+          <span class="offer-kicker">Operator-led</span>
+          <h2>Built by a team focused on revenue systems, not generic marketing deliverables.</h2>
+          <p>
+            DigitalConsulting is designed around one core idea: service businesses do not just need more traffic — they need stronger systems for call handling, follow-up, qualification, booking, and measurement.
+          </p>
+          <p>
+            Our approach combines AI infrastructure, conversion strategy, automation design, and acquisition systems into one integrated operating layer.
+          </p>
+
+          <div class="founder-points">
+            <div class="founder-point">
+              <strong>Commercial focus</strong>
+              <span>Built around booked appointments, lead response, and operational efficiency.</span>
+            </div>
+            <div class="founder-point">
+              <strong>System-level thinking</strong>
+              <span>We connect acquisition, automation, booking flow, and attribution instead of treating them as separate projects.</span>
+            </div>
+            <div class="founder-point">
+              <strong>Best fit for high-trust services</strong>
+              <span>Especially relevant for businesses where missed calls and slow follow-up directly impact revenue.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="founder-band-panel">
+          <span class="founder-panel-label">Why this approach is different</span>
+          <div class="founder-mini-card">
+            <h3>Most providers stop at traffic or automation.</h3>
+            <p>We build the full commercial path from inbound demand to booked appointment to performance visibility.</p>
+          </div>
+          <div class="founder-mini-card">
+            <h3>The result</h3>
+            <p>A cleaner operating system for growth: faster response, less leakage, stronger conversion, and better measurement.</p>
+          </div>
+          <a href="https://cal.com/bookings-appointments-ooxy15/15min" class="btn btn-primary" target="_blank" rel="noopener">
+            Book Revenue Audit
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="booking-handoff reveal" id="booking-handoff">
+      <div class="booking-handoff-card">
+        <div class="booking-handoff-copy">
+          <span class="offer-kicker">Before you book</span>
+          <h2>What to expect on the revenue audit call</h2>
+          <p>
+            This is a strategic review of your lead capture, call handling, booking workflow, website conversion path, and tracking visibility. The goal is to identify where revenue is leaking and what the highest-leverage next steps would be.
+          </p>
+        </div>
+
+        <div class="booking-handoff-points">
+          <div class="handoff-point">
+            <strong>We review your current setup</strong>
+            <span>Lead sources, response flow, booking process, and tracking visibility.</span>
+          </div>
+          <div class="handoff-point">
+            <strong>We identify leakage</strong>
+            <span>Missed calls, weak follow-up, routing gaps, conversion blockers, and attribution issues.</span>
+          </div>
+          <div class="handoff-point">
+            <strong>We map the right system</strong>
+            <span>The combination of AI, automation, acquisition, and infrastructure best suited to your business.</span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -575,8 +857,11 @@
       <div class="container">
       <div class="contact-container reveal-up">
         <span class="section-label">Get Started</span>
-        <h2>Let's map your next growth sprint.</h2>
-        <p class="text-muted">Share your business model, current channels, and target goals.<br>We will send a practical strategy outline.</p>
+        <h2>Let&rsquo;s map your AI revenue system.</h2>
+        <p class="text-muted">
+          Tell us about your business, your lead sources, and your current setup.
+          We&rsquo;ll show you where AI and automation can improve booking rates and operational efficiency.
+        </p>
         <div class="contact-actions">
           <a href="mailto:team@digitalconsultingusa.com" class="btn btn-primary btn-lg btn-glow">Email DigitalConsulting</a>
           <a href="tel:+16123985577" class="btn btn-secondary btn-lg">Call +1 (612) 398-5577</a>
@@ -593,8 +878,11 @@
         <div class="cta-light cta-light-2"></div>
       </div>
       <div class="container">
-      <h2 class="reveal-up">Book a Revenue Infrastructure Review</h2>
-      <p class="cta-subtitle reveal-up">Let's see where revenue is leaking &mdash; and how to fix it.</p>
+      <h2 class="reveal-up">See How an AI Revenue System Would Work for Your Business</h2>
+      <p class="cta-subtitle reveal-up">
+        We&apos;ll review your current funnel, identify where revenue is leaking,
+        and show you how AI and automation could increase booked jobs.
+      </p>
       <div class="cta-buttons reveal-up">
         <a href="https://cal.com/bookings-appointments-ooxy15/15min" class="btn btn-primary btn-xl btn-glow" target="_blank" rel="noopener">Book a Review</a>
         <a href="tel:+16123985577" class="btn btn-secondary btn-xl">Call +1 (612) 398-5577</a>
@@ -604,48 +892,71 @@
   </main>
 
   <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-container container">
-      <div class="footer-grid">
-        <div class="footer-col">
-          <h4>Services</h4>
-          <a href="#services">Google Ads</a>
-          <a href="#services">Meta Ads</a>
-          <a href="#services">Advanced Tracking</a>
-          <a href="#services">AI Call Secretary</a>
+  <footer class="footer footer-premium">
+    <div class="footer-shell">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="#" class="footer-logo">
+            <img src="favicon.svg" alt="DigitalConsulting" width="34" height="34">
+            <div>
+              <strong>DigitalConsulting</strong>
+              <span>Minnesota&rsquo;s AI Revenue Systems Provider</span>
+            </div>
+          </a>
+
+          <p class="footer-brand-copy">
+            We build AI-powered revenue systems for service businesses that want stronger lead capture, faster follow-up, cleaner operations, and more booked appointments.
+          </p>
+
+          <div class="footer-status-pill">
+            <span class="status-dot"></span>
+            <span>Revenue systems active</span>
+          </div>
         </div>
-        <div class="footer-col">
-          <h4>Company</h4>
-          <a href="#process">Process</a>
-          <a href="#results">Results</a>
-          <a href="#pricing">Pricing</a>
-        </div>
-        <div class="footer-col">
-          <h4>Contact</h4>
-          <a href="mailto:team@digitalconsultingusa.com">Email</a>
-          <a href="tel:+16123985577">+1 (612) 398-5577</a>
-          <a href="https://wa.me/16123985577" target="_blank" rel="noopener">WhatsApp</a>
-        </div>
-        <div class="footer-col">
-          <h4>Connect</h4>
-          <a href="https://www.linkedin.com/in/nicmuggli/" target="_blank" rel="noopener">LinkedIn</a>
+
+        <div class="footer-links-grid">
+          <div class="footer-col">
+            <h4>System</h4>
+            <a href="#ai-offer">Overview</a>
+            <a href="#services">Capabilities</a>
+            <a href="#process">Process</a>
+            <a href="#results">Outcomes</a>
+          </div>
+
+          <div class="footer-col">
+            <h4>Solutions</h4>
+            <a href="#ai-offer">AI Receptionist</a>
+            <a href="#ai-offer">AI Outbound Caller</a>
+            <a href="#ai-offer">Workflow Automation</a>
+            <a href="#ai-offer">Tracking Infrastructure</a>
+          </div>
+
+          <div class="footer-col">
+            <h4>Contact</h4>
+            <a href="mailto:team@digitalconsultingusa.com">team@digitalconsultingusa.com</a>
+            <a href="tel:+16123985577">+1 (612) 398-5577</a>
+            <a href="https://wa.me/16123985577" target="_blank" rel="noopener">WhatsApp Business</a>
+            <a href="https://www.linkedin.com/in/nicmuggli/" target="_blank" rel="noopener">LinkedIn</a>
+          </div>
+
+          <div class="footer-col">
+            <h4>Book</h4>
+            <a href="https://cal.com/bookings-appointments-ooxy15/15min" target="_blank" rel="noopener">Book Revenue Audit</a>
+            <a href="#contact">Talk to Our Team</a>
+          </div>
         </div>
       </div>
-      <div class="footer-bottom">
-        <div class="footer-status">
-          <span class="status-dot"></span>
-          <span>Revenue systems active</span>
-        </div>
-        <div class="footer-compliance">
-          <span>&copy; 2026 DigitalConsulting</span>
-        </div>
+
+      <div class="footer-bottom-bar">
+        <span>&copy; 2026 DigitalConsulting</span>
+        <span>AI revenue systems for Minnesota service businesses</span>
       </div>
     </div>
   </footer>
 
   <div class="mobile-sticky-cta" aria-label="Quick actions">
-    <a href="https://cal.com/bookings-appointments-ooxy15/15min" class="btn btn-primary" target="_blank" rel="noopener">Book Audit</a>
-    <a href="tel:+16123985577" class="btn btn-secondary">Call</a>
+    <a href="https://cal.com/bookings-appointments-ooxy15/15min" class="btn btn-primary" target="_blank" rel="noopener">Book Revenue Audit</a>
+    <a href="tel:+16123985577" class="btn btn-secondary">Call Now</a>
   </div>
 
   <script src="script.js"></script>

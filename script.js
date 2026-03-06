@@ -16,11 +16,12 @@
   });
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const supportsHoverPointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   const isMobileEffectsViewport = window.matchMedia('(max-width: 768px)').matches;
   const enableParticleEffects = !prefersReducedMotion;
   const enableGrainEffects = !prefersReducedMotion;
   const enableCursorGlowEffects = !prefersReducedMotion && !isMobileEffectsViewport;
-  const enableTiltEffects = !prefersReducedMotion;
+  const enableTiltEffects = !prefersReducedMotion && supportsHoverPointer;
 
   // ===== FILM GRAIN CANVAS =====
   const grainCanvas = document.getElementById('grainCanvas');
@@ -605,7 +606,22 @@
   }
 
   // ===== 3D TILT EFFECT =====
-  document.querySelectorAll('[data-tilt]').forEach(el => {
+  const tiltTargets = document.querySelectorAll([
+    '[data-tilt]',
+    '.stack-card',
+    '.summary-card',
+    '.positioning-card',
+    '.after-card',
+    '.case-band-card',
+    '.proof-case',
+    '.system-column',
+    '.system-metric',
+    '.founder-point',
+    '.founder-mini-card',
+    '.handoff-point'
+  ].join(', '));
+
+  tiltTargets.forEach(el => {
     if (!enableTiltEffects) {
       el.style.transform = 'none';
       el.style.transition = 'none';
@@ -619,11 +635,20 @@
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
-      const rotateX = ((y - centerY) / centerY) * -2.5;
-      const rotateY = ((x - centerX) / centerX) * 2.5;
+      let intensity = 1.2;
+      let lift = 1.2;
+      if (el.matches('[data-tilt]')) {
+        intensity = 1.9;
+        lift = 2;
+      } else if (el.classList.contains('stack-card')) {
+        intensity = 1.4;
+        lift = 1.5;
+      }
+      const rotateX = ((y - centerY) / centerY) * -intensity;
+      const rotateY = ((x - centerX) / centerX) * intensity;
 
-      el.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.008)`;
-      el.style.transition = 'transform 0.1s ease-out';
+      el.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-${lift}px) scale(1.004)`;
+      el.style.transition = 'transform 0.14s ease-out';
 
       const percentX = (x / rect.width) * 100;
       const percentY = (y / rect.height) * 100;
@@ -633,7 +658,7 @@
 
     el.addEventListener('mouseleave', () => {
       el.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg) scale(1)';
-      el.style.transition = 'transform 0.6s ease-out';
+      el.style.transition = 'transform 0.45s ease-out';
     });
   });
 
@@ -651,6 +676,11 @@
   // ===== SCROLL REVEAL =====
   const revealElements = document.querySelectorAll('.reveal-up, .reveal');
 
+  revealElements.forEach((el, index) => {
+    const localIndex = index % 6;
+    el.style.transitionDelay = `${localIndex * 45}ms`;
+  });
+
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -663,6 +693,28 @@
   });
 
   revealElements.forEach(el => revealObserver.observe(el));
+
+  // ===== LIVE BOOKED APPOINTMENTS KPI =====
+  const bookedAppointmentsValue = document.getElementById('bookedAppointmentsValue');
+  if (bookedAppointmentsValue) {
+    const startValue = 5000;
+    const storageKey = 'dc_booked_appointments_start_ts';
+    let startTs = Number.parseInt(localStorage.getItem(storageKey) || '', 10);
+
+    if (!Number.isFinite(startTs)) {
+      startTs = Date.now();
+      localStorage.setItem(storageKey, String(startTs));
+    }
+
+    const updateBookedAppointments = () => {
+      const stepsElapsed = Math.floor((Date.now() - startTs) / 10000);
+      const currentValue = startValue + Math.max(0, stepsElapsed);
+      bookedAppointmentsValue.textContent = `+${currentValue.toLocaleString('en-US')}`;
+    };
+
+    updateBookedAppointments();
+    window.setInterval(updateBookedAppointments, 1000);
+  }
 
   // ===== COUNTER ANIMATION =====
   const counters = document.querySelectorAll('.counter');
@@ -729,7 +781,7 @@
 
   // ===== MOBILE NAV TOGGLE =====
   const navToggle = document.getElementById('navToggle');
-  const primaryNav = document.getElementById('primaryNav');
+  const primaryNav = document.getElementById('primaryNav') || document.getElementById('nav');
 
   if (navToggle && primaryNav) {
     const setNavOpen = (isOpen) => {
@@ -753,6 +805,82 @@
       if (e.key === 'Escape') setNavOpen(false);
     });
   }
+
+  /* Scroll-progress nav highlight */
+  const sectionIds = ['hero', 'ai-offer', 'services', 'process', 'results', 'contact'];
+  const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+
+  function setActiveNavLink() {
+    const scrollY = window.scrollY + 140;
+    let currentId = 'hero';
+
+    sectionIds.forEach((id) => {
+      const section = document.getElementById(id);
+      if (!section) return;
+      if (scrollY >= section.offsetTop) {
+        currentId = id;
+      }
+    });
+
+    navLinks.forEach((link) => {
+      const href = link.getAttribute('href');
+      link.classList.toggle('active', href === `#${currentId}`);
+    });
+  }
+
+  window.addEventListener('scroll', setActiveNavLink, { passive: true });
+  window.addEventListener('load', setActiveNavLink);
+
+  const navDropdowns = document.querySelectorAll('.nav-dropdown');
+
+  const closeAllDropdowns = () => {
+    navDropdowns.forEach((dropdown) => {
+      const toggle = dropdown.querySelector('.nav-dropdown-toggle');
+      if (!toggle) return;
+      toggle.setAttribute('aria-expanded', 'false');
+      dropdown.classList.remove('is-open');
+    });
+  };
+
+  navDropdowns.forEach((dropdown) => {
+    const toggle = dropdown.querySelector('.nav-dropdown-toggle');
+    const menu = dropdown.querySelector('.nav-mega');
+    if (!toggle || !menu) return;
+
+    toggle.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
+
+      closeAllDropdowns();
+
+      if (!isOpen) {
+        toggle.setAttribute('aria-expanded', 'true');
+        dropdown.classList.add('is-open');
+      }
+    });
+
+    menu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        toggle.setAttribute('aria-expanded', 'false');
+        dropdown.classList.remove('is-open');
+      });
+    });
+  });
+
+  document.addEventListener('click', (event) => {
+    navDropdowns.forEach((dropdown) => {
+      if (dropdown.contains(event.target)) return;
+      const toggle = dropdown.querySelector('.nav-dropdown-toggle');
+      if (!toggle) return;
+      toggle.setAttribute('aria-expanded', 'false');
+      dropdown.classList.remove('is-open');
+    });
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeAllDropdowns();
+  });
 
   // ===== FEATURE TABS =====
   document.querySelectorAll('.feature-tab').forEach(tab => {
@@ -858,25 +986,5 @@
 
     floatNode();
   });
-
-  // ===== PROOF VERB WORD ROTATION =====
-  const proofVerb = document.querySelector('.proof-verb');
-  if (proofVerb) {
-    const words = ['convert', 'scale', 'optimize', 'capture'];
-    let wordIndex = 0;
-
-    setInterval(() => {
-      proofVerb.style.opacity = '0';
-      proofVerb.style.transform = 'translateY(8px)';
-      proofVerb.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-
-      setTimeout(() => {
-        wordIndex = (wordIndex + 1) % words.length;
-        proofVerb.textContent = words[wordIndex];
-        proofVerb.style.opacity = '1';
-        proofVerb.style.transform = 'translateY(0)';
-      }, 300);
-    }, 3000);
-  }
 
 })();
