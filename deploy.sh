@@ -757,7 +757,14 @@ build() {
     add_security_headers
     
     validate_build
-    
+
+    # Inject Sara AI agent API key (if available)
+    if [[ -n "${SARA_GEMINI_KEY:-}" ]]; then
+        bash scripts/inject-sara-key.sh
+    else
+        log_warning "SARA_GEMINI_KEY not set — Sara widget will not activate"
+    fi
+
     log_success "Build completed successfully!"
 }
 

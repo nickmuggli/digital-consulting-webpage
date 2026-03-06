@@ -95,6 +95,17 @@ jobs:
             mv dist/js/main.min.js dist/js/main.js
           fi
 
+      - name: Inject Sara AI agent API key
+        run: |
+          if [ -f dist/index.html ] && [ -n "$SARA_KEY" ]; then
+            sed -i "s|window.__SARA_GEMINI_KEY__ || \"\"|\"${SARA_KEY}\"|g" dist/index.html
+            echo "Sara API key injected"
+          else
+            echo "Skipping Sara key injection (key not set or index.html not found)"
+          fi
+        env:
+          SARA_KEY: ${{ secrets.GEMINI_API_KEY }}
+
       - name: Create robots.txt
         run: |
           mkdir -p dist
