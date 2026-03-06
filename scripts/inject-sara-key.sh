@@ -17,7 +17,7 @@ fi
 
 if [[ -f "$BUILD_DIR/index.html" ]]; then
   # Replace the placeholder with the actual key
-  sed -i.bak "s|window.__SARA_GEMINI_KEY__ || \"\"|\"${KEY}\"|g" "$BUILD_DIR/index.html"
+  sed -i.bak "s|SARA_KEY_PLACEHOLDER|${KEY}|g" "$BUILD_DIR/index.html"
   rm -f "$BUILD_DIR/index.html.bak"
   echo "[Sara] API key injected into $BUILD_DIR/index.html"
 else

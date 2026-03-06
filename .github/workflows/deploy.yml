@@ -98,7 +98,7 @@ jobs:
       - name: Inject Sara AI agent API key
         run: |
           if [ -f dist/index.html ] && [ -n "$SARA_KEY" ]; then
-            sed -i "s|window.__SARA_GEMINI_KEY__ || \"\"|\"${SARA_KEY}\"|g" dist/index.html
+            sed -i "s|SARA_KEY_PLACEHOLDER|${SARA_KEY}|g" dist/index.html
             echo "Sara API key injected"
           else
             echo "Skipping Sara key injection (key not set or index.html not found)"
