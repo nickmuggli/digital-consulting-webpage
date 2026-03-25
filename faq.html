@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ | Digital Consulting US</title>
+  <meta name="description" content="Questions and answers about the AI Client Acquisition System.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <canvas id="grainCanvas" class="grain-canvas"></canvas>
+  <canvas id="particleCanvas" class="particle-canvas"></canvas>
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <header class="nav-header">
+    <nav class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <img src="images/dc-logo-us-2.jpg" alt="Digital Consulting US logo" width="40" height="40">
+        <span>Digital Consulting US</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation menu" aria-controls="nav" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav">
+        <a href="system.html" class="nav-link">System</a>
+        <a href="results.html" class="nav-link">Results</a>
+        <a href="reviews.html" class="nav-link">Reviews</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="login.html" class="nav-link">Login</a>
+      </div>
+      <a href="https://cal.com/bookings-appointments-ooxy15/15min" class="btn btn-primary btn-nav" target="_blank" rel="noopener">Book a Free Strategy Call</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="page-hero page-hero-split reveal">
+      <div>
+        <span class="offer-kicker">Questions</span>
+        <h1>We've got answers</h1>
+        <p class="hero-subtitle">The answers stay aligned with your offer: more leads, instant AI follow-up, and more closed deals. This page is meant to remove confusion and make booking feel easier.</p>
+      </div>
+      <article class="page-media-card">
+        <img src="images/digital_consulting_logo-DQJncZBR.webp" alt="Digital Consulting US logo artwork" loading="lazy">
+        <div class="page-media-meta">
+          <span>FAQ Visual</span>
+          <strong>For businesses that want a cleaner explanation before taking the next step.</strong>
+          <p>Use this section to reduce hesitation and answer the most common questions prospects ask before booking.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="faq-accordion reveal" style="margin-top:24px;">
+      <details class="faq-detail"><summary>What does the AI Client Acquisition System actually do?</summary><p>It helps generate qualified leads, contact them instantly using AI, and improve how those leads are handled so more become paying clients.</p></details>
+      <details class="faq-detail"><summary>Do I need to change my CRM?</summary><p>No. The system is designed to work with GoHighLevel and can sit on top of your current sales flow.</p></details>
+      <details class="faq-detail"><summary>What channels can it use?</summary><p>SMS, calls, WhatsApp, Instagram, Facebook Messenger, and other CRM-connected conversation channels.</p></details>
+      <details class="faq-detail"><summary>Is this a software subscription?</summary><p>No. This is a service-led system built around your client acquisition and follow-up process, not a free-trial SaaS product.</p></details>
+      <details class="faq-detail"><summary>What is the main benefit?</summary><p>Speed-to-lead. The faster new leads are contacted, the more likely they are to book and eventually close.</p></details>
+      <details class="faq-detail"><summary>What happens after I book?</summary><p>We review your lead flow, response speed, and current follow-up gaps so you can clearly see where opportunities are being lost and what the system should fix first.</p></details>
+    </section>
+
+    <section class="page-grid reveal">
+      <article class="page-card">
+        <h3>What we usually help fix first</h3>
+        <ul>
+          <li>Slow first response times</li>
+          <li>Missed follow-up across multiple channels</li>
+          <li>Lead leakage between ads and calendar</li>
+          <li>Weak handoff into the sales process</li>
+        </ul>
+      </article>
+      <article class="page-card">
+        <h3>Best next step</h3>
+        <p>If you are already generating leads but know some of them are being lost, the best next step is simply to book a call and map out where the follow-up breaks.</p>
+        <a href="https://cal.com/bookings-appointments-ooxy15/15min" class="btn btn-primary btn-lg btn-glow" target="_blank" rel="noopener">Book a Free Strategy Call</a>
+      </article>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

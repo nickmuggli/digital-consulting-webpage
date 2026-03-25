@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | Digital Consulting US</title>
+  <meta name="description" content="Contact Digital Consulting US.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <canvas id="grainCanvas" class="grain-canvas"></canvas>
+  <canvas id="particleCanvas" class="particle-canvas"></canvas>
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <header class="nav-header">
+    <nav class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <img src="images/dc-logo-us-2.jpg" alt="Digital Consulting US logo" width="40" height="40">
+        <span>Digital Consulting US</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation menu" aria-controls="nav" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav">
+        <a href="system.html" class="nav-link">System</a>
+        <a href="results.html" class="nav-link">Results</a>
+        <a href="reviews.html" class="nav-link">Reviews</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="login.html" class="nav-link">Login</a>
+      </div>
+      <a href="https://cal.com/bookings-appointments-ooxy15/15min" class="btn btn-primary btn-nav" target="_blank" rel="noopener">Book a Free Strategy Call</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="page-hero page-hero-split reveal">
+      <div>
+        <span class="offer-kicker">Contact</span>
+        <h1>Tell us about your lead flow</h1>
+        <p class="hero-subtitle">Use this page to capture inquiry details before the strategy call. The more context you give, the easier it is to spot where your lead handling is leaking revenue.</p>
+      </div>
+      <article class="page-media-card">
+        <img src="images/portrait.jpg" alt="Digital Consulting US contact artwork" loading="lazy">
+        <div class="page-media-meta">
+          <span>Before The Call</span>
+          <strong>Share your current lead volume, follow-up speed, and biggest bottleneck so the conversation starts from the right place.</strong>
+          <p>Whether the issue is lead generation, response time, or low close rate, this gives us a clearer starting point.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="auth-grid reveal">
+      <article class="auth-card">
+        <h3>Contact details</h3>
+        <form class="auth-form" id="contactCaptureForm">
+          <label>Name<input type="text" name="name" required></label>
+          <label>Email<input type="email" name="email" required></label>
+          <label>Business Type<input type="text" name="business_type"></label>
+          <label>Monthly Leads<input type="number" name="monthly_leads" min="0"></label>
+          <label>Message<textarea name="message" placeholder="What are you struggling with right now?"></textarea></label>
+          <button class="btn btn-primary btn-lg btn-glow" type="submit">Save Inquiry</button>
+          <div class="auth-success" id="contactCaptureSuccess">Inquiry saved locally in this browser. Connect this form to your backend or CRM webhook next.</div>
+        </form>
+      </article>
+      <article class="auth-card">
+        <h3>Direct booking</h3>
+        <p>Prefer to skip the form? Book a Free Strategy Call right away and we'll walk through where leads are being lost and how instant AI follow-up can recover them.</p>
+        <a href="https://cal.com/bookings-appointments-ooxy15/15min" class="btn btn-primary btn-lg btn-glow" target="_blank" rel="noopener">Book a Free Strategy Call</a>
+      </article>
+    </section>
+
+    <section class="page-grid reveal">
+      <article class="page-card">
+        <h3>What we'll cover</h3>
+        <ul>
+          <li>How leads are currently coming in</li>
+          <li>How fast your team responds today</li>
+          <li>Where follow-up drops off</li>
+          <li>What instant AI response could recover</li>
+        </ul>
+      </article>
+      <article class="page-card">
+        <h3>Best fit businesses</h3>
+        <ul>
+          <li>Agencies and consultants</li>
+          <li>Service businesses with inbound leads</li>
+          <li>Teams already using GoHighLevel</li>
+          <li>Founders who want more booked conversations from existing traffic</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

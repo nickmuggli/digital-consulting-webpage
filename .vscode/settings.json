@@ -3,5 +3,6 @@
   "liveServer.settings.file": "index.html",
   "liveServer.settings.port": 5500,
   "liveServer.settings.host": "127.0.0.1",
-  "liveServer.settings.donotShowInfoMsg": true
+  "liveServer.settings.donotShowInfoMsg": true,
+  "liveServer.settings.multiRootWorkspaceName": "digital-consulting-webpage"
 }

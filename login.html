@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Digital Consulting US</title>
+  <meta name="description" content="Login and sign-up shell for Digital Consulting US.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <canvas id="grainCanvas" class="grain-canvas"></canvas>
+  <canvas id="particleCanvas" class="particle-canvas"></canvas>
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <header class="nav-header">
+    <nav class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <img src="images/dc-logo-us-2.jpg" alt="Digital Consulting US logo" width="40" height="40">
+        <span>Digital Consulting US</span>
+      </a>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation menu" aria-controls="nav" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links" id="nav">
+        <a href="system.html" class="nav-link">System</a>
+        <a href="results.html" class="nav-link">Results</a>
+        <a href="reviews.html" class="nav-link">Reviews</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+        <a href="login.html" class="nav-link">Login</a>
+      </div>
+      <a href="https://cal.com/bookings-appointments-ooxy15/15min" class="btn btn-primary btn-nav" target="_blank" rel="noopener">Book a Free Strategy Call</a>
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    <section class="page-hero page-hero-split reveal">
+      <div>
+        <span class="offer-kicker">Login / Sign Up</span>
+        <h1>Create an account shell and capture lead data</h1>
+        <p class="hero-subtitle">This page captures sign-up information locally for now. To use it for real lead capture, connect it to your CRM, database, or backend endpoint next.</p>
+      </div>
+      <article class="page-media-card">
+        <img src="images/digital_consulting_logo-DQJncZBR.webp" alt="Digital Consulting US account area artwork" loading="lazy">
+        <div class="page-media-meta">
+          <span>Member Area</span>
+          <strong>This gives you the visual shell for a smoother login and signup flow without changing your current brand style.</strong>
+          <p>Right now it is a frontend capture layer. The next step would be connecting it to real authentication and CRM intake.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="auth-grid reveal">
+      <article class="auth-card">
+        <h3>Create account</h3>
+        <form class="auth-form" id="signupCaptureForm">
+          <label>Full Name<input type="text" name="full_name" required></label>
+          <label>Email<input type="email" name="email" required></label>
+          <label>Company<input type="text" name="company"></label>
+          <label>Password<input type="password" name="password" required></label>
+          <button class="btn btn-primary btn-lg btn-glow" type="submit">Create Account</button>
+          <div class="auth-success" id="signupCaptureSuccess">Sign-up saved locally in this browser. Hook this form into your real auth/database flow next.</div>
+        </form>
+      </article>
+      <article class="auth-card">
+        <h3>Login</h3>
+        <form class="auth-form" id="loginCaptureForm">
+          <label>Email<input type="email" name="email" required></label>
+          <label>Password<input type="password" name="password" required></label>
+          <button class="btn btn-secondary btn-lg" type="submit">Login</button>
+          <div class="auth-success" id="loginCaptureSuccess">Login attempt recorded locally for testing the flow. Replace this with real authentication when ready.</div>
+        </form>
+      </article>
+    </section>
+
+    <section class="page-grid reveal">
+      <article class="page-card">
+        <h3>What this is useful for now</h3>
+        <ul>
+          <li>Testing the sign-up flow visually</li>
+          <li>Capturing basic lead or client information locally</li>
+          <li>Preparing for a future client portal or onboarding area</li>
+        </ul>
+      </article>
+      <article class="page-card">
+        <h3>What would make it production-ready</h3>
+        <ul>
+          <li>Real authentication and password handling</li>
+          <li>CRM or database connection</li>
+          <li>Protected routes for client-only access</li>
+          <li>Webhook or GoHighLevel form integration</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

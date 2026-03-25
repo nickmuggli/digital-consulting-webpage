@@ -1,4 +1,4 @@
-// ============================================
+﻿// ============================================
 // DIGITALCONSULTING — INTERACTIVE ANIMATIONS
 // ============================================
 
@@ -57,16 +57,11 @@
   }
   if (grainCanvas && grainCtx && enableGrainEffects) renderGrain();
 
-  // ===== PAGE REVEAL — hide content until explosion finishes =====
+  // ===== PAGE REVEAL =====
   const pageContent = document.querySelector('.nav-header');
   const mainContent = document.querySelector('main');
   const footerContent = document.querySelector('footer');
   const cursorGlowEl = document.getElementById('cursorGlow');
-  if (enableParticleEffects) {
-    [pageContent, mainContent, footerContent, cursorGlowEl].forEach(el => {
-      if (el) { el.style.opacity = '0'; el.style.transition = 'none'; }
-    });
-  }
 
   function revealPage() {
     [pageContent, mainContent, footerContent, cursorGlowEl].forEach(el => {
@@ -76,6 +71,8 @@
       }
     });
   }
+
+  revealPage();
 
   // ===== METAL SUPERNOVA PARTICLE SYSTEM =====
   const particleCanvas = document.getElementById('particleCanvas');
@@ -95,9 +92,9 @@
   });
 
   // --- Configuration ---
-  const PARTICLE_COUNT = isMobileEffectsViewport ? 220 : 500;
-  const MOUSE_RADIUS = isMobileEffectsViewport ? 160 : 250;
-  const MOUSE_REPEL = isMobileEffectsViewport ? 2.4 : 4;
+  const PARTICLE_COUNT = isMobileEffectsViewport ? 340 : 820;
+  const MOUSE_RADIUS = isMobileEffectsViewport ? 180 : 290;
+  const MOUSE_REPEL = isMobileEffectsViewport ? 2.8 : 4.8;
   const CONNECTION_DIST = 120;
   const phaseScale = isMobileEffectsViewport ? 0.68 : 1;
 
@@ -251,6 +248,13 @@
     const time = now * 0.001;
     const W = particleCanvas.width;
     const H = particleCanvas.height;
+    const isLightTheme = document.documentElement.dataset.theme === 'light';
+    const particleAlphaBoost = isLightTheme ? 1.7 : 1;
+    const particleSizeBoost = isLightTheme ? 1.34 : 1;
+    const glowBoost = isLightTheme ? 1.9 : 1;
+    const lineBoost = isLightTheme ? 2.05 : 1;
+    const mouseRadiusCurrent = isLightTheme ? MOUSE_RADIUS * 1.32 : MOUSE_RADIUS;
+    const mouseRepelCurrent = isLightTheme ? MOUSE_REPEL * 1.38 : MOUSE_REPEL;
 
     pCtx.clearRect(0, 0, W, H);
 
@@ -410,12 +414,12 @@
         const dy = p.y - mouseY;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
-        if (dist < MOUSE_RADIUS && mouseX > 0) {
-          const proximity = 1 - (dist / MOUSE_RADIUS);
+        if (dist < mouseRadiusCurrent && mouseX > 0) {
+          const proximity = 1 - (dist / mouseRadiusCurrent);
           p.lit += (proximity - p.lit) * 0.18;
 
           if (dist > 1) {
-            const force = MOUSE_REPEL * proximity * proximity;
+            const force = mouseRepelCurrent * proximity * proximity;
             p.pushX += (dx / dist) * force;
             p.pushY += (dy / dist) * force;
           }
@@ -436,18 +440,22 @@
       }
 
       // === DRAW ===
-      const alpha = Math.max(0, Math.min(1, p.currentAlpha));
+      const alpha = Math.max(0, Math.min(1, p.currentAlpha * particleAlphaBoost));
       if (alpha < 0.005) continue;
 
       const { h, s, l } = p.color;
+      const drawHue = isLightTheme ? Math.max(202, Math.min(216, h + 8)) : h;
+      const drawSat = isLightTheme ? Math.min(100, s + 12) : s;
+      const drawLight = isLightTheme ? Math.max(42, Math.min(72, l - 8)) : l;
+      const drawSize = p.size * particleSizeBoost;
 
       // --- Explosion trails ---
       if (p.trail.length > 1) {
         for (let t = 0; t < p.trail.length - 1; t++) {
           const trailAlpha = (t / p.trail.length) * alpha * 0.3;
           pCtx.beginPath();
-          pCtx.arc(p.trail[t].x, p.trail[t].y, p.size * 0.4, 0, TWO_PI);
-          pCtx.fillStyle = `hsla(${h}, ${s}%, ${l}%, ${trailAlpha})`;
+          pCtx.arc(p.trail[t].x, p.trail[t].y, drawSize * 0.48, 0, TWO_PI);
+          pCtx.fillStyle = `hsla(${drawHue}, ${drawSat}%, ${drawLight}%, ${trailAlpha})`;
           pCtx.fill();
         }
       }
@@ -456,33 +464,33 @@
       const glowAmount = isAmbient ? p.lit :
         (isPulsing ? 0.8 : (isExploding ? 0.5 : (isImploding ? easeInCubic(elapsed / PHASE.IMPLODE_DURATION) * 0.3 : 0)));
       if (glowAmount > 0.03) {
-        const glowSize = p.size * (p.isBright ? 8 : 5);
+        const glowSize = drawSize * (p.isBright ? 8.8 : 5.8) * glowBoost;
         const glowGrad = pCtx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowSize);
-        glowGrad.addColorStop(0, `hsla(${h}, ${s}%, ${Math.min(100, l + 20)}%, ${glowAmount * 0.2})`);
-        glowGrad.addColorStop(0.5, `hsla(${h}, ${s}%, ${l}%, ${glowAmount * 0.06})`);
-        glowGrad.addColorStop(1, `hsla(${h}, ${s}%, ${l}%, 0)`);
+        glowGrad.addColorStop(0, `hsla(${drawHue}, ${drawSat}%, ${Math.min(100, drawLight + 22)}%, ${glowAmount * 0.24})`);
+        glowGrad.addColorStop(0.5, `hsla(${drawHue}, ${drawSat}%, ${drawLight}%, ${glowAmount * 0.08})`);
+        glowGrad.addColorStop(1, `hsla(${drawHue}, ${drawSat}%, ${drawLight}%, 0)`);
         pCtx.fillStyle = glowGrad;
         pCtx.fillRect(p.x - glowSize, p.y - glowSize, glowSize * 2, glowSize * 2);
       }
 
       // --- Bright core ---
       pCtx.beginPath();
-      pCtx.arc(p.x, p.y, p.size, 0, TWO_PI);
-      pCtx.fillStyle = `hsla(${h}, ${s}%, ${Math.min(100, l + (p.lit || (isPulsing ? 1 : 0)) * 35)}%, ${alpha})`;
+      pCtx.arc(p.x, p.y, drawSize, 0, TWO_PI);
+      pCtx.fillStyle = `hsla(${drawHue}, ${drawSat}%, ${Math.min(100, drawLight + (p.lit || (isPulsing ? 1 : 0)) * 35)}%, ${alpha})`;
       pCtx.fill();
 
       // --- White specular highlight for bright particles ---
       if (p.isBright && alpha > 0.3) {
         pCtx.beginPath();
-        pCtx.arc(p.x, p.y, p.size * 0.4, 0, TWO_PI);
-        pCtx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.6})`;
+        pCtx.arc(p.x, p.y, drawSize * 0.42, 0, TWO_PI);
+        pCtx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.7})`;
         pCtx.fill();
       }
     }
 
     // === GEOMETRIC CONNECTION LINES ===
     if (litParticles.length > 1) {
-      pCtx.lineWidth = 0.6;
+      pCtx.lineWidth = isLightTheme ? 0.95 : 0.6;
       for (let i = 0; i < litParticles.length; i++) {
         for (let j = i + 1; j < litParticles.length; j++) {
           const a = litParticles[i], b = litParticles[j];
@@ -490,11 +498,13 @@
           const dist = Math.sqrt(dx * dx + dy * dy);
 
           if (dist < CONNECTION_DIST) {
-            const lineAlpha = (1 - dist / CONNECTION_DIST) * Math.min(a.lit, b.lit) * 0.4;
+            const lineAlpha = (1 - dist / CONNECTION_DIST) * Math.min(a.lit, b.lit) * 0.4 * lineBoost;
             pCtx.beginPath();
             pCtx.moveTo(a.x, a.y);
             pCtx.lineTo(b.x, b.y);
-            pCtx.strokeStyle = `rgba(0, 220, 255, ${lineAlpha})`;
+            pCtx.strokeStyle = isLightTheme
+              ? `rgba(0, 108, 196, ${lineAlpha})`
+              : `rgba(0, 220, 255, ${lineAlpha})`;
             pCtx.stroke();
           }
         }
@@ -807,7 +817,7 @@
   }
 
   /* Scroll-progress nav highlight */
-  const sectionIds = ['hero', 'ai-offer', 'services', 'process', 'results', 'contact'];
+  const sectionIds = ['hero', 'trust', 'calculator', 'process', 'results', 'gohighlevel', 'faq', 'contact'];
   const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
 
   function setActiveNavLink() {
@@ -830,6 +840,97 @@
 
   window.addEventListener('scroll', setActiveNavLink, { passive: true });
   window.addEventListener('load', setActiveNavLink);
+
+  // ===== BENCHMARK CALCULATOR =====
+  const calcLeads = document.getElementById('calcLeads');
+  const calcResponseHours = document.getElementById('calcResponseHours');
+  const calcDealValue = document.getElementById('calcDealValue');
+  const calcRecoveredRevenue = document.getElementById('calcRecoveredRevenue');
+  const calcExtraAppointments = document.getElementById('calcExtraAppointments');
+  const calcAdditionalRevenue = document.getElementById('calcAdditionalRevenue');
+  const calcHumanResponse = document.getElementById('calcHumanResponse');
+  const calcHumanConv = document.getElementById('calcHumanConv');
+  const calcAiResponse = document.getElementById('calcAiResponse');
+  const calcAiConv = document.getElementById('calcAiConv');
+  const calcReadySave = document.getElementById('calcReadySave');
+  const calcScenarioLine = document.getElementById('calcScenarioLine');
+
+  if (calcLeads && calcResponseHours && calcDealValue && calcRecoveredRevenue && calcExtraAppointments && calcAdditionalRevenue && calcHumanResponse && calcHumanConv && calcAiResponse && calcAiConv && calcReadySave) {
+    const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+    const integer = new Intl.NumberFormat('en-US');
+    const aiConversionRate = 0.40;
+    const aiResponseSeconds = 12;
+    const revenueRealizationRate = 0.25;
+    const getHumanConversionRate = (hours) => {
+      if (hours <= 1) return 0.20;
+      if (hours >= 24) return 0.10;
+      const slope = (0.20 - 0.10) / (24 - 1);
+      return Math.max(0.10, 0.20 - ((hours - 1) * slope));
+    };
+
+    const renderBenchmarkCalc = () => {
+      const leads = Math.max(0, Number.parseFloat(calcLeads.value) || 0);
+      const responseHours = Math.max(0, Number.parseFloat(calcResponseHours.value) || 0);
+      const dealValue = Math.max(0, Number.parseFloat(calcDealValue.value) || 0);
+      const humanConversionRate = getHumanConversionRate(responseHours);
+      const extraAppointments = Math.max(0, Math.round(leads * (aiConversionRate - humanConversionRate)));
+      const additionalRevenue = Math.max(0, Math.round(extraAppointments * dealValue * revenueRealizationRate));
+      const recoveredRevenue = Math.max(0, additionalRevenue * 12);
+      const roundedResponseHours = responseHours === 1 ? '1 hour' : `${integer.format(responseHours)} hours`;
+
+      calcRecoveredRevenue.textContent = currency.format(recoveredRevenue);
+      calcExtraAppointments.textContent = `+${integer.format(extraAppointments)}`;
+      calcAdditionalRevenue.textContent = currency.format(additionalRevenue);
+      calcHumanResponse.textContent = roundedResponseHours;
+      calcHumanConv.textContent = `${Math.round(humanConversionRate * 100)}%`;
+      calcAiResponse.textContent = `${aiResponseSeconds} seconds`;
+      calcAiConv.textContent = `${Math.round(aiConversionRate * 100)}%`;
+      calcReadySave.textContent = `Ready to recover ${currency.format(recoveredRevenue)}/year?`;
+      if (calcScenarioLine) {
+        calcScenarioLine.textContent = `Based on ${integer.format(leads)} leads, ${roundedResponseHours} human response, and a ${currency.format(dealValue)} average deal value.`;
+      }
+    };
+
+    [calcLeads, calcResponseHours, calcDealValue].forEach((input) => {
+      input.addEventListener('input', renderBenchmarkCalc);
+      input.addEventListener('change', renderBenchmarkCalc);
+    });
+
+    renderBenchmarkCalc();
+  }
+
+  // ===== TRUST MARQUEE =====
+  const trustedToolsTrack = document.getElementById('trustedToolsTrack');
+  if (trustedToolsTrack) {
+    const trustedItems = [
+      { name: 'Hospital CIMA', slug: 'hospital-cima', logo: 'images/logos/hospital-cima.png', type: 'client' },
+      { name: 'Coldwell Banker', slug: 'coldwell-banker', logo: 'images/logos/coldwell-banker.png', type: 'client' },
+      { name: 'Colliers', slug: 'colliers', logo: 'images/logos/colliers.png', type: 'client' },
+      { name: 'Claude', slug: 'claude', logo: 'images/logos/claude.svg', type: 'brand icon' },
+      { name: 'Codex', slug: 'codex', logo: 'images/logos/codex.png', type: 'brand icon' },
+      { name: 'ChatGPT', slug: 'chatgpt', logo: 'images/logos/chatgpt.svg', type: 'brand icon' },
+      { name: 'GoHighLevel', slug: 'gohighlevel', logo: 'images/logos/gohighlevel.png', type: 'brand icon' },
+      { name: 'Gemini', slug: 'gemini', logo: 'images/logos/gemini.png', type: 'brand icon' },
+      { name: 'Meta', slug: 'meta', logo: 'images/logos/meta.svg', type: 'brand icon' },
+      { name: 'OpenAI', slug: 'openai', logo: 'images/logos/openai.svg', type: 'brand icon' },
+      { name: 'Retell', slug: 'retell', logo: 'images/logos/retell.svg', type: 'brand icon' },
+      { name: 'Skool', slug: 'skool', logo: 'images/logos/skool.png', type: 'brand icon' },
+      { name: 'Stripe', slug: 'stripe', logo: 'images/logos/stripe.svg', type: 'brand icon' },
+      { name: 'Whop', slug: 'whop', logo: 'images/logos/whop.svg', type: 'brand icon' },
+      { name: 'Google Ads', slug: 'google-ads', logo: 'images/logos/google-ads.png', type: 'brand icon' }
+    ];
+
+    const renderTrustedItem = ({ name, slug, logo, type }) => `
+      <div class="marquee-item marquee-item--${slug}${type.includes('icon') ? ' marquee-item--icon' : ''}" aria-label="${name}">
+        <div class="marquee-logo">
+          <img src="${logo}" alt="${name} logo" loading="lazy">
+        </div>
+      </div>
+    `;
+
+    const loopMarkup = trustedItems.map(renderTrustedItem).join('');
+    trustedToolsTrack.innerHTML = loopMarkup + loopMarkup;
+  }
 
   const navDropdowns = document.querySelectorAll('.nav-dropdown');
 
@@ -966,6 +1067,39 @@
       }
     });
   });
+
+  // ===== HERO ROTATING HEADLINE =====
+  const heroRotatingTextPrimary = document.getElementById('heroRotatingTextPrimary');
+  const heroRotatingTextSecondary = document.getElementById('heroRotatingTextSecondary');
+  if (heroRotatingTextPrimary && heroRotatingTextSecondary && !prefersReducedMotion) {
+    const defaultHeadlineTerms = [
+      'US Business Owners',
+      'HVAC Businesses',
+      'Medical Practices',
+      'Roofing Companies',
+      'Dental Clinics',
+      'Med Spas',
+      'Real Estate Teams'
+    ];
+
+    let headlineIndex = 0;
+    let activeNode = heroRotatingTextPrimary;
+    let inactiveNode = heroRotatingTextSecondary;
+
+    window.setInterval(() => {
+      const headlineTerms = typeof window.__dcGetHeadlineTerms === 'function'
+        ? window.__dcGetHeadlineTerms()
+        : defaultHeadlineTerms;
+      headlineIndex = (headlineIndex + 1) % headlineTerms.length;
+      inactiveNode.textContent = headlineTerms[headlineIndex];
+      inactiveNode.classList.add('is-active');
+      activeNode.classList.remove('is-active');
+
+      const previousActive = activeNode;
+      activeNode = inactiveNode;
+      inactiveNode = previousActive;
+    }, 2600);
+  }
 
   // ===== NODE FLOATING (impact map) =====
   const floatNodes = document.querySelectorAll('.node:not(.node-center)');
