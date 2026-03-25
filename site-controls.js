@@ -22,10 +22,10 @@
 
   const copy = {
     en: {
-      metaTitle: 'Digital Consulting US | AI Client Acquisition System',
-      metaDescription: 'Get more clients and respond to every lead instantly with Digital Consulting US and its AI Client Acquisition System.',
-      metaSocialDescription: 'More leads. Instant follow-up. More closed deals.',
-      metaTwitterDescription: 'We help businesses get more leads and contact them instantly using AI, so they turn into paying clients.',
+      metaTitle: '#1 AI Client Acquisition System for US Business Owners',
+      metaDescription: 'Get more clients and respond instantly.',
+      metaSocialDescription: 'Get more clients and respond instantly.',
+      metaTwitterDescription: 'Get more clients and respond instantly.',
       heroTerms: ['US Business Owners', 'HVAC Businesses', 'Medical Practices', 'Roofing Companies', 'Dental Clinics', 'Med Spas', 'Real Estate Teams'],
       toggles: { themeNight: 'Night', themeDay: 'Day', toDay: 'Switch to daytime mode', toNight: 'Switch to nighttime mode', language: 'EN', switchLanguage: 'Switch language to Costa Rican Spanish' },
       calcScenario: ({ leads, response, deal }) => `Based on ${leads} leads, ${response} human response, and a ${deal} average deal value.`,
@@ -253,10 +253,10 @@
       }
     },
     es: {
-      metaTitle: 'Digital Consulting US | Sistema de Adquisición de Clientes con IA',
-      metaDescription: 'Consiga más clientes y responda cada lead al instante con Digital Consulting US y su Sistema de Adquisición de Clientes con IA.',
-      metaSocialDescription: 'Más leads. Respuesta al instante. Más cierres.',
-      metaTwitterDescription: 'Le ayudamos a su negocio a conseguir más leads y responderles al instante con IA para convertirlos en clientes que sí compran.',
+      metaTitle: '#1 Sistema de Adquisición de Clientes con IA para dueños de negocios en EE. UU.',
+      metaDescription: 'Consiga más clientes y responda al instante.',
+      metaSocialDescription: 'Consiga más clientes y responda al instante.',
+      metaTwitterDescription: 'Consiga más clientes y responda al instante.',
       heroTerms: ['Dueños de negocios en EE. UU.', 'Negocios de HVAC', 'Consultorios médicos', 'Empresas de techos', 'Clínicas dentales', 'Med spas', 'Equipos inmobiliarios'],
       toggles: { themeNight: 'Noche', themeDay: 'Día', toDay: 'Cambiar al modo de día', toNight: 'Cambiar al modo de noche', language: 'ES', switchLanguage: 'Cambiar idioma a inglés' },
       calcScenario: ({ leads, response, deal }) => `Basado en ${leads} leads, ${response} de respuesta humana y un valor promedio por venta de ${deal}.`,
