@@ -18,10 +18,13 @@
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const supportsHoverPointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   const isMobileEffectsViewport = window.matchMedia('(max-width: 768px)').matches;
-  const enableParticleEffects = !prefersReducedMotion;
-  const enableGrainEffects = !prefersReducedMotion;
-  const enableCursorGlowEffects = !prefersReducedMotion && !isMobileEffectsViewport;
+  const isPerformanceConstrainedViewport = window.matchMedia('(max-width: 900px), (hover: none), (pointer: coarse)').matches;
+  const enableParticleEffects = !prefersReducedMotion && !isPerformanceConstrainedViewport;
+  const enableGrainEffects = !prefersReducedMotion && !isPerformanceConstrainedViewport;
+  const enableCursorGlowEffects = !prefersReducedMotion && !isPerformanceConstrainedViewport;
   const enableTiltEffects = !prefersReducedMotion && supportsHoverPointer;
+  const enableConnectionEffects = !prefersReducedMotion && !isPerformanceConstrainedViewport;
+  const enableFloatingNodeEffects = !prefersReducedMotion && !isPerformanceConstrainedViewport;
 
   // ===== FILM GRAIN CANVAS =====
   const grainCanvas = document.getElementById('grainCanvas');
@@ -524,6 +527,11 @@
   const connectionCanvases = document.querySelectorAll('.card-canvas[data-effect="connections"]');
 
   connectionCanvases.forEach(canvas => {
+    if (!enableConnectionEffects) {
+      canvas.style.display = 'none';
+      return;
+    }
+
     const ctx = canvas.getContext('2d');
     const parent = canvas.parentElement;
 
@@ -778,16 +786,72 @@
 
   // ===== NAV SCROLL EFFECT =====
   const navHeader = document.querySelector('.nav-header');
+  const heroCard = document.querySelector('.hero-card');
+  const hero = document.querySelector('.hero');
+  const sectionIds = ['hero', 'trust', 'calculator', 'process', 'results', 'gohighlevel', 'faq', 'contact'];
+  const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
 
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 80) {
+  function updateNavChrome(scrollY) {
+    if (!navHeader) return;
+
+    if (scrollY > 80) {
       navHeader.style.background = 'rgba(6, 13, 31, 0.95)';
       navHeader.style.borderBottomColor = 'rgba(255, 255, 255, 0.08)';
     } else {
       navHeader.style.background = 'rgba(6, 13, 31, 0.75)';
       navHeader.style.borderBottomColor = 'rgba(255, 255, 255, 0.06)';
     }
-  });
+  }
+
+  function setActiveNavLink(scrollY = window.scrollY) {
+    if (navLinks.length === 0) return;
+
+    const navScanY = scrollY + 140;
+    let currentId = 'hero';
+
+    sectionIds.forEach((id) => {
+      const section = document.getElementById(id);
+      if (!section) return;
+      if (navScanY >= section.offsetTop) {
+        currentId = id;
+      }
+    });
+
+    navLinks.forEach((link) => {
+      const href = link.getAttribute('href');
+      link.classList.toggle('active', href === `#${currentId}`);
+    });
+  }
+
+  function updateHeroParallax(scrollY) {
+    if (!heroCard || !hero || isPerformanceConstrainedViewport) return;
+
+    const heroBottom = hero.offsetTop + hero.offsetHeight;
+    if (scrollY < heroBottom) {
+      const progress = scrollY / heroBottom;
+      heroCard.style.transform = `translateY(${progress * -30}px)`;
+    } else {
+      heroCard.style.transform = '';
+    }
+  }
+
+  let scrollTicking = false;
+  const handleScrollFrame = () => {
+    const scrollY = window.scrollY;
+    updateNavChrome(scrollY);
+    setActiveNavLink(scrollY);
+    updateHeroParallax(scrollY);
+    scrollTicking = false;
+  };
+  const requestScrollFrame = () => {
+    if (scrollTicking) return;
+    scrollTicking = true;
+    requestAnimationFrame(handleScrollFrame);
+  };
+
+  window.addEventListener('scroll', requestScrollFrame, { passive: true });
+  window.addEventListener('load', handleScrollFrame);
+  handleScrollFrame();
 
   // ===== MOBILE NAV TOGGLE =====
   const navToggle = document.getElementById('navToggle');
@@ -815,31 +879,6 @@
       if (e.key === 'Escape') setNavOpen(false);
     });
   }
-
-  /* Scroll-progress nav highlight */
-  const sectionIds = ['hero', 'trust', 'calculator', 'process', 'results', 'gohighlevel', 'faq', 'contact'];
-  const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
-
-  function setActiveNavLink() {
-    const scrollY = window.scrollY + 140;
-    let currentId = 'hero';
-
-    sectionIds.forEach((id) => {
-      const section = document.getElementById(id);
-      if (!section) return;
-      if (scrollY >= section.offsetTop) {
-        currentId = id;
-      }
-    });
-
-    navLinks.forEach((link) => {
-      const href = link.getAttribute('href');
-      link.classList.toggle('active', href === `#${currentId}`);
-    });
-  }
-
-  window.addEventListener('scroll', setActiveNavLink, { passive: true });
-  window.addEventListener('load', setActiveNavLink);
 
   // ===== BENCHMARK CALCULATOR =====
   const calcLeads = document.getElementById('calcLeads');
@@ -1001,19 +1040,6 @@
     prListScroll.dataset.cloned = 'true';
   }
 
-  // ===== HERO PARALLAX =====
-  const heroCard = document.querySelector('.hero-card');
-  const hero = document.querySelector('.hero');
-
-  window.addEventListener('scroll', () => {
-    const scrollY = window.scrollY;
-    const heroBottom = hero.offsetTop + hero.offsetHeight;
-    if (scrollY < heroBottom && heroCard) {
-      const progress = scrollY / heroBottom;
-      heroCard.style.transform = `translateY(${progress * -30}px)`;
-    }
-  });
-
   // ===== UPTIME BARS ANIMATION =====
   const uptimeBars = document.querySelectorAll('.uptime-bar');
 
@@ -1044,7 +1070,12 @@
       e.preventDefault();
       const target = document.querySelector(href);
       if (target) {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const headerOffset = navHeader ? navHeader.offsetHeight + 20 : 108;
+        const targetTop = target.getBoundingClientRect().top + window.scrollY - headerOffset;
+        window.scrollTo({
+          top: Math.max(0, targetTop),
+          behavior: prefersReducedMotion ? 'auto' : 'smooth'
+        });
       }
     });
   });
@@ -1067,6 +1098,45 @@
       }
     });
   });
+
+  // Keep the contact CTA compact in Spanish without changing the rest of the translation set.
+  const contactHeading = document.querySelector('#contact .rebuild-contact-copy h2');
+  const contactPrimaryCta = document.querySelector('#contact .rebuild-contact-actions .btn-primary[data-i18n="cta.strategy"]');
+  const whatsAppWidget = document.getElementById('whatsAppWidget');
+
+  function syncContactSectionCopy() {
+    const isSpanish = (document.documentElement.lang || '').startsWith('es');
+    if (contactHeading) {
+      contactHeading.textContent = isSpanish ? 'Agenda una llamada gratis' : 'Book a Free Strategy Call';
+    }
+    if (contactPrimaryCta) {
+      contactPrimaryCta.textContent = isSpanish ? 'Agenda una llamada gratis' : 'Book a Free Strategy Call';
+    }
+  }
+
+  function syncWhatsAppLink() {
+    if (!whatsAppWidget) return;
+
+    const isSpanish = (document.documentElement.lang || '').startsWith('es');
+    const baseMessage = isSpanish
+      ? 'Hola, encontré su sitio web y me gustaría saber más sobre su sistema de adquisición de clientes con IA.'
+      : 'Hi, I found your website and would like to learn more about your AI client acquisition system.';
+    const robotEmoji = String.fromCodePoint(0x1F916);
+    const message = `${baseMessage} ${robotEmoji}`;
+
+    whatsAppWidget.href = `https://api.whatsapp.com/send?phone=16123985577&text=${encodeURIComponent(message)}`;
+  }
+
+  syncContactSectionCopy();
+  syncWhatsAppLink();
+
+  if ('MutationObserver' in window) {
+    const languageObserver = new MutationObserver(() => {
+      syncContactSectionCopy();
+      syncWhatsAppLink();
+    });
+    languageObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+  }
 
   // ===== HERO ROTATING HEADLINE =====
   const heroRotatingTextPrimary = document.getElementById('heroRotatingTextPrimary');
@@ -1104,7 +1174,16 @@
   // ===== NODE FLOATING (impact map) =====
   const floatNodes = document.querySelectorAll('.node:not(.node-center)');
 
+  if (!enableFloatingNodeEffects) {
+    floatNodes.forEach((node) => {
+      node.style.marginTop = '0';
+      node.style.marginLeft = '0';
+    });
+  }
+
   floatNodes.forEach((node, i) => {
+    if (!enableFloatingNodeEffects) return;
+
     const amplitude = 2 + Math.random() * 3;
     const speed = 2500 + Math.random() * 1500;
     const offset = Math.random() * Math.PI * 2;

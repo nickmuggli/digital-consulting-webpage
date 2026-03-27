@@ -246,6 +246,10 @@
         'footer.contactLabel': 'Contact',
         'footer.system': '3-Step System',
         'footer.implementation': 'Implementation',
+        'whatsapp.aria': 'Chat with us on WhatsApp',
+        'whatsapp.eyebrow': 'WhatsApp',
+        'whatsapp.title': 'Chat with our team',
+        'whatsapp.message': 'Hi, I found your website and would like to learn more about your AI client acquisition system. \uD83E\uDD16',
         'mobile.quickActions': 'Quick actions',
         'mobile.bookCall': 'Book a Free Call',
         'mobile.callNow': 'Call Now',
@@ -257,7 +261,7 @@
       metaDescription: 'Consiga más clientes y responda al instante.',
       metaSocialDescription: 'Consiga más clientes y responda al instante.',
       metaTwitterDescription: 'Consiga más clientes y responda al instante.',
-      heroTerms: ['Dueños de negocios en EE. UU.', 'Negocios de HVAC', 'Consultorios médicos', 'Empresas de techos', 'Clínicas dentales', 'Med spas', 'Equipos inmobiliarios'],
+      heroTerms: ['Dueños de negocios', 'Negocios de HVAC', 'Consultorios médicos', 'Empresas de techos', 'Clínicas dentales', 'Med spas', 'Equipos inmobiliarios'],
       toggles: { themeNight: 'Noche', themeDay: 'Día', toDay: 'Cambiar al modo de día', toNight: 'Cambiar al modo de noche', language: 'ES', switchLanguage: 'Cambiar idioma a inglés' },
       calcScenario: ({ leads, response, deal }) => `Basado en ${leads} leads, ${response} de respuesta humana y un valor promedio por venta de ${deal}.`,
       calcReady: ({ revenue }) => `¿Listo para recuperar ${revenue}/año?`,
@@ -465,7 +469,7 @@
         'faq.q5': '¿Qué pasa en la llamada estratégica?',
         'faq.a5': 'Revisamos de dónde le entran los leads, cómo los están manejando hoy, dónde se está fugando plata y cómo debería verse la versión más limpia del sistema para su negocio.',
         'contact.kicker': 'Empecemos',
-        'contact.title': 'Agende una llamada estratégica gratis',
+        'contact.title': 'Agenda una llamada gratis',
         'contact.subtitle': 'Le mostramos dónde se le están perdiendo leads, cómo encajaría el sistema en su negocio y qué se necesita para lanzarlo bien.',
         'contact.call': 'Llamar al +1 (612) 398-5577',
         'final.kicker': '¿Listo para moverse más rápido?',
@@ -477,10 +481,14 @@
         'footer.contactLabel': 'Contacto',
         'footer.system': 'Sistema de 3 pasos',
         'footer.implementation': 'Implementación',
+        'whatsapp.aria': 'Escríbanos por WhatsApp',
+        'whatsapp.eyebrow': 'WhatsApp',
+        'whatsapp.title': 'Escríbanos por WhatsApp',
+        'whatsapp.message': 'Hola, encontré su sitio web y me gustaría saber más sobre su sistema de adquisición de clientes con IA. \uD83E\uDD16',
         'mobile.quickActions': 'Acciones rápidas',
-        'mobile.bookCall': 'Agendar llamada gratis',
+        'mobile.bookCall': 'Agenda llamada gratis',
         'mobile.callNow': 'Llamar ahora',
-        'cta.strategy': 'Agende una llamada estratégica gratis'
+        'cta.strategy': 'Agenda una llamada gratis'
       }
     }
   };
