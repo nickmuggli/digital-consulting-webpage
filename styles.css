@@ -8775,6 +8775,29 @@ html[data-theme="light"] .rebuild-benchmark-compare-card small {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.68);
 }
 
+html[data-theme="light"] .rebuild-benchmark-compare-pill {
+  border-color: rgba(18, 40, 74, 0.12);
+  background: linear-gradient(180deg, rgba(248, 252, 255, 0.94), rgba(237, 245, 251, 0.9));
+  box-shadow:
+    0 14px 28px rgba(61, 92, 126, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
+}
+
+html[data-theme="light"] .rebuild-benchmark-compare-pill__side {
+  background: #dbe6f1;
+  color: #08213b;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.68);
+}
+
+html[data-theme="light"] .rebuild-benchmark-compare-pill__side--ai {
+  background: linear-gradient(180deg, rgba(193, 239, 251, 0.96), rgba(225, 251, 245, 0.98));
+  color: #007fb8;
+}
+
+html[data-theme="light"] .rebuild-benchmark-compare-pill__divider {
+  background: linear-gradient(90deg, rgba(18, 40, 74, 0.16), rgba(0, 127, 184, 0.42));
+}
+
 html[data-theme="light"] .rebuild-benchmark-card,
 html[data-theme="light"] .rebuild-benchmark-compare-card {
   background: linear-gradient(180deg, #f6fbff, #eaf1f8);
@@ -10426,6 +10449,52 @@ html[lang="es"] .rebuild-rotating-text {
   gap: 18px;
 }
 
+.rebuild-benchmark-compare-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 6px auto 18px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(116, 211, 255, 0.12);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.018)),
+    rgba(8, 20, 42, 0.48);
+  box-shadow:
+    0 14px 28px rgba(0, 0, 0, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  width: fit-content;
+  min-width: 158px;
+}
+
+.rebuild-benchmark-compare-pill__side {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 68px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(214, 231, 243, 0.84);
+  font: 700 0.7rem/1 var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.rebuild-benchmark-compare-pill__side--ai {
+  background: linear-gradient(180deg, rgba(116, 211, 255, 0.14), rgba(0, 255, 209, 0.08));
+  color: #b8eeff;
+  box-shadow: inset 0 1px 0 rgba(151, 221, 255, 0.12);
+}
+
+.rebuild-benchmark-compare-pill__divider {
+  width: 12px;
+  height: 1px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(198, 218, 236, 0.3), rgba(116, 211, 255, 0.56));
+}
+
 .rebuild-benchmark-compare-card {
   gap: 14px;
   padding: 20px;
@@ -10480,23 +10549,7 @@ html[lang="es"] .rebuild-rotating-text {
 }
 
 .rebuild-benchmark-compare::before {
-  content: "Human vs AI";
-  position: absolute;
-  left: 50%;
-  top: -10px;
-  transform: translate(-50%, -100%);
-  padding: 8px 12px;
-  border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgba(116, 211, 255, 0.14), rgba(0, 255, 209, 0.06)),
-    rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(116, 211, 255, 0.12);
-  color: rgba(184, 238, 255, 0.84);
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.16);
+  content: none;
 }
 
 .rebuild-benchmark-split small,
@@ -12662,6 +12715,24 @@ html[lang="es"] .rebuild-benchmark-compare-card > div {
 
   .rebuild-benchmark-split {
     gap: 10px;
+  }
+
+  .rebuild-benchmark-compare-pill {
+    gap: 6px;
+    margin: 4px auto 14px;
+    padding: 4px 6px;
+    min-width: 142px;
+  }
+
+  .rebuild-benchmark-compare-pill__side {
+    min-width: 60px;
+    padding: 6px 9px;
+    font-size: 0.64rem;
+    letter-spacing: 0.05em;
+  }
+
+  .rebuild-benchmark-compare-pill__divider {
+    width: 10px;
   }
 
   .rebuild-benchmark-split > div,
