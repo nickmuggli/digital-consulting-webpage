@@ -19,7 +19,8 @@
   const supportsHoverPointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   const isMobileEffectsViewport = window.matchMedia('(max-width: 768px)').matches;
   const isPerformanceConstrainedViewport = window.matchMedia('(max-width: 900px), (hover: none), (pointer: coarse)').matches;
-  const enableParticleEffects = !prefersReducedMotion && !isPerformanceConstrainedViewport;
+  const isGalaxyHomepage = document.body.classList.contains('dc-homepage');
+  const enableParticleEffects = !prefersReducedMotion && (isGalaxyHomepage || !isPerformanceConstrainedViewport);
   const enableGrainEffects = !prefersReducedMotion && !isPerformanceConstrainedViewport;
   const enableCursorGlowEffects = !prefersReducedMotion && !isPerformanceConstrainedViewport;
   const enableTiltEffects = !prefersReducedMotion && supportsHoverPointer;
@@ -95,7 +96,7 @@
   });
 
   // --- Configuration ---
-  const PARTICLE_COUNT = isMobileEffectsViewport ? 340 : 820;
+  const PARTICLE_COUNT = isPerformanceConstrainedViewport ? 180 : 820;
   const MOUSE_RADIUS = isMobileEffectsViewport ? 180 : 290;
   const MOUSE_REPEL = isMobileEffectsViewport ? 2.8 : 4.8;
   const CONNECTION_DIST = 120;
@@ -244,9 +245,15 @@
   const animStart = performance.now();
   let bloomAlpha = 0;
   let pageRevealed = false;
+  let lastParticleFrame = 0;
 
   // --- Main render loop ---
   function renderSupernova(now) {
+    if (isPerformanceConstrainedViewport && now - lastParticleFrame < 30) {
+      requestAnimationFrame(renderSupernova);
+      return;
+    }
+    lastParticleFrame = now;
     const elapsed = now - animStart;
     const time = now * 0.001;
     const W = particleCanvas.width;

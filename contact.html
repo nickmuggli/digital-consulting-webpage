@@ -1,117 +1,38 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
-<head>
+<html lang="en"><head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact | Digital Consulting US</title>
-  <meta name="description" content="Contact Digital Consulting US.">
-  <link rel="canonical" href="https://www.digitalconsultingusa.com/contact.html">
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>Contact | Digital Consulting USA</title>
+  <meta name="description" content="Contact Nicolas Muggli at Digital Consulting USA about your contractor growth system.">
+  <link rel="canonical" href="https://www.digitalconsultingusa.com/contact/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <meta property="og:site_name" content="Digital Consulting US">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.digitalconsultingusa.com/contact.html">
-  <meta property="og:title" content="Contact | Digital Consulting US">
-  <meta property="og:description" content="Contact Digital Consulting US.">
+  <meta property="og:url" content="https://www.digitalconsultingusa.com/contact/">
+  <meta property="og:title" content="Contact">
+  <meta property="og:description" content="Contact Nicolas Muggli at Digital Consulting USA about your contractor growth system.">
   <meta property="og:image" content="https://www.digitalconsultingusa.com/og-image.png">
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Digital Consulting US website preview">
+  <meta property="og:image:alt" content="Digital Consulting USA project pipeline system">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Contact | Digital Consulting US">
-  <meta name="twitter:description" content="Contact Digital Consulting US.">
+  <meta name="twitter:title" content="Contact">
+  <meta name="twitter:description" content="Contact Nicolas Muggli at Digital Consulting USA about your contractor growth system.">
   <meta name="twitter:image" content="https://www.digitalconsultingusa.com/og-image.png">
-  <meta name="twitter:image:alt" content="Digital Consulting US website preview">
+  <meta name="twitter:image:alt" content="Digital Consulting USA project pipeline system">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <canvas id="grainCanvas" class="grain-canvas"></canvas>
-  <canvas id="particleCanvas" class="particle-canvas"></canvas>
-  <div class="cursor-glow" id="cursorGlow"></div>
+  <link rel="stylesheet" href="/styles.css">
 
-  <header class="nav-header">
-    <nav class="nav-container">
-      <a href="index.html" class="nav-logo">
-        <img src="images/dc-logo-us-2.jpg" alt="Digital Consulting US logo" width="40" height="40">
-        <span>Digital Consulting US</span>
-      </a>
-      <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation menu" aria-controls="nav" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-      <div class="nav-links" id="nav">
-        <a href="system.html" class="nav-link">System</a>
-        <a href="results.html" class="nav-link">Results</a>
-        <a href="reviews.html" class="nav-link">Reviews</a>
-        <a href="faq.html" class="nav-link">FAQ</a>
-        <a href="contact.html" class="nav-link">Contact</a>
-        <a href="login.html" class="nav-link">Login</a>
-      </div>
-      <a href="https://cal.com/bookings-appointments-ooxy15/15min" class="btn btn-primary btn-nav" target="_blank" rel="noopener">Book a Free Strategy Call</a>
-    </nav>
-  </header>
-
-  <main class="page-shell">
-    <section class="page-hero page-hero-split reveal">
-      <div>
-        <span class="offer-kicker">Contact</span>
-        <h1>Tell us about your lead flow</h1>
-        <p class="hero-subtitle">Use this page to capture inquiry details before the strategy call. The more context you give, the easier it is to spot where your lead handling is leaking revenue.</p>
-      </div>
-      <article class="page-media-card">
-        <img src="images/portrait.jpg" alt="Digital Consulting US contact artwork" loading="lazy">
-        <div class="page-media-meta">
-          <span>Before The Call</span>
-          <strong>Share your current lead volume, follow-up speed, and biggest bottleneck so the conversation starts from the right place.</strong>
-          <p>Whether the issue is lead generation, response time, or low close rate, this gives us a clearer starting point.</p>
-        </div>
-      </article>
-    </section>
-
-    <section class="auth-grid reveal">
-      <article class="auth-card">
-        <h3>Contact details</h3>
-        <form class="auth-form" id="contactCaptureForm">
-          <label>Name<input type="text" name="name" required></label>
-          <label>Email<input type="email" name="email" required></label>
-          <label>Business Type<input type="text" name="business_type"></label>
-          <label>Monthly Leads<input type="number" name="monthly_leads" min="0"></label>
-          <label>Message<textarea name="message" placeholder="What are you struggling with right now?"></textarea></label>
-          <button class="btn btn-primary btn-lg btn-glow" type="submit">Save Inquiry</button>
-          <div class="auth-success" id="contactCaptureSuccess">Inquiry saved locally in this browser. Connect this form to your backend or CRM webhook next.</div>
-        </form>
-      </article>
-      <article class="auth-card">
-        <h3>Direct booking</h3>
-        <p>Prefer to skip the form? Book a Free Strategy Call right away and we'll walk through where leads are being lost and how instant AI follow-up can recover them.</p>
-        <a href="https://cal.com/bookings-appointments-ooxy15/15min" class="btn btn-primary btn-lg btn-glow" target="_blank" rel="noopener">Book a Free Strategy Call</a>
-      </article>
-    </section>
-
-    <section class="page-grid reveal">
-      <article class="page-card">
-        <h3>What we'll cover</h3>
-        <ul>
-          <li>How leads are currently coming in</li>
-          <li>How fast your team responds today</li>
-          <li>Where follow-up drops off</li>
-          <li>What instant AI response could recover</li>
-        </ul>
-      </article>
-      <article class="page-card">
-        <h3>Best fit businesses</h3>
-        <ul>
-          <li>Agencies and consultants</li>
-          <li>Service businesses with inbound leads</li>
-          <li>Teams already using GoHighLevel</li>
-          <li>Founders who want more booked conversations from existing traffic</li>
-        </ul>
-      </article>
-    </section>
-  </main>
-
-  <script src="script.js"></script>
-</body>
-</html>
+<link rel="stylesheet" href="/contractor.css?v=aace497488"><link rel="stylesheet" href="/experience.css?v=aace497488">
+</head><body class="contractor-site"><canvas id="grainCanvas" class="grain-canvas" aria-hidden="true"></canvas><canvas id="particleCanvas" class="particle-canvas" aria-hidden="true"></canvas><div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div><div class="ambient-burst" aria-hidden="true"></div><a class="skip-link" href="#main">Skip to content</a><div class="dc-scroll-progress" aria-hidden="true"></div><header class="nav-header"><nav class="dc-nav" aria-label="Main navigation"><a class="dc-brand" href="/"><img src="/images/dc-logo-us-2.jpg" width="40" height="40" alt="Digital Consulting USA logo"><span>Digital Consulting <b>USA</b></span></a><div class="dc-utilities" aria-label="Display preferences"><div class="dc-language" aria-label="Language"><button type="button" data-language="en" aria-pressed="true">EN</button><button type="button" data-language="es" aria-pressed="false">ES</button></div><button type="button" id="dcTheme" class="dc-theme-toggle" aria-label="Toggle light and dark mode" aria-pressed="false"><svg class="dc-sun" viewBox="0 0 32 32" aria-hidden="true"><use href="/images/pipeline-icons.svg#sun"></use></svg><svg class="dc-moon" viewBox="0 0 32 32" aria-hidden="true"><use href="/images/pipeline-icons.svg#moon"></use></svg></button></div><button class="dc-menu" id="navToggle" aria-controls="primaryNav" aria-expanded="false" aria-label="Toggle navigation" type="button">Menu</button><div class="dc-links" id="primaryNav"><a href="/">Home</a><a href="/about/">About</a><a href="/contact/">Contact</a><a class="dc-button" href="/apply/">Apply to Work With Us</a></div></nav></header><main id="main"><section class="dc-contact-first"><div class="dc-wrap dc-contact-grid"><div class="dc-contact-copy"><span class="dc-eyebrow">LET’S TALK GROWTH</span><h1>Want More Jobs?<br><em>Let’s Talk.</em></h1><p class="dc-lead">Tell us what you do, where you work, and where you need help. We’ll review your business and get back to you about the next step.</p><div class="dc-contact-secondary"><p><strong>Nicolas Muggli</strong><br>Digital Consulting USA</p><a href="mailto:team@digitalconsultingusa.com">team@digitalconsultingusa.com</a><a href="tel:+16123985577">+1 (612) 398-5577</a><a class="dc-text-link" data-booking href="https://cal.com/bookings-appointments-ooxy15/15min" target="_blank" rel="noopener">Prefer to talk? Book a Strategy Call</a><p>Serving Minnesota, Texas &amp; Florida.</p></div></div><form class="dc-form" data-dc-form="contact" aria-label="Contact form">
+      <div class="dc-form-heading"><span class="dc-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><use href="/images/pipeline-icons.svg#chat"></use></svg></span><div><span class="dc-eyebrow">START A CONVERSATION</span><h2>Tell Us About Your Business.</h2></div></div>
+      <p class="dc-form-note">Fields marked * are required.</p>
+      <div class="dc-notice" data-form-status role="status" tabindex="-1" hidden></div>
+      <label for="full_name">Full name *</label><input id="full_name" name="full_name" type="text" autocomplete="name" maxlength="200" required><label for="company">Business name *</label><input id="company" name="company" type="text" autocomplete="organization" maxlength="200" required><label for="email">Email address *</label><input id="email" name="email" type="email" autocomplete="email" maxlength="200" required><label for="phone">Phone number *</label><input id="phone" name="phone" type="tel" inputmode="tel" pattern="(?=(?:[^0-9]*[0-9]){7,15}[^0-9]*$)[+0-9\(\) .\-]{7,25}" autocomplete="tel" maxlength="200" required><label for="specialty">Contractor specialty *</label><select id="specialty" name="specialty" required><option value="">Select an option</option><option value="Roofing">Roofing</option><option value="Bathroom remodeling">Bathroom remodeling</option><option value="Kitchen remodeling">Kitchen remodeling</option><option value="Home renovations">Home renovations</option><option value="Other">Other</option></select><label for="service_area">City and state *</label><input id="service_area" name="service_area" type="text" autocomplete="off" maxlength="200" required><label for="challenge">Primary growth challenge *</label><select id="challenge" name="challenge" required><option value="">Select an option</option><option value="More qualified leads">More qualified leads</option><option value="Faster follow-up">Faster follow-up</option><option value="More booked estimates">More booked estimates</option><option value="More referrals">More referrals</option><option value="A connected system">A connected system</option></select><label for="additional_information">Additional information (optional)</label><textarea id="additional_information" name="additional_information" rows="3" maxlength="3000"></textarea>
+      <fieldset class="dc-consent"><legend>SMS updates (optional)</legend><label class="dc-check"><input type="checkbox" name="sms_consent" id="sms_consent" value="yes" disabled><span>I agree to receive text messages from Digital Consulting USA about my inquiry, application, and appointment scheduling, including automated messages. Message frequency varies. Message and data rates may apply. Reply STOP to opt out or HELP for help. Consent is not required to purchase services.</span></label><p>SMS enrollment is pending sender approval and is not active. Mobile opt-in information is not shared with third parties or affiliates for their marketing purposes.</p><p><a href="/privacy-policy/">Privacy Policy</a> · <a href="/terms-and-conditions/">Terms &amp; Conditions</a> · <a href="/sms-consent/">SMS Consent</a></p></fieldset>
+      <button class="dc-button" type="submit" disabled>Submission Setup Pending</button>
+      <div data-after-submit hidden><a class="dc-button" data-booking href="https://cal.com/bookings-appointments-ooxy15/15min" target="_blank" rel="noopener">Book a Strategy Call</a></div>
+    </form></div></section></main><footer class="dc-footer"><div class="dc-wrap dc-footer-grid"><div><a class="dc-brand" href="/"><img src="/images/dc-logo-us-2.jpg" width="40" height="40" alt=""><span>Digital Consulting <b>USA</b></span></a><p>Ads. Follow-up. Booked estimates. More opportunities from the work you already do.</p><p>Minnesota &middot; Texas &middot; Florida</p></div><div><h2>Explore</h2><a href="/about/">About</a><a href="/apply/">Application</a><a href="/contact/">Contact</a><a href="/bathroom-remodeling/">Bathroom Remodeling</a></div><div><h2>Get in touch</h2><a href="mailto:team@digitalconsultingusa.com">team@digitalconsultingusa.com</a><a href="tel:+16123985577">+1 (612) 398-5577</a><a href="https://cal.com/bookings-appointments-ooxy15/15min" target="_blank" rel="noopener">Book a Strategy Call &nearr;</a><a href="https://api.whatsapp.com/send?phone=16123985577" target="_blank" rel="noopener">WhatsApp &nearr;</a></div></div><div class="dc-wrap dc-footer-bottom"><small>&copy; 2026 Digital Consulting USA</small><button type="button" id="dcPrivacySettings" class="dc-privacy-settings">Privacy Settings</button><div><a href="/privacy-policy/">Privacy Policy</a><a href="/terms-and-conditions/">Terms &amp; Conditions</a><a href="/sms-consent/">SMS Consent</a></div></div></footer><script src="/site-config.js"></script><script src="/script.js"></script><script src="/contractor.js"></script><script>window.SARA_CONFIG = { clientId: "digitalconsulting" };</script><script src="https://gabrieletupini.github.io/website-creator/b2b/sara-voice-widget.js"></script><aside class="dc-cookie-panel" id="dcConsentPanel" aria-label="Analytics preferences" hidden><p><strong>Your privacy. Your choice.</strong><br>Optional analytics help us understand site use. They stay off until you accept.</p><div><button type="button" data-tracking-choice="rejected">Essential Only</button><button type="button" data-tracking-choice="accepted">Accept Analytics</button></div><a href="/privacy-policy/">Privacy Policy</a></aside><script src="/translations-es.js"></script><script src="/site-experience.js"></script></body></html>
