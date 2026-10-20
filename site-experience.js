@@ -103,17 +103,23 @@
     try { sessionStorage.setItem('dc-attribution', JSON.stringify(attribution)); } catch { /* Optional. */ }
   }
   const safeSource = location.origin + location.pathname;
-  function bookingUrl() {
+  const bookingPrefill = new WeakMap();
+  function bookingUrl(prefill) {
     try {
       const url = new URL(config.bookingUrl);
       if (url.protocol !== 'https:') return null;
       Object.entries(attribution).forEach(([key, value]) => url.searchParams.set(key, value));
+      // Only confirmed submissions prefill the existing Cal.com booking form.
+      if (prefill && url.hostname === 'cal.com') {
+        url.searchParams.set('name', prefill.name);
+        url.searchParams.set('email', prefill.email);
+      }
       return url.href;
     } catch { return null; }
   }
   const bookingLinks = document.querySelectorAll('a[data-booking],a[href*="cal.com/bookings-appointments-ooxy15/15min"]');
   function refreshBookingLinks() {
-    bookingLinks.forEach(link => { const url = bookingUrl(); if (url) link.href = url; });
+    bookingLinks.forEach(link => { const url = bookingUrl(bookingPrefill.get(link)); if (url) link.href = url; });
   }
   refreshBookingLinks();
   let analyticsLoaded = false;
@@ -209,19 +215,19 @@
       if (!button) return;
       status.hidden = !endpointReady && form.dataset.complete !== 'true' && form.dataset.error !== 'true';
       if (form.dataset.complete === 'true') {
-        status.textContent = text('Thank you. Your details were received. You can now book a strategy call below.', 'Gracias. Recibimos tus datos. Ahora puedes agendar una llamada estratégica abajo.');
+        status.textContent = text('Thanks. We received your details. Book a call below.', 'Gracias. Recibimos tus datos. Agenda una llamada abajo.');
         button.textContent = text('Details Received', 'Datos recibidos');
         return;
       }
       if (form.dataset.busy === 'true') { button.textContent = text('Sending…', 'Enviando…'); return; }
       if (form.dataset.error === 'true') {
-        status.textContent = text('We could not confirm receipt. Your details remain in the form. Try again or contact us directly; no success has been recorded.', 'No pudimos confirmar la recepción. Tus datos siguen en el formulario. Intenta de nuevo o contáctanos directamente; no se registró un envío exitoso.');
+        status.textContent = text('We could not confirm your submission. Try again, or call or email us.', 'No pudimos confirmar el envío. Intenta de nuevo o llámanos o escríbenos.');
         button.textContent = text('Try Again', 'Intentar de nuevo');
         return;
       }
       button.disabled = !endpointReady;
-      button.textContent = endpointReady ? text('Send My Details', 'Enviar mis datos') : text('Submission Setup Pending', 'Envío pendiente de configuración');
-      status.textContent = endpointReady ? text('Your details will be sent securely for review.', 'Tus datos se enviarán de forma segura para revisión.') : '';
+      button.textContent = endpointReady ? text('Send My Details', 'Enviar mis datos') : text('Online Sending Unavailable', 'Envío en línea no disponible');
+      status.textContent = endpointReady ? text('Send your details for review.', 'Envía tus datos para revisarlos.') : '';
     });
   }
   forms.forEach(form => {
@@ -302,16 +308,20 @@
         const result = await response.json();
         if (!response.ok || result.success !== true || typeof result.submissionId !== 'string' || !result.submissionId) throw new Error('Submission not confirmed');
         form.dataset.complete = 'true';
-        status.textContent = text('Thank you. Your details were received. You can now book a strategy call below.', 'Gracias. Recibimos tus datos. Ahora puedes agendar una llamada estratégica abajo.');
+        status.textContent = text('Thanks. We received your details. Book a call below.', 'Gracias. Recibimos tus datos. Agenda una llamada abajo.');
         status.classList.add('dc-form-success');
         form.querySelector('[data-after-submit]').hidden = false;
+        form.querySelectorAll('[data-after-submit] a[data-booking]').forEach(link => {
+          bookingPrefill.set(link, { name: String(fields.full_name || ''), email: String(fields.email || '') });
+        });
+        refreshBookingLinks();
         form.querySelectorAll('input,select,textarea').forEach(input => { input.disabled = true; });
         button.textContent = text('Details Received', 'Datos recibidos');
         track('dc_lead_confirmed', { form_source: form.dataset.dcForm }, idempotencyKey);
         status.focus();
       } catch {
         form.dataset.error = 'true';
-        status.textContent = text('We could not confirm receipt. Your details remain in the form. Try again or contact us directly; no success has been recorded.', 'No pudimos confirmar la recepción. Tus datos siguen en el formulario. Intenta de nuevo o contáctanos directamente; no se registró un envío exitoso.');
+        status.textContent = text('We could not confirm your submission. Try again, or call or email us.', 'No pudimos confirmar el envío. Intenta de nuevo o llámanos o escríbenos.');
         status.focus();
         button.disabled = false;
         button.textContent = text('Try Again', 'Intentar de nuevo');

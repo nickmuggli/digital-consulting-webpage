@@ -600,3 +600,137 @@ Object.assign(window.DC_SPANISH, {
 });
 
 Object.assign(window.DC_SPANISH, {"More Leads.": "M\u00e1s clientes potenciales.", "More Booked Estimates.": "M\u00e1s presupuestos agendados.", "More Jobs.": "M\u00e1s proyectos.", "We help roofing and remodeling companies attract qualified homeowners, book estimates, and win more projects.": "Ayudamos a empresas de techado y remodelaci\u00f3n a atraer propietarios calificados, agendar presupuestos y ganar m\u00e1s proyectos.", "Company results and growth system": "Resultados de la empresa y sistema de crecimiento", "Companies served": "Empresas atendidas", "Qualified leads / booked estimates": "Clientes calificados / presupuestos agendados", "Verified count pending": "Cifra verificada pendiente", "3-Step": "3 pasos", "Growth System": "Sistema de crecimiento", "Attract. Convert. Multiply.": "Atraer. Convertir. Multiplicar.", "A Simple System for More Jobs.": "Un sistema sencillo para conseguir m\u00e1s proyectos.", "Attract the right homeowners. Book the estimate. Build on every finished job.": "Atrae a los propietarios adecuados. Agenda el presupuesto. Aprovecha cada proyecto terminado.", "Ads that reach homeowners looking for the work you do. We ask the right questions before the lead reaches you.": "Anuncios que llegan a propietarios que buscan tu servicio. Hacemos las preguntas adecuadas antes de pasarte el contacto.", "Follow-up that turns interest into an estimate on your calendar. Keep the conversation going when a homeowner needs more time.": "Seguimiento que convierte el inter\u00e9s en un presupuesto agendado. Mantenemos la conversaci\u00f3n cuando el propietario necesita m\u00e1s tiempo.", "Turn finished projects into introductions and neighborhood opportunities. With your approval, we ask for referrals and reach 25 nearby homes.": "Convierte proyectos terminados en recomendaciones y oportunidades en el vecindario. Con tu aprobaci\u00f3n, pedimos referencias y contactamos a 25 hogares cercanos.", "A lead is only the beginning. We help with the reply, the booking, and the follow-up.": "Un contacto es solo el comienzo. Ayudamos con la respuesta, la cita y el seguimiento.", "Know who needs a call and where every opportunity stands.": "Sabe qui\u00e9n necesita una llamada y en qu\u00e9 etapa est\u00e1 cada oportunidad.", "More Opportunities. Less Guesswork.": "M\u00e1s oportunidades. Menos conjeturas.", "Know what brings in leads, books estimates, and wins jobs.": "Conoce qu\u00e9 genera contactos, agenda presupuestos y consigue proyectos."});
+
+// Final plain-language refinement.
+Object.assign(window.DC_SPANISH, {
+  "Higher Close Rates.": "M\u00e1s ventas cerradas.",
+  "Zero Lead-Chasing.": "Sin perseguir contactos.",
+  "We generate the leads, call and qualify homeowners, and book estimates directly on your calendar. You show up, sell the job, and get back to running your business.": "Generamos contactos, llamamos a los propietarios, comprobamos si encajan y agendamos presupuestos en tu calendario. T\u00fa vas a la cita, cierras la venta y sigues al frente de tu negocio.",
+  "Get Better Leads.": "Consigue mejores contactos.",
+  "We Call. We Qualify. We Book.": "Llamamos. Evaluamos. Agendamos.",
+  "Turn One Job Into More.": "Convierte un proyecto en m\u00e1s.",
+  "We run ads that bring in homeowners looking for the work you do.": "Creamos anuncios que atraen a propietarios que buscan el trabajo que t\u00fa haces.",
+  "We call your leads, ask the right questions, follow up, and book estimates on your calendar.": "Llamamos a tus contactos, hacemos las preguntas necesarias, damos seguimiento y agendamos presupuestos en tu calendario.",
+  "We help you get referrals and reach about 25 nearby homes after a finished project.": "Te ayudamos a conseguir recomendaciones y llegar a unas 25 casas cercanas despu\u00e9s de terminar un proyecto.",
+  "Good Jobs Slip Away.": "Se pierden buenos proyectos.",
+  "More leads only help when someone answers and gets the estimate booked.": "Tener m\u00e1s contactos solo sirve si alguien responde y agenda el presupuesto.",
+  "Too many people want the cheapest quote. You need homeowners who value good work.": "Demasiadas personas buscan el precio m\u00e1s bajo. Necesitas propietarios que valoren un buen trabajo.",
+  "Nobody calls the new lead.": "Nadie llama al nuevo contacto.",
+  "You\u2019re busy on a job. The homeowner books with someone who answers first.": "Est\u00e1s trabajando. El propietario agenda con quien le responde primero.",
+  "Follow-up gets missed.": "Se olvida el seguimiento.",
+  "One call or text is not always enough. Good leads get lost when nobody checks back.": "Una llamada o un mensaje no siempre basta. Se pierden buenos contactos si nadie vuelve a hablarles.",
+  "Some homeowners need more time. Without another call, the quote goes nowhere.": "Algunos propietarios necesitan m\u00e1s tiempo. Sin otra llamada, el presupuesto queda en el olvido.",
+  "We Bring the Leads. We Book the Estimates.": "Traemos contactos. Agendamos presupuestos.",
+  "You handle the sale and the work. We handle the calls and follow-up.": "T\u00fa te encargas de la venta y del trabajo. Nosotros hacemos las llamadas y el seguimiento.",
+  "More Than Ads.<br>Real Follow-Up.": "M\u00e1s que anuncios.<br>Seguimiento de verdad.",
+  "We call, qualify, and follow up with homeowners. Your team gets estimates to attend.": "Llamamos a los propietarios, vemos si encajan y damos seguimiento. Tu equipo recibe citas para presupuestar.",
+  "You focus on selling and doing good work.": "T\u00fa te concentras en vender y hacer un buen trabajo.",
+  "We work with one contractor per trade in a 30-mile radius. We check availability and confirm your area in writing before work starts.": "Trabajamos con un contratista por oficio en un radio de 30 millas. Revisamos la disponibilidad y confirmamos tu zona por escrito antes de empezar.",
+  "One contractor per trade, within 30 miles. Apply to check availability; your area and terms are confirmed in writing before work starts.": "Un contratista por oficio en un radio de 30 millas. Solicita una revisi\u00f3n; la zona y las condiciones se confirman por escrito antes de empezar.",
+  "This is for established contractors who:": "Esto es para contratistas establecidos que:",
+  "Do quality work.": "Hacen un buen trabajo.",
+  "Have room for more jobs.": "Tienen capacidad para m\u00e1s proyectos.",
+  "Can invest in marketing.": "Pueden invertir en publicidad.",
+  "Can attend booked estimates.": "Pueden asistir a las citas agendadas.",
+  "You have no marketing budget.": "No tienes presupuesto para publicidad.",
+  "You can't attend scheduled estimates.": "No puedes asistir a las citas agendadas.",
+  "Check Your Territory": "Consulta tu zona",
+  "Less Chasing. More Selling.": "Menos perseguir. M\u00e1s vender.",
+  "Spend your time with homeowners who are ready for an estimate.": "Dedica tu tiempo a propietarios listos para pedir un presupuesto.",
+  "Better Leads": "Mejores contactos",
+  "Homeowners looking for your kind of work.": "Propietarios que buscan el trabajo que t\u00fa haces.",
+  "We make the calls and book the visit.": "Hacemos las llamadas y agendamos la visita.",
+  "Clear Results": "Resultados claros",
+  "See your leads, estimates, and ad spend.": "Consulta tus contactos, citas y gasto en anuncios.",
+  "We keep in touch when a homeowner needs more time.": "Seguimos en contacto cuando un propietario necesita m\u00e1s tiempo.",
+  "More Referrals": "M\u00e1s recomendaciones",
+  "Help happy customers send more work your way.": "Ayuda a tus clientes satisfechos a recomendarte.",
+  "We Bring the Leads.<br>We Make the Calls.": "Traemos contactos.<br>Hacemos las llamadas.",
+  "We help established bathroom remodelers and roofers get leads and booked estimates. Your team handles the sale and the work.": "Ayudamos a empresas establecidas de remodelaci\u00f3n de ba\u00f1os y techado a conseguir contactos y citas. Tu equipo se encarga de vender y hacer el trabajo.",
+  "Busy on a Job?<br>We Answer the Leads.": "\u00bfEst\u00e1s trabajando?<br>Nosotros respondemos.",
+  "A lead comes in while you\u2019re working. We call so you don\u2019t have to stop the job.": "Llega un contacto mientras trabajas. Nosotros llamamos para que no tengas que parar.",
+  "We ask what the homeowner needs and book the estimate. We follow up when they need more time.": "Preguntamos qu\u00e9 necesita el propietario y agendamos el presupuesto. Damos seguimiento si necesita m\u00e1s tiempo.",
+  "You attend the estimate and close the job.": "T\u00fa asistes a la cita y cierras la venta.",
+  "Three Steps. One Clear Goal.": "Tres pasos. Un objetivo claro.",
+  "MORE WORK FOR BATHROOM REMODELERS": "M\u00c1S TRABAJO PARA REMODELADORES DE BA\u00d1OS",
+  "We bring in bathroom leads, call homeowners, and book estimates. You visit the home, sell the job, and do the work.": "Conseguimos contactos para remodelar ba\u00f1os, llamamos a los propietarios y agendamos presupuestos. T\u00fa visitas la casa, cierras la venta y haces el trabajo.",
+  "Get Better Bathroom Leads.": "Consigue mejores contactos para ba\u00f1os.",
+  "Ads for the work you want: full remodels, walk-in showers, and tub-to-shower conversions.": "Anuncios para el trabajo que buscas: remodelaciones completas, duchas a ras de suelo y cambios de ba\u00f1era por ducha.",
+  "We ask about the home, the project, and the timing. Then we book the estimate and follow up.": "Preguntamos por la casa, el proyecto y los plazos. Despu\u00e9s agendamos el presupuesto y damos seguimiento.",
+  "With your approval, we reach about 25 nearby homes after a finished job. Neighbors see your work and know how to call.": "Con tu aprobaci\u00f3n, contactamos a unas 25 casas cercanas despu\u00e9s de terminar un proyecto. Los vecinos ven tu trabajo y saben c\u00f3mo llamarte.",
+  "A proposed program gives a customer $100 for five introductions. Each person must agree before their contact details are shared.": "Un programa propuesto ofrece $100 a un cliente por cinco presentaciones. Cada persona debe dar permiso antes de compartir sus datos de contacto.",
+  "The program needs your approval and a rules review before use. Written terms must explain who qualifies, when rewards are paid, and any limits; no reward program is active on this site.": "El programa necesita tu aprobaci\u00f3n y una revisi\u00f3n de las normas antes de usarse. Las condiciones escritas deben explicar qui\u00e9n puede participar, cu\u00e1ndo se paga y qu\u00e9 l\u00edmites hay; este sitio no activa ning\u00fan programa de recompensas.",
+  "An introduction does not give permission to send marketing texts.": "Una presentaci\u00f3n no da permiso para enviar mensajes de publicidad.",
+  "Tell us about your business below. To reach us now, book a call or use our email or phone.": "Cu\u00e9ntanos sobre tu empresa abajo. Para hablar ahora, agenda una llamada o usa nuestro correo o tel\u00e9fono.",
+  "Good Work.<br>Room for More Jobs.": "Buen trabajo.<br>Capacidad para m\u00e1s proyectos.",
+  "You do good work, can invest in marketing, and can attend more estimates. Tell us about your business.": "Haces un buen trabajo, puedes invertir en publicidad y asistir a m\u00e1s citas. Cu\u00e9ntanos sobre tu empresa.",
+  "We work with one contractor per trade in a 30-mile radius. Apply to check availability; we confirm your area and terms in writing before work starts.": "Trabajamos con un contratista por oficio en un radio de 30 millas. Solicita una revisi\u00f3n; confirmamos tu zona y las condiciones por escrito antes de empezar.",
+  "The jobs you want, your budget, and room for more work.": "Los proyectos que buscas, tu presupuesto y tu capacidad para m\u00e1s trabajo.",
+  "We explain the service and answer your questions.": "Te explicamos el servicio y respondemos tus preguntas.",
+  "If it fits, we agree on your area and terms in writing. No pressure.": "Si encaja, acordamos tu zona y las condiciones por escrito. Sin presi\u00f3n.",
+  "DONE-FOR-YOU GROWTH FOR CONTRACTORS": "CRECIMIENTO PARA CONTRATISTAS, NOSOTROS NOS ENCARGAMOS",
+  "Client Revenue Generated": "Ingresos generados para clientes",
+  "Owner-proposed claim; evidence pending.": "Cifra propuesta por el propietario; pruebas pendientes.",
+  "Automated Lead Acknowledgment Target": "Tiempo objetivo de respuesta autom\u00e1tica",
+  "A target, not a human calling guarantee.": "Es un objetivo, no una garant\u00eda de llamada humana.",
+  "Ads \u2192 Human Follow-Up \u2192 Booked Estimates": "Anuncios \u2192 Seguimiento humano \u2192 Citas agendadas",
+  "You close the jobs.": "T\u00fa cierras las ventas.",
+  "Results claim and service targets": "Cifra propuesta y objetivos del servicio",
+  "You show up, sell the job, and do the work.": "T\u00fa vas a la cita, cierras la venta y haces el trabajo.",
+  "More Than Ads.": "M\u00e1s que anuncios.",
+  "Real Follow-Up.": "Seguimiento de verdad.",
+  "We Bring the Leads.": "Traemos contactos.",
+  "We Make the Calls.": "Hacemos las llamadas.",
+  "Busy on a Job?": "\u00bfEst\u00e1s trabajando?",
+  "We Answer the Leads.": "Nosotros respondemos.",
+  "Good Work.": "Buen trabajo.",
+  "Room for More Jobs.": "Capacidad para m\u00e1s proyectos.",
+  "We bring the leads. We make the calls. We book the estimates. You close the jobs.": "Traemos contactos. Hacemos las llamadas. Agendamos presupuestos. T\u00fa cierras las ventas.",
+  "Service radius in miles *": "Radio de servicio en millas *",
+  "When would you like to start? *": "\u00bfCu\u00e1ndo te gustar\u00eda empezar? *",
+  "As soon as possible": "Lo antes posible",
+  "Within 30 days": "En los pr\u00f3ximos 30 d\u00edas",
+  "Within 1\u20133 months": "Dentro de 1 a 3 meses",
+  "Just exploring": "Solo estoy buscando informaci\u00f3n",
+  "Your next step: book a call.": "El siguiente paso: agenda una llamada.",
+  "More Leads. Booked Estimates. | Digital Consulting USA": "M\u00e1s contactos. Citas agendadas. | Digital Consulting USA"
+});
+
+Object.assign(window.DC_SPANISH, {
+  "Updated October 20, 2026. Draft pending business and service details.": "Actualizado el 20 de octubre de 2026. Borrador pendiente de confirmar los datos del negocio y del servicio.",
+  "Digital Consulting USA is the business name used on this site. Nicolas Muggli is the owner/contact; business structure, mailing address, and SMS sender approval are not yet confirmed.": "Digital Consulting USA es el nombre comercial usado en este sitio. Nicolas Muggli es el propietario y contacto; la estructura del negocio, la direcci\u00f3n postal y la aprobaci\u00f3n del remitente SMS a\u00fan no est\u00e1n confirmadas.",
+  "We plan to keep inquiry and service information only as long as needed to provide services, meet recordkeeping duties, resolve disputes, and keep consent or opt-out records. Retention periods and deletion steps still need to be confirmed.": "Planeamos conservar los datos de consultas y servicios solo el tiempo necesario para prestar servicios, cumplir obligaciones de registro, resolver disputas y guardar permisos o bajas. A\u00fan deben confirmarse los plazos y los pasos de eliminaci\u00f3n.",
+  "No online service can promise complete security. Access controls and connected providers must be checked before online form delivery is enabled.": "Ning\u00fan servicio en l\u00ednea puede prometer seguridad total. Deben revisarse los controles de acceso y los proveedores conectados antes de activar el env\u00edo de formularios.",
+  "We will update this notice when our practices change and ask for new consent when required.": "Actualizaremos este aviso cuando cambien nuestras pr\u00e1cticas y pediremos un nuevo permiso cuando sea necesario.",
+  "These draft terms cover use of the Digital Consulting USA website. Use it lawfully; do not disrupt the site, send unlawful material, try to access restricted systems, or give false identity or business details.": "Estas condiciones provisionales cubren el uso del sitio de Digital Consulting USA. \u00dasalo de forma legal; no interrumpas el sitio, env\u00edes material ilegal, intentes acceder a sistemas restringidos ni des datos falsos sobre tu identidad o negocio.",
+  "SMS stays off until sender details, consent records, opt-out handling, and support are ready and match the approved program.": "Los SMS seguir\u00e1n desactivados hasta que los datos del remitente, los registros de permiso, las bajas y el soporte est\u00e9n listos y coincidan con el programa aprobado.",
+  "The proposed Digital Consulting USA SMS program covers contractor applications, appointments, and related service questions. It is not active; the sender and sending number must be confirmed first.": "El programa SMS propuesto de Digital Consulting USA cubre solicitudes de contratistas, citas y preguntas relacionadas con el servicio. No est\u00e1 activo; primero deben confirmarse el remitente y el n\u00famero de env\u00edo.",
+  "The SMS checkbox is separate, optional, and unchecked. It stays disabled until sender approval and consent recording are ready. Before SMS starts, we must record the phone number, your choice, the disclosure version, the page, and the time of consent; marketing texts require the right permission.": "La casilla SMS es independiente, opcional y no est\u00e1 marcada. Seguir\u00e1 desactivada hasta que est\u00e9n listos la aprobaci\u00f3n del remitente y el registro del permiso. Antes de activar SMS, debemos registrar el tel\u00e9fono, tu elecci\u00f3n, la versi\u00f3n del aviso, la p\u00e1gina y la hora del permiso; los mensajes de publicidad requieren el permiso adecuado.",
+  "These services may process data when they load or when you use them under their own policies. After a confirmed form submission, the booking link may include your name and email to fill in the Cal.com form.": "Estos servicios pueden tratar datos al cargarse o cuando los uses, seg\u00fan sus propias pol\u00edticas. Tras un env\u00edo confirmado, el enlace de reserva puede incluir tu nombre y correo para completar el formulario de Cal.com.",
+  "Online Sending Unavailable": "Env\u00edo en l\u00ednea no disponible"
+});
+
+Object.assign(window.DC_SPANISH, {
+  "When you contact us or book a call, we may receive your name, company, website, email, phone number, trade, service area, service radius, project value, budget, start timeframe, and goals. Do not submit sensitive personal information or homeowner records. Contact and application details are sent only when a verified submission service is configured. Until then, field values are not sent or saved by this site.": "Cuando nos contactas o reservas una llamada, podemos recibir tu nombre, empresa, sitio web, correo, tel\u00e9fono, oficio, zona y radio de servicio, valor de los proyectos, presupuesto, fecha deseada de inicio y objetivos. No env\u00edes datos personales sensibles ni registros de propietarios. Los formularios solo env\u00edan datos cuando hay un servicio de env\u00edo verificado; hasta entonces, este sitio no los env\u00eda ni guarda.",
+  "This site is configured for GitHub Pages hosting, Google Fonts, a Cal.com booking link, a WhatsApp contact link, and an externally hosted Sara voice widget. These services may process data when they load or when you use them under their own policies. After a confirmed form submission, the booking link may include your name and email to fill in the Cal.com form. Using the voice widget may send voice or conversation information to its operator; avoid sharing sensitive information. Vendor processing, any recording practices, and the final vendor inventory require confirmation before publication.": "Este sitio usa GitHub Pages, Google Fonts, enlaces de Cal.com y WhatsApp, y un asistente de voz Sara alojado por otro proveedor. Estos servicios pueden tratar datos al cargarse o cuando los uses, seg\u00fan sus propias pol\u00edticas. Tras un env\u00edo confirmado, el enlace de reserva puede incluir tu nombre y correo para completar el formulario de Cal.com. El asistente de voz puede enviar tu voz o conversaci\u00f3n a su operador; evita compartir datos sensibles. A\u00fan deben confirmarse el tratamiento de datos, las posibles grabaciones y la lista final de proveedores.",
+  "The site is intended for business users and is not directed to children under 13. Service providers may process information in the United States or other countries. We will update this notice when our practices change and ask for new consent when required.": "El sitio est\u00e1 dirigido a empresas, no a menores de 13 a\u00f1os. Los proveedores pueden tratar datos en Estados Unidos u otros pa\u00edses. Actualizaremos este aviso cuando cambien nuestras pr\u00e1cticas y pediremos un nuevo permiso cuando sea necesario.",
+  "disclosures. SMS stays off until sender details, consent records, opt-out handling, and support are ready and match the approved program.": "para conocer los avisos. Los SMS seguir\u00e1n desactivados hasta que los datos del remitente, los registros de permiso, las bajas y el soporte est\u00e9n listos y coincidan con el programa aprobado."
+});
+
+Object.assign(window.DC_SPANISH, {"Built for established bathroom remodelers and roofers. More leads only help when someone answers and books the estimate.": "Para empresas establecidas de remodelaci\u00f3n de ba\u00f1os y techado. Tener m\u00e1s contactos solo sirve si alguien responde y agenda el presupuesto.", "More Leads. Higher Close Rates. | Digital Consulting USA": "M\u00e1s contactos. M\u00e1s ventas. | Digital Consulting USA"});
+
+Object.assign(window.DC_SPANISH, {
+  "How much does your business make each month? *": "\u00bfCu\u00e1nto ingresa tu empresa al mes? *",
+  "How much do you spend on ads each month? *": "\u00bfCu\u00e1nto gastas en anuncios al mes? *",
+  "What is a typical job worth? *": "\u00bfCu\u00e1nto vale un proyecto habitual? *",
+  "What would you like help with? *": "\u00bfEn qu\u00e9 te gustar\u00eda recibir ayuda? *",
+  "More Bathroom Jobs.": "M\u00e1s remodelaciones de ba\u00f1os.",
+  "Less Chasing Leads.": "Sin perseguir contactos."
+});
+
+Object.assign(window.DC_SPANISH, {
+  "Revenue closed for one client in under a year": "Ingresos cerrados para un cliente en menos de un a\u00f1o",
+  "Average speed-to-lead. A rep contacts every new opt-in": "Tiempo medio de respuesta. Un representante contacta a cada nuevo interesado",
+  "Proven system: Ads \u2192 Rep Contact \u2192 Follow-Up": "Sistema probado: Anuncios \u2192 Contacto del representante \u2192 Seguimiento",
+  "LIVE": "EN VIVO"
+});

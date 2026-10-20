@@ -9,14 +9,20 @@ No production integration is enabled by this change. Never add private credentia
 `site-config.js` preserves the site's existing Cal.com URL. Replace `bookingUrl` with
 an approved HTTPS Cal.com or Calendly scheduling link when needed. UTM parameters and
 available click IDs are preserved between pages in tab-scoped storage and appended to
-booking links. No contact data is placed in booking URLs. Booking-link clicks are not
+booking links. After a confirmed receipt only, the form's booking CTA prefills name
+and email on the existing HTTPS Cal.com link. These values remain in page memory,
+not browser storage or analytics. Other booking links stay unprefilled. The booking
+URL contains these values when clicked; Privacy Policy now discloses that handoff.
+Booking-link clicks are not
 reported as completed bookings. Actual booking attribution and CRM linkage require a
 verified provider webhook on the server and a shared server-side lead reference.
 
 ## Contact and Application
 
 Until `formEndpoint` contains a verified HTTPS receiver, submit buttons stay disabled
-and the site explicitly states that nothing is transmitted. Fields are not saved.
+and read "Online Sending Unavailable". The old large disconnected banner was removed
+at the owner's request; it is not shown again. Fields are not saved or transmitted.
+The Contact form is visible immediately, with working email, phone and booking links.
 Never point the browser directly at an authenticated GoHighLevel API.
 
 Required receiver behavior:
@@ -39,6 +45,36 @@ Required receiver behavior:
 6. Replaying the same key must return the same result. Handle uncertain client
    timeouts safely. The frontend keeps the same key for retries, prevents double
    clicks, retains fields on errors, and fires success tracking only once.
+
+Application fields now include required `service_radius` (whole miles, 1-500) and
+`start_timeframe` (As soon as possible / Within 30 days / Within 1-3 months /
+Just exploring). Existing `full_name`, `company`, `email`, `phone`, `website`,
+`specialty`, `service_area`, `monthly_revenue`, `ad_budget`, `project_value`,
+`growth_goals`, `capacity`, `challenge`, and `sms_consent` names are preserved.
+Option values are stable English CRM values even when displayed in Spanish.
+
+The approved receiver must also upsert an opportunity in the intended pipeline/stage,
+link it to the contact, save qualification answers and attribution, notify the agency,
+and send the approved confirmation. Contact/opportunity deduplication and retryable
+notifications must be handled server-side; do not turn an email/SMS failure into a
+second contact. No GHL location, token, field IDs, opportunity pipeline/stage, or
+workflow/notification settings have been provided. No backend host exists in this
+GitHub Pages repository. A verified external receiver is still required; none is
+invented or activated by this refinement.
+
+## Confirmed bookings (external setup pending)
+
+Configure a Cal.com webhook on the approved backend. Validate its signature, dedupe
+by booking UID, and handle created/cancelled/rescheduled events. Associate the booking
+with the GHL contact using verified server-side records (for example normalized
+email plus the saved lead reference); update the existing opportunity and notify
+the agency. Only provider-confirmed bookings may fire a booking conversion. Define
+the provider metadata/lead reference contract and consent propagation before enabling
+server-side ads events. The site does not treat a link click or page visit as a booking.
+
+Cal.com supports name/email prefill in booking links:
+https://cal.com/embed . Prefill URL formation was tested with synthetic data locally;
+no appointment or real CRM record was created.
 
 Needed before production: receiver URL/hosting, approved GHL location and credential,
 field mapping, workflow IDs, rate limiting/bot controls, and a successful end-to-end
@@ -68,6 +104,26 @@ disclosures, consent evidence storage, HELP support and STOP suppression are tes
 The owner/contact is Nicolas Muggli; the business name is Digital Consulting USA.
 Legal structure, mailing address, retention schedule and vendor practices remain
 pending. English/Spanish legal pages are drafts for review, not an A2P approval.
+The October 20 plain-language edits keep that pending status visible, retain STOP,
+HELP, rates, frequency, optional consent and mobile opt-in sharing restrictions, and
+update the privacy inventory for radius/timeframe and Cal.com prefill. They do not
+verify business identity or register a sender. Provider references reviewed:
+https://www.twilio.com/docs/messaging/compliance/a2p-10dlc/collect-business-info
+https://www.twilio.com/en-us/legal/messaging-policy?view=Schedule
+
+## Proof claims and service scope
+
+The $500K+ figure was supplied by the owner and has not been independently verified.
+The owner requested removal of the extra public proof-bar notes. Evidence remains
+pending internally. The 5s figure is an automated lead
+acknowledgment target, not a human calling guarantee or measured current performance.
+One contractor per trade / 30-mile-radius coverage is subject to availability and
+written area/terms confirmation. Human qualification and estimate booking are the
+offer; the contractor closes renovation sales. The $100/five-introduction proposal
+stays inactive pending written conditions, client approval and rules review.
+
+No commit, push or deployment is authorized for these refinement changes. The live
+site still runs c0937ba2 until a new production push is approved.
 
 ## Local verification
 
@@ -79,3 +135,8 @@ The ordinary preview on port 8765 continues using the unconfigured production co
 The mock server suppresses input autofill hints in its HTTP responses to keep
 password-manager overlays out of synthetic QA. Production autocomplete attributes
 remain unchanged.
+
+
+## Latest proof-bar wording override
+
+The owner explicitly requested the Launchpad screenshot captions: Revenue closed for one client in under a year; Average speed-to-lead. A rep contacts every new opt-in; Proven system: Ads -> Rep Contact -> Follow-Up. Added the green LIVE badge and retained $500K+ / 5s / 3-Step. These requested marketing claims supersede the earlier target-caption description above; no revenue evidence or measured response-time evidence was supplied, and no CRM, SMS or response service was activated. The badge is display copy, not an integration status check. Changes remain local and undeployed.
