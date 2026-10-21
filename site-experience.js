@@ -330,3 +330,17 @@
   });
   applyLanguage(); applyTheme(); updateProgress(); activateAnalytics();
 })();
+
+// Invisible spam trap for website form submissions.
+(() => {
+  const addTrap = () => document.querySelectorAll('form[data-dc-form]').forEach(form => {
+    if (form.querySelector('[name="website_confirm"]')) return;
+    const trap = document.createElement('div');
+    trap.setAttribute('aria-hidden', 'true');
+    trap.style.cssText = 'position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden';
+    const input = document.createElement('input');
+    input.name = 'website_confirm'; input.type = 'text'; input.tabIndex = -1; input.autocomplete = 'off';
+    trap.appendChild(input); form.appendChild(trap);
+  });
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addTrap); else addTrap();
+})();
