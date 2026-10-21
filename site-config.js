@@ -4,5 +4,5 @@ window.DC_CONFIG = {
   // HTTPS server-side receiver; see INTEGRATION.md for the request contract.
   formEndpoint: 'https://dcusa-form-receiver.mugglimusica.workers.dev/forms',
   smsEnabled: false,
-  tracking: { gtmId: '', ga4Id: '', metaPixelId: '', googleAdsId: '', googleAdsLeadLabel: '' }
+  tracking: { gtmId: '', ga4Id: 'G-RGN8REZX3L', metaPixelId: '', googleAdsId: '', googleAdsLeadLabel: '' }
 };
