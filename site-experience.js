@@ -119,7 +119,16 @@
   }
   const bookingLinks = document.querySelectorAll('a[data-booking],a[href*="cal.com/bookings-appointments-ooxy15/15min"]');
   function refreshBookingLinks() {
-    bookingLinks.forEach(link => { const url = bookingUrl(bookingPrefill.get(link)); if (url) link.href = url; });
+    bookingLinks.forEach(link => {
+      const href = bookingUrl(bookingPrefill.get(link));
+      if (!href) return;
+      link.href = href;
+      const url = new URL(href);
+      if (url.hostname !== 'cal.com' || url.pathname !== '/bookings-appointments-ooxy15/15min') return;
+      link.dataset.calLink = 'bookings-appointments-ooxy15/15min';
+      link.dataset.calNamespace = 'dcusa';
+      link.dataset.calConfig = JSON.stringify({ layout: 'month_view', ...Object.fromEntries(url.searchParams) });
+    });
   }
   refreshBookingLinks();
   let analyticsLoaded = false;
@@ -174,6 +183,48 @@
       }
     }
     document.dispatchEvent(new CustomEvent('dc:analytics', {detail: payload}));
+  }
+  // Keep scheduling on this page so a confirmed booking retains first-party GA attribution.
+  // Cal's fresh-booking event is separate from its reschedule and dry-run events.
+  const calNamespace = 'dcusa';
+  if (bookingLinks.length) {
+    ((C, A, L) => {
+      const push = (api, args) => api.q.push(args);
+      C.Cal = C.Cal || function () {
+        const cal = C.Cal, args = arguments;
+        if (!cal.loaded) {
+          cal.ns = {}; cal.q = cal.q || [];
+          const script = document.createElement('script');
+          script.src = A; script.async = true; document.head.appendChild(script);
+          cal.loaded = true;
+        }
+        if (args[0] === L) {
+          const api = function () { push(api, arguments); };
+          api.q = [];
+          if (typeof args[1] === 'string') {
+            cal.ns[args[1]] = cal.ns[args[1]] || api;
+            push(cal.ns[args[1]], args); push(cal, ['initNamespace', args[1]]);
+          } else push(cal, args);
+          return;
+        }
+        push(cal, args);
+      };
+    })(window, 'https://app.cal.com/embed/embed.js', 'init');
+    window.Cal('init', calNamespace, { origin: 'https://app.cal.com' });
+    window.Cal.config = window.Cal.config || {};
+    window.Cal.config.forwardQueryParams = false;
+    window.Cal.ns[calNamespace]('on', {
+      action: 'bookingSuccessfulV2',
+      callback: event => {
+        const data = event.detail?.data;
+        if (consent !== 'accepted' || String(data?.status).toUpperCase() !== 'ACCEPTED' || data.paymentRequired || Number(data.eventTypeId) !== 4928892 || !/^[a-zA-Z0-9_-]{10,200}$/.test(data.uid || '')) return;
+        const key = 'cal:' + data.uid;
+        if (storage.get('dc-booking-recorded:' + data.uid)) return;
+        storage.set('dc-booking-recorded:' + data.uid, '1');
+        // Only fixed non-personal parameters go to Analytics. UID stays in local deduplication storage.
+        track('dc_booking_confirmed', { booking_provider: 'cal.com', appointment_type: 'strategy_call' }, key);
+      }
+    });
   }
   document.addEventListener('click', event => {
     const link = event.target.closest('a.dc-button,a[data-booking]');
