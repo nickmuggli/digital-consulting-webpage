@@ -2,7 +2,7 @@
 window.DC_CONFIG = {
   bookingUrl: 'https://cal.com/bookings-appointments-ooxy15/15min',
   // HTTPS server-side receiver; see INTEGRATION.md for the request contract.
-  formEndpoint: '',
+  formEndpoint: 'https://dcusa-form-receiver.mugglimusica.workers.dev/forms',
   smsEnabled: false,
   tracking: { gtmId: '', ga4Id: '', metaPixelId: '', googleAdsId: '', googleAdsLeadLabel: '' }
 };
