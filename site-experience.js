@@ -325,11 +325,8 @@
     form.addEventListener('invalid', event => {
       if (lang === 'es') event.target.setCustomValidity(event.target.validity.typeMismatch ? 'Ingresa un correo o enlace válido.' : 'Completa este campo con un valor válido.');
     }, true);
-    const sms = form.querySelector('[name=sms_consent]');
-    if (sms && !config.smsEnabled) {
-      sms.disabled = true;
-      sms.checked = false;
-    }
+    const smsMarketing = form.querySelector('[name=sms_marketing_consent]');
+    const smsInformational = form.querySelector('[name=sms_informational_consent]');
     form.addEventListener('submit', async event => {
       event.preventDefault();
       if (busy || !endpointReady || form.dataset.complete === 'true' || !form.reportValidity()) return;
@@ -352,8 +349,10 @@
             version: 1, idempotencyKey, source: form.dataset.dcForm, fields,
             submittedAt: new Date().toISOString(), sourcePage: safeSource,
             attribution: consent === 'rejected' ? {} : attribution, language: lang,
-            smsConsent: config.smsEnabled && !!sms?.checked,
-            smsDisclosureVersion: '2026-10-19-v1'
+            smsConsent: false,
+            smsMarketingConsent: !!smsMarketing?.checked,
+            smsInformationalConsent: !!smsInformational?.checked,
+            smsDisclosureVersion: '2026-10-21-v2'
           })
         });
         const result = await response.json();
