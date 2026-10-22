@@ -1,0 +1,8 @@
+/* Supplied Operator wordmarks: preserve aspect ratio and theme contrast. */
+a.dc-operator-brand{display:inline-flex;flex:0 0 auto;width:150px;max-width:none;align-items:center;line-height:1;text-decoration:none}
+a.dc-operator-brand img{display:block;width:100%;height:auto;max-height:none;object-fit:contain;border-radius:0;flex-shrink:0}
+a.dc-operator-brand .dc-logo-light{display:none}
+html[data-theme="light"] a.dc-operator-brand .dc-logo-dark{display:none}
+html[data-theme="light"] a.dc-operator-brand .dc-logo-light{display:block}
+.dc-footer a.dc-operator-brand{width:220px;max-width:100%;margin-bottom:16px}
+@media(max-width:760px){.dc-nav>a.dc-operator-brand,a.nav-logo.dc-operator-brand{width:130px;max-width:130px;min-width:0}.dc-footer a.dc-operator-brand{width:200px}}
