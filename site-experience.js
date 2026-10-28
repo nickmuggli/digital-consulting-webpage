@@ -37,6 +37,7 @@
     document.title = lang === 'es' ? dictionary[originalTitle] || originalTitle : originalTitle;
     document.querySelectorAll('[data-language]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.language === lang)));
     document.querySelectorAll('input,select,textarea').forEach(input => input.setCustomValidity(''));
+    document.querySelectorAll('[data-dc-form] [name=phone]').forEach(input => { if (input.value) input.dispatchEvent(new Event('input', { bubbles: true })); });
     refreshFormNotices();
     updateConsentButtons();
   }
@@ -321,15 +322,33 @@
     }
     let busy = false;
     let idempotencyKey = crypto.randomUUID();
-    form.addEventListener('input', event => event.target.setCustomValidity?.(''));
+    const phone = form.querySelector('[name=phone]');
+    const phoneError = form.querySelector('#phone-error');
+    const validatePhone = () => {
+      const normalized = window.DC_PHONE?.normalize(phone.value);
+      const message = normalized ? '' : text('Enter a valid U.S. phone number, including area code.', 'Ingresa un número de teléfono válido de EE. UU., incluido el código de área.');
+      phone.setCustomValidity(message);
+      phone.setAttribute('aria-invalid', String(!normalized));
+      phoneError.textContent = message;
+      phoneError.hidden = !message;
+      return normalized;
+    };
+    phone.addEventListener('blur', validatePhone);
+    form.addEventListener('input', event => {
+      if (event.target === phone) validatePhone();
+      else event.target.setCustomValidity?.('');
+    });
     form.addEventListener('invalid', event => {
+      if (event.target === phone) { validatePhone(); return; }
       if (lang === 'es') event.target.setCustomValidity(event.target.validity.typeMismatch ? 'Ingresa un correo o enlace válido.' : 'Completa este campo con un valor válido.');
     }, true);
     const smsMarketing = form.querySelector('[name=sms_marketing_consent]');
     const smsInformational = form.querySelector('[name=sms_informational_consent]');
     form.addEventListener('submit', async event => {
       event.preventDefault();
-      if (busy || !endpointReady || form.dataset.complete === 'true' || !form.reportValidity()) return;
+      if (busy || !endpointReady || form.dataset.complete === 'true') return;
+      const normalizedPhone = validatePhone();
+      if (!form.reportValidity() || !normalizedPhone) return;
       busy = true; form.dataset.busy = 'true';
       form.dataset.error = 'false';
       const button = form.querySelector('[type=submit]');
@@ -340,6 +359,7 @@
       const data = new FormData(form);
       const fields = {};
       for (const key of new Set(data.keys())) fields[key] = data.getAll(key).length > 1 ? data.getAll(key) : data.get(key);
+      fields.phone = normalizedPhone;
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), 15000);
       try {
@@ -352,10 +372,14 @@
             smsConsent: false,
             smsMarketingConsent: !!smsMarketing?.checked,
             smsInformationalConsent: !!smsInformational?.checked,
-            smsDisclosureVersion: '2026-10-21-v2'
+            smsDisclosureVersion: '2026-10-27-appointments-v1'
           })
         });
         const result = await response.json();
+        if (!response.ok && result.field === 'phone') {
+          phone.setCustomValidity(text('Enter a valid U.S. phone number, including area code.', 'Ingresa un número de teléfono válido de EE. UU., incluido el código de área.'));
+          phoneError.textContent = phone.validationMessage; phoneError.hidden = false; phone.setAttribute('aria-invalid', 'true'); phone.reportValidity();
+        }
         if (!response.ok || result.success !== true || typeof result.submissionId !== 'string' || !result.submissionId) throw new Error('Submission not confirmed');
         form.dataset.complete = 'true';
         status.textContent = text('Thanks. We received your details. Book a call below.', 'Gracias. Recibimos tus datos. Agenda una llamada abajo.');
