@@ -2,6 +2,7 @@ import '../vendor/libphonenumber-js/libphonenumber-max.js';
 import '../phone-validation.js';
 // DCUSA form receiver. Secrets remain in Cloudflare bindings. Based on active version 76938761.
 const API = 'https://services.leadconnectorhq.com';
+const appointmentDisclosure='I agree to receive automated appointment confirmation and reminder texts from Digital Consulting USA at the number provided. Message frequency varies. Message and data rates may apply. Reply STOP to opt out or HELP for help.';
 const fieldsMap = {
   specialty:'dcusa_contractor_specialty', service_area:'dcusa_service_area',
   service_radius:'dcusa_service_radius', monthly_revenue:'dcusa_monthly_revenue',
@@ -69,7 +70,7 @@ class GHL {
     this.fields=new Map((cf.customFields||[]).map(f=>[f.fieldKey,f.id]));
     this.pipeline=(pl.pipelines||[]).find(p=>p.name===this.env.PIPELINE_NAME);if(!this.pipeline)fail(503,'Pipeline setup incomplete');
   }
-  custom(values){return Object.entries(values).filter(([,v])=>v!==undefined&&v!=='').map(([key,value])=>{const id=this.fields.get('contact.'+key);if(!id)fail(503,'Field mapping incomplete');return {id,field_value:String(value)};});}
+  custom(values){return Object.entries(values).filter(([,v])=>v!==undefined&&v!=='').map(([key,value])=>{const id=this.fields.get('contact.'+key);if(!id)fail(503,'Field mapping incomplete');return {id,field_value:Array.isArray(value)?value:String(value)};});}
   stage(name){const s=this.pipeline.stages.find(s=>s.name===name);if(!s)fail(503,'Stage mapping incomplete');return s.id;}
   async contact(f,custom){
     const name=str(f.full_name).split(/\s+/);
@@ -105,12 +106,26 @@ async function processForm(env,b,ip){
   return withLock(db,async()=>{
     const id='form:'+b.idempotencyKey,row=await receipt(db,id,b);
     if(row.result)return JSON.parse(row.result);
+    // A receipt retains its original order across retries. Never replay an older
+    // choice over a newer submission for either the email or submitted number.
+    const latest=await db.prepare("SELECT id FROM receipts WHERE id LIKE 'form:%' AND (json_extract(body,'$.fields.email')=? OR json_extract(body,'$.fields.phone')=?) ORDER BY rowid DESC LIMIT 1").bind(b.fields.email,b.fields.phone).first();
+    if(latest?.id!==id){
+      const out={success:true,submissionId:b.idempotencyKey,superseded:true};
+      await db.prepare('UPDATE receipts SET result=? WHERE id=?').bind(JSON.stringify(out),id).run();
+      return out;
+    }
     const cp=JSON.parse(row.checkpoint);
     const save=()=>db.prepare('UPDATE receipts SET checkpoint=? WHERE id=?').bind(JSON.stringify(cp),id).run();
     if(!cp.rateChecked){const key=await hash(ip+':'+new Date().toISOString().slice(0,13)+':'+env.RATE_SALT);await db.prepare('INSERT INTO limits(id,count) VALUES(?,1) ON CONFLICT(id) DO UPDATE SET count=count+1').bind(key).run();const r=await db.prepare('SELECT count FROM limits WHERE id=?').bind(key).first();if(r.count>10)fail(429,'Too many submissions; try later');cp.rateChecked=true;await save();}
     const crm=new GHL(env);await crm.config();
     const custom=Object.fromEntries(Object.entries(fieldsMap).filter(([k])=>b.fields[k]).map(([k,v])=>[v,b.fields[k]]));
     Object.assign(custom,{dcusa_form_source:b.source,dcusa_submission_id:b.idempotencyKey,dcusa_received_at:row.received,dcusa_attribution:JSON.stringify(b.attribution),dcusa_language:b.language});
+    Object.assign(custom,{
+      dcusa_appointment_sms_permission:b.smsAppointmentConsent?'yes':'no',
+      dcusa_appointment_sms_consented_phone:b.smsAppointmentConsent?b.fields.phone:'none',
+      dcusa_appointment_sms_updated_at:row.received
+    });
+    custom.appointment_text_messages_optional=b.smsAppointmentConsent?[appointmentDisclosure]:[];
     if(!cp.contactId){cp.contactId=await crm.contact(b.fields,custom);await save();}
     if(!cp.consentRecorded){await crm.call('/contacts/'+cp.contactId+'/notes','POST',{body:JSON.stringify({type:'DCUSA SMS consent record',submissionId:b.idempotencyKey,phone:b.fields.phone,marketing:b.smsMarketingConsent,informational:b.smsInformationalConsent,appointment:b.smsAppointmentConsent,purpose:b.smsDisclosureVersion==='2026-10-27-appointments-v1'?'appointment confirmations and reminders':'legacy purposes',receivedAt:row.received,sourceUrl:b.sourcePage,disclosureVersion:b.smsDisclosureVersion,language:b.language,smsEnabled:false})});cp.consentRecorded=true;await save();}
     if(!cp.opportunityId){cp.opportunityId=await crm.opportunity(cp.contactId,b.source==='application'?'Application Received':'New Inquiry','DCUSA Website '+b.source,{allowMove:b.source==='application'?'application':false});await save();}
